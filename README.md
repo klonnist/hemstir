@@ -41,17 +41,17 @@ Ortam değişkenleriyle ayarlanabilir: `CONTEXT_HOURS` (varsayılan 300), `HORIZ
 
 ## TimesFM Sürümü ve Lisansı (önemli)
 
-Script varsayılan olarak **TimesFM 2.5** (`google/timesfm-2.5-200m-pytorch`, **Apache-2.0**
-lisanslı, ticari kullanıma açık) checkpoint'ini kullanır. `pip install timesfm[torch]`
-zaman içinde farklı bir majör sürüm çözümlerse (API `google-research/timesfm` reposunda
-değişebiliyor), `generate_forecasts.py`'deki `load_model()` fonksiyonu otomatik olarak eski
-API'ye (`TimesFm` + `TimesFmHparams`/`TimesFmCheckpoint`, checkpoint: `google/timesfm-2.0-500m-pytorch`,
-o da Apache-2.0) düşer.
+Script **TimesFM 2.5** (`google/timesfm-2.5-200m-pytorch`, **Apache-2.0** lisanslı, ticari
+kullanıma açık) checkpoint'ini, `timesfm.TimesFM_2p5_200M_torch` sınıfıyla yükler.
 
-> ⚠️ TimesFM **v3.0** ağırlıkları (varsa/kullanılırsa) Google tarafından **ticari kullanıma
-> kapalı** bir lisansla dağıtılıyor. Bu proje kasıtlı olarak v3.0'ı **kullanmaz** — hem
-> `CHECKPOINT_REPO` hem de `LEGACY_CHECKPOINT_REPO` varsayılanları v2.5/v2.0'a (Apache-2.0)
-> sabittir. Checkpoint'i kendiniz değiştirirseniz lisansı kontrol edin.
+`requirements.txt`'de `timesfm[torch]==2.0.2` olarak **bilerek sabitlendi**: `pip install
+timesfm[torch]` (sürüm belirtmeden) 2026 itibarıyla PyPI'den **timesfm 3.0.x**'i çözüyor.
+
+> ⚠️ TimesFM **v3.0** ağırlıkları Google tarafından **ticari kullanıma kapalı** bir lisansla
+> dağıtılıyor. Bu proje kasıtlı olarak v3.0'ı **kullanmaz** — `timesfm` paketi 2.0.2'ye
+> sabitlenmiştir (bu paket sürümü, 2.5 model mimarisini/checkpoint'ini Apache-2.0 API'siyle
+> yükleyen `TimesFM_2p5_200M_torch` sınıfını içerir). `requirements.txt`'i kendiniz
+> güncellerseniz hangi sürümün hangi lisansla geldiğini kontrol edin.
 
 ## GitHub Actions Otomasyonu
 
