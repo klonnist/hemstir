@@ -39,58 +39,42 @@ BAR = "1H"
 CONTEXT_HOURS = int(os.environ.get("CONTEXT_HOURS", "300"))
 HORIZON_HOURS = int(os.environ.get("HORIZON_HOURS", "48"))
 
-# TimesFM 2.5 (Apache-2.0) varsayilan checkpoint'i. timesfm paketi 2.x'ten daha eski
-# bir surumse (farkli API), asagidaki LEGACY_CHECKPOINT'e otomatik dusulur.
+# TimesFM 2.5 (Apache-2.0) checkpoint'i - bkz. README'deki lisans notu.
 CHECKPOINT_REPO = os.environ.get("TIMESFM_CHECKPOINT", "google/timesfm-2.5-200m-pytorch")
-LEGACY_CHECKPOINT_REPO = os.environ.get("TIMESFM_LEGACY_CHECKPOINT", "google/timesfm-2.0-500m-pytorch")
 
 OUTPUT_FILE = os.environ.get("OUTPUT_FILE", os.path.join("docs", "forecasts.json"))
 
 
-def load_model():
-    """timesfm paketinin surumune gore uygun modeli yukler.
+def load_model(batch_size: int):
+    """TimesFM 2.5 modelini yukler ve verilen batch boyutu icin derler.
 
-    timesfm >= 2.5 icin yeni sinif tabanli API (`TimesFm_2p5_200M_torch` + `ForecastConfig`);
-    daha eski surumler icin `TimesFm` + `TimesFmHparams`/`TimesFmCheckpoint` API'si kullanilir.
-    Donen tuple: (model, api_surumu)."""
+    torch_compile=False: CI'da her calistirmada sifirdan derleme (torch.compile)
+    yapmak yerine dogrudan eager modda calistirir - inference suresi bu olcekte
+    (10 kisa seri, CPU) onemsiz, CI guvenilirligi daha degerli."""
     import timesfm
 
-    if hasattr(timesfm, "TimesFm_2p5_200M_torch"):
-        model = timesfm.TimesFm_2p5_200M_torch.from_pretrained(CHECKPOINT_REPO)
-        model.compile(
-            timesfm.ForecastConfig(
-                max_context=CONTEXT_HOURS,
-                max_horizon=HORIZON_HOURS,
-                normalize_inputs=True,
-                use_continuous_quantile_head=True,
-                force_flip_invariance=True,
-                infer_is_positive=True,
-                fix_quantile_crossing=True,
-            )
+    model = timesfm.TimesFM_2p5_200M_torch.from_pretrained(CHECKPOINT_REPO, torch_compile=False)
+    model.compile(
+        timesfm.ForecastConfig(
+            max_context=CONTEXT_HOURS,
+            max_horizon=HORIZON_HOURS,
+            per_core_batch_size=batch_size,  # tum coinler tek batch'te islensin
+            normalize_inputs=True,
+            use_continuous_quantile_head=True,
+            force_flip_invariance=True,
+            infer_is_positive=True,
+            fix_quantile_crossing=True,
         )
-        return model, "2.5"
-
-    model = timesfm.TimesFm(
-        hparams=timesfm.TimesFmHparams(
-            backend="cpu",
-            per_core_batch_size=32,
-            horizon_len=HORIZON_HOURS,
-            context_len=CONTEXT_HOURS,
-        ),
-        checkpoint=timesfm.TimesFmCheckpoint(huggingface_repo_id=LEGACY_CHECKPOINT_REPO),
     )
-    return model, "legacy"
+    return model
 
 
-def run_forecast(model, api_version: str, inputs: list) -> tuple:
+def run_forecast(model, inputs: list) -> tuple:
     """Tum coinlerin kapanis serilerini tek batch cagrisinda tahmin eder.
 
-    Doner: (point_forecast, quantile_forecast) - ikisi de sekil (n_seri, horizon, ...).
-    quantile_forecast modelin/surumun kantil destegi yoksa None olabilir."""
-    if api_version == "2.5":
-        return model.forecast(horizon=HORIZON_HOURS, inputs=inputs)
-    freq = [0] * len(inputs)  # 0 = yuksek frekans (saatlik/gunluk gibi) seri
-    return model.forecast(inputs, freq=freq)
+    Doner: (point_forecast, quantile_forecast), sekil (n_seri, horizon) ve
+    (n_seri, horizon, 10) - kantil kolonlari [0.1, 0.2, ..., 0.9] kapsar."""
+    return model.forecast(horizon=HORIZON_HOURS, inputs=inputs)
 
 
 def confidence_band(quantile_row) -> tuple:
@@ -130,13 +114,12 @@ def main() -> int:
         print("HATA: Hicbir coin icin veri alinamadi.", file=sys.stderr)
         return 1
 
-    print("TimesFM yukleniyor (ilk calistirmada agirliklar Hugging Face'ten indirilir)...")
-    model, api_version = load_model()
-    print(f"TimesFM API surumu: {api_version}")
-
     ordered_symbols = list(series_by_symbol.keys())
     inputs = [series_by_symbol[s] for s in ordered_symbols]
-    point_forecast, quantile_forecast = run_forecast(model, api_version, inputs)
+
+    print("TimesFM yukleniyor (ilk calistirmada agirliklar Hugging Face'ten indirilir)...")
+    model = load_model(batch_size=len(inputs))
+    point_forecast, quantile_forecast = run_forecast(model, inputs)
 
     coins_payload = {}
     for i, symbol in enumerate(ordered_symbols):
@@ -163,8 +146,8 @@ def main() -> int:
 
     payload = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "model": f"Google TimesFM {api_version} (zero-shot, yeniden egitim yok)",
-        "checkpoint": CHECKPOINT_REPO if api_version == "2.5" else LEGACY_CHECKPOINT_REPO,
+        "model": "Google TimesFM 2.5 (200M, zero-shot, yeniden egitim yok)",
+        "checkpoint": CHECKPOINT_REPO,
         "bar": BAR,
         "context_hours": CONTEXT_HOURS,
         "horizon_hours": HORIZON_HOURS,

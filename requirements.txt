@@ -1,4 +1,7 @@
-timesfm[torch]
+# v2.0.2, TimesFM 2.5 (Apache-2.0) checkpoint'ini yukleyen TimesFM_2p5_200M_torch
+# API'sini icerir. Bilerek timesfm 3.x'e sabitlenmedi - o surumun agirliklari
+# ticari kullanima kapali bir lisansla dagitiliyor (bkz. README).
+timesfm[torch]==2.0.2
 pandas>=2.0.0
 numpy>=1.24.0
 requests>=2.31.0
