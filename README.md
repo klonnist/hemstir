@@ -2,21 +2,43 @@
 
 OKX'in genel (public, API anahtarı gerekmez) piyasa verisiyle 10 kripto para için Google'ın
 **TimesFM** modelini zero-shot modda (yeniden eğitim yok, doğrudan inference) kullanarak
-24-48 saatlik saatlik kapanış fiyatı tahmini üreten ve sonucu GitHub Pages üzerinde statik
-bir panelde gösteren proje.
+24-48 saatlik saatlik kapanış fiyatı tahmini üreten, buna ATR bazlı bir **AL/SAT + TP/SL**
+sinyali ekleyen ve sonucu GitHub Pages üzerinde statik bir panelde gösteren proje.
 
 **Bu bir yatırım tavsiyesi değildir.** TimesFM yalnızca geçmiş sayısal fiyat serisine bakar;
-haber, duyarlılık (sentiment) ya da temel analiz bilgisi yoktur. Gerçek emir göndermez,
-sadece istatistiksel bir tahmin gösterir.
+haber, duyarlılık (sentiment) ya da temel analiz bilgisi yoktur. AL/SAT + TP/SL de kanıtlanmış
+bir strateji değil, basit ve kural tabanlı bir hesaplamadır (aşağıya bakın). Gerçek emir
+göndermez, sadece istatistiksel bir tahmin ve buna bağlı bir seviye önerisi gösterir.
 
 ## Dosyalar
 
 - `okx_client.py` — OKX `/api/v5/market/candles` için ince istemci
-- `generate_forecasts.py` — veri çekme + TimesFM inference + `docs/forecasts.json` üretimi
+- `indicators.py` — ATR (Average True Range) hesaplama
+- `generate_forecasts.py` — veri çekme + TimesFM inference + sinyal hesaplama +
+  `docs/forecasts.json` üretimi
 - `docs/` — GitHub Pages ile yayınlanan statik panel (`index.html`, `style.css`, `app.js`)
   ve Actions'ın periyodik olarak commit'lediği `forecasts.json`
 - `.github/workflows/generate_forecasts.yml` — otomasyon (her 6 saatte bir + manuel tetikleme)
 - `requirements.txt` — Python bağımlılıkları
+
+## AL/SAT + TP/SL Sinyali Nasıl Hesaplanır
+
+Bu proje `crypto-trader` (aynı geliştiricinin başka bir reposu, EMA/RSI/ATR bazlı bir OKX
+botu) ile aynı TP/SL yaklaşımını kullanır:
+
+1. **Yön (BUY/SELL)**: TimesFM'in ufuk sonu (varsayılan 48. saat) için tahmin ettiği fiyat,
+   mevcut (son gerçek) kapanıştan yüksekse **BUY**, düşükse **SELL**.
+2. **TP/SL**: `ATR(14)`'ün (saatlik mumlardan Wilder yöntemiyle hesaplanır) sabit katları —
+   `SL = giriş ∓ 1.5×ATR`, `TP = giriş ± 2.5×ATR` (yön BUY/SELL'e göre işaret değişir),
+   yani risk/ödül oranı sabit ~1:1.67.
+3. **Sinyal gücü**: beklenen hareketin ATR'ye oranı 1'in altındaysa "zayıf", 1-2 arasında
+   "orta", 2 ve üzerinde "güçlü" olarak etiketlenir — yönü değiştirmez, sadece bilgi amaçlıdır.
+
+TimesFM'in ürettiği güven aralığı (quantile band) TP/SL için **kullanılmaz** — o saf
+istatistiksel yayılımdır, risk yönetimi için tasarlanmamıştır; grafikte sadece görsel olarak
+gösterilir. `forecasts.json`'daki her coin'in `signal` alanında `side`, `strength`,
+`entry_price`, `atr`, `expected_move_pct`, `take_profit`, `stop_loss`, `risk_reward`
+bulunur (yeterli geçmiş veri yoksa `null` olabilir).
 
 ## Coinler
 

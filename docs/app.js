@@ -62,8 +62,44 @@ function selectCoin(symbol) {
   document.querySelectorAll(".tab-btn[data-coin]").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.coin === symbol);
   });
+  renderSignal(symbol);
   renderChart(symbol);
   renderMeta(symbol);
+}
+
+const STRENGTH_LABELS = { guclu: "Güçlü", orta: "Orta", zayif: "Zayıf" };
+
+function renderSignal(symbol) {
+  const panel = document.getElementById("signal-panel");
+  const sig = forecastData.coins[symbol].signal;
+  if (!sig) {
+    panel.innerHTML = `<div class="empty">${symbol} için sinyal hesaplanamadı (yetersiz geçmiş veri).</div>`;
+    return;
+  }
+  const isBuy = sig.side === "BUY";
+  const sideLabel = isBuy ? "AL · BUY" : "SAT · SELL";
+  const moveSign = sig.expected_move_pct >= 0 ? "+" : "";
+
+  panel.innerHTML = `
+    <div class="signal-head">
+      <span class="signal-badge ${isBuy ? "side-buy-badge" : "side-sell-badge"}">${sideLabel}</span>
+      <span class="signal-tag">Sinyal gücü: ${STRENGTH_LABELS[sig.strength] || sig.strength}</span>
+      <span class="signal-tag">Risk/Ödül 1:${sig.risk_reward}</span>
+    </div>
+    <div class="signal-grid">
+      <div class="signal-item"><div class="label">Giriş</div><div class="value">${fmtPrice(sig.entry_price)}</div></div>
+      <div class="signal-item"><div class="label">Take Profit</div><div class="value pos">${fmtPrice(sig.take_profit)}</div></div>
+      <div class="signal-item"><div class="label">Stop Loss</div><div class="value neg">${fmtPrice(sig.stop_loss)}</div></div>
+      <div class="signal-item"><div class="label">ATR (14)</div><div class="value">${fmtPrice(sig.atr)}</div></div>
+      <div class="signal-item"><div class="label">Beklenen Hareket</div><div class="value ${sig.expected_move_pct >= 0 ? "pos" : "neg"}">${moveSign}${sig.expected_move_pct}%</div></div>
+    </div>
+    <p class="signal-disclaimer">
+      Kural tabanlı, otomatik üretilir: yön TimesFM'in ${forecastData.horizon_hours} saat sonrası için beklediği
+      fiyatın mevcut fiyata göre yukarı/aşağı olmasından; Take Profit / Stop Loss ise ATR(14)'ün sabit
+      katlarından (SL = 1.5×ATR, TP = 2.5×ATR) hesaplanır — TimesFM'in güven aralığı risk yönetimi için
+      kullanılmaz. Kanıtlanmış bir strateji ya da yatırım tavsiyesi değildir.
+    </p>
+  `;
 }
 
 function renderMeta(symbol) {

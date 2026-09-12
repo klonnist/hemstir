@@ -1,12 +1,17 @@
-"""OKX'ten 10 kripto icin saatlik kapanis verisi ceker, Google'in TimesFM modeliyle
-zero-shot 24-48 saatlik fiyat tahmini uretir ve sonucu docs/forecasts.json'a yazar.
+"""OKX'ten 10 kripto icin saatlik OHLCV verisi ceker, Google'in TimesFM modeliyle
+zero-shot 24-48 saatlik fiyat tahmini uretir, ATR bazli bir yon (BUY/SELL) + TP/SL
+seviyesi hesaplar ve sonucu docs/forecasts.json'a yazar.
 
 Akis:
   1. Her coin icin OKX'in genel /market/candles ucundan (auth gerekmez) son
-     CONTEXT_HOURS saatlik kapanis mumunu cek.
+     CONTEXT_HOURS saatlik mumu cek.
   2. Tum coinlerin kapanis serilerini TimesFM'e TEK bir batch cagrisinda ver
      (yeniden egitim yok, dogrudan zero-shot inference).
-  3. Gercek gecmis veri + tahmin + (varsa) guven araligini tek bir JSON'a yaz.
+  3. TimesFM'in ufuk sonundaki tahmini mevcut fiyatla kiyaslayarak yon belirle;
+     TP/SL'i (crypto-trader projesindeki gibi) ATR'nin sabit katlariyla hesapla -
+     TimesFM'in guven araligi risk yonetimi icin tasarlanmadigindan TP/SL icin
+     kullanilmiyor, sadece grafikte gosteriliyor (bkz. README).
+  4. Gercek gecmis veri + tahmin + sinyali tek bir JSON'a yaz.
 
 TimesFM agirliklari script her calistiginda Hugging Face'ten indirilir; onceden
 hicbir yerde barindirilmaz (bkz. README - lisans notlari da orada).
@@ -18,6 +23,7 @@ from datetime import datetime, timedelta, timezone
 
 import numpy as np
 
+from indicators import atr as compute_atr
 from okx_client import fetch_recent_candles
 
 COINS = {
@@ -43,6 +49,32 @@ HORIZON_HOURS = int(os.environ.get("HORIZON_HOURS", "48"))
 CHECKPOINT_REPO = os.environ.get("TIMESFM_CHECKPOINT", "google/timesfm-2.5-200m-pytorch")
 
 OUTPUT_FILE = os.environ.get("OUTPUT_FILE", os.path.join("docs", "forecasts.json"))
+
+# ATR bazli TP/SL - crypto-trader projesindeki (okx_trader/strategy.py) katsayilarla
+# birebir ayni: SL = 1.5x ATR, TP = 2.5x ATR (~1:1.67 risk/odul).
+ATR_PERIOD = 14
+SL_ATR_MULT = 1.5
+TP_ATR_MULT = 2.5
+# Yon (BUY/SELL) her zaman tahmin edilen hareketin yonune gore atanir; bu esik
+# sadece "guclu/orta/zayif" etiketini belirler, sinyali gizlemez.
+SIGNAL_ATR_THRESHOLDS = (1.0, 2.0)  # zayif < 1.0 ATR <= orta < 2.0 ATR <= guclu
+
+
+def compute_tp_sl(entry_price: float, atr_value: float, side: str) -> tuple:
+    """(stop_loss, take_profit) doner - crypto-trader/okx_trader/strategy.py ile ayni mantik."""
+    if side == "BUY":
+        return entry_price - SL_ATR_MULT * atr_value, entry_price + TP_ATR_MULT * atr_value
+    return entry_price + SL_ATR_MULT * atr_value, entry_price - TP_ATR_MULT * atr_value
+
+
+def signal_strength(expected_move: float, atr_value: float) -> str:
+    ratio = abs(expected_move) / atr_value if atr_value else 0.0
+    weak, medium = SIGNAL_ATR_THRESHOLDS
+    if ratio >= medium:
+        return "guclu"
+    if ratio >= weak:
+        return "orta"
+    return "zayif"
 
 
 def load_model(batch_size: int):
@@ -95,20 +127,24 @@ def build_series(symbol: str, inst_id: str) -> tuple:
         {"ts": row.timestamp.strftime("%Y-%m-%dT%H:%M:%SZ"), "close": round(float(row.close), 8)}
         for row in df.itertuples()
     ]
-    return history, df["close"].to_numpy(dtype=np.float64)
+    atr_series = compute_atr(df, period=ATR_PERIOD)
+    atr_value = float(atr_series.iloc[-1]) if not np.isnan(atr_series.iloc[-1]) else None
+    return history, df["close"].to_numpy(dtype=np.float64), atr_value
 
 
 def main() -> int:
     histories = {}
     series_by_symbol = {}
+    atr_by_symbol = {}
     for symbol, inst_id in COINS.items():
         try:
-            history, closes = build_series(symbol, inst_id)
+            history, closes, atr_value = build_series(symbol, inst_id)
         except Exception as e:
             print(f"UYARI: {symbol} icin veri alinamadi, atlaniyor: {e}", file=sys.stderr)
             continue
         histories[symbol] = history
         series_by_symbol[symbol] = closes
+        atr_by_symbol[symbol] = atr_value
 
     if not series_by_symbol:
         print("HATA: Hicbir coin icin veri alinamadi.", file=sys.stderr)
@@ -138,10 +174,30 @@ def main() -> int:
                 "upper": round(upper, 8) if upper is not None else None,
             })
 
+        entry_price = float(series_by_symbol[symbol][-1])
+        atr_value = atr_by_symbol[symbol]
+        signal = None
+        if atr_value is not None and points[-1] is not None:
+            expected_move = float(points[-1]) - entry_price
+            side = "BUY" if expected_move >= 0 else "SELL"
+            sl, tp = compute_tp_sl(entry_price, atr_value, side)
+            signal = {
+                "side": side,
+                "strength": signal_strength(expected_move, atr_value),
+                "entry_price": round(entry_price, 8),
+                "atr": round(atr_value, 8),
+                "expected_move": round(expected_move, 8),
+                "expected_move_pct": round(expected_move / entry_price * 100, 3),
+                "take_profit": round(tp, 8),
+                "stop_loss": round(sl, 8),
+                "risk_reward": round(TP_ATR_MULT / SL_ATR_MULT, 3),
+            }
+
         coins_payload[symbol] = {
             "inst_id": COINS[symbol],
             "history": histories[symbol],
             "forecast": forecast_points,
+            "signal": signal,
         }
 
     payload = {
