@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OKX TimesFM Tahmin Paneli</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top-row">
+    <div>
+      <h1>OKX · TimesFM Fiyat Tahmin Paneli</h1>
+      <p class="subtitle">
+        Veriler GitHub Actions tarafından periyodik olarak güncellenir ·
+        fiyat verisi <a href="https://www.okx.com" target="_blank" rel="noopener">OKX</a> genel API'sinden
+      </p>
+    </div>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Tema değiştir">🌙</button>
+  </div>
+
+  <p class="disclaimer">
+    ⚠️ Bu panel <strong>istatistiksel, zero-shot bir zaman serisi tahmin aracıdır</strong> (Google TimesFM);
+    yatırım/finansal tavsiye değildir. Model yalnızca geçmiş sayısal fiyat serisine dayanır —
+    haber, duyarlılık (sentiment), temel analiz ya da güncel piyasa olayları hakkında bilgisi yoktur.
+    Geçmiş performans gelecek sonuçların garantisi değildir. Sorumlu davranın, kendi araştırmanızı yapın.
+  </p>
+
+  <p class="updated" id="updated">Son güncelleme: —</p>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="panel">
+    <div class="chart-head">
+      <h2 id="chart-title">—</h2>
+      <div class="legend">
+        <span class="legend-item"><span class="swatch swatch-history"></span>Gerçek</span>
+        <span class="legend-item"><span class="swatch swatch-forecast"></span>Tahmin</span>
+        <span class="legend-item"><span class="swatch swatch-band"></span>Güven aralığı</span>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="chart"></canvas>
+    </div>
+  </div>
+
+  <div class="meta" id="meta"></div>
+
+  <footer class="footer">
+    Google TimesFM ile üretildi (zero-shot, yeniden eğitim yok) · statik sayfa, model çıkarımı yalnızca
+    GitHub Actions üzerinde çalışır.
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
