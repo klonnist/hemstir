@@ -196,7 +196,18 @@ function renderChart(symbol) {
       plugins: {
         legend: { display: false },
         tooltip: {
-          filter: (item) => item.dataset.label === "Gerçek" || item.dataset.label === "Tahmin",
+          filter: (item) => {
+            const label = item.dataset.label;
+            if (label === "Gerçek" || label === "Tahmin") return true;
+            if (label === "Üst sınır" || label === "Alt sınır") {
+              return item.parsed.y !== null && item.parsed.y !== undefined;
+            }
+            return false;
+          },
+          itemSort: (a, b) => {
+            const order = { "Gerçek": 0, "Tahmin": 1, "Üst sınır": 2, "Alt sınır": 3 };
+            return (order[a.dataset.label] ?? 9) - (order[b.dataset.label] ?? 9);
+          },
           callbacks: { label: (item) => `${item.dataset.label}: ${fmtPrice(item.parsed.y)} USDT` },
         },
       },
