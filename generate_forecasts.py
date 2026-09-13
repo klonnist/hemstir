@@ -1,4 +1,4 @@
-"""OKX'ten 10 kripto icin saatlik OHLCV verisi ceker, Google'in TimesFM modeliyle
+"""OKX'ten 14 kripto icin saatlik OHLCV verisi ceker, Google'in TimesFM modeliyle
 zero-shot 24-48 saatlik fiyat tahmini uretir, ATR bazli bir yon (BUY/SELL) + TP/SL
 seviyesi hesaplar ve sonucu docs/forecasts.json'a yazar.
 
@@ -26,17 +26,23 @@ import numpy as np
 from indicators import atr as compute_atr
 from okx_client import fetch_recent_candles
 
+# Bazilari spot (-USDT), bazilari perp/vadeli (-USDT-SWAP) - kullanici hangisinde
+# islem actigina gore sectirdi (bkz. README'deki spot/perp notu).
 COINS = {
     "BTC": "BTC-USDT",
     "ETH": "ETH-USDT",
     "SOL": "SOL-USDT",
     "XRP": "XRP-USDT",
-    "ADA": "ADA-USDT",
-    "AVAX": "AVAX-USDT",
-    "DOGE": "DOGE-USDT",
+    "ADA": "ADA-USDT-SWAP",
+    "AVAX": "AVAX-USDT-SWAP",
+    "DOGE": "DOGE-USDT-SWAP",
     "DOT": "DOT-USDT",
     "LINK": "LINK-USDT",
     "LTC": "LTC-USDT",
+    "ETHFI": "ETHFI-USDT-SWAP",
+    "CRV": "CRV-USDT-SWAP",
+    "NEAR": "NEAR-USDT-SWAP",
+    "BNB": "BNB-USDT-SWAP",
 }
 
 BAR = "1H"

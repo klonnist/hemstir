@@ -1,6 +1,6 @@
 # OKX TimesFM Tahmin Paneli
 
-OKX'in genel (public, API anahtarı gerekmez) piyasa verisiyle 10 kripto para için Google'ın
+OKX'in genel (public, API anahtarı gerekmez) piyasa verisiyle 14 kripto para için Google'ın
 **TimesFM** modelini zero-shot modda (yeniden eğitim yok, doğrudan inference) kullanarak
 24-48 saatlik saatlik kapanış fiyatı tahmini üreten, buna ATR bazlı bir **AL/SAT + TP/SL**
 sinyali ekleyen ve sonucu GitHub Pages üzerinde statik bir panelde gösteren proje.
@@ -42,8 +42,17 @@ bulunur (yeterli geçmiş veri yoksa `null` olabilir).
 
 ## Coinler
 
-BTC, ETH, SOL, XRP, ADA, AVAX, DOGE, DOT, LINK, LTC — hepsi OKX'te `<COIN>-USDT` spot
-paritesi, saatlik (`1H`) mum verisiyle.
+Saatlik (`1H`) mum verisiyle, `generate_forecasts.py`'deki `COINS` sözlüğünde tanımlı:
+
+- **Spot** (`<COIN>-USDT`): BTC, ETH, SOL, XRP, DOT, LINK, LTC
+- **Perp / vadeli** (`<COIN>-USDT-SWAP`): ADA, AVAX, DOGE, ETHFI, CRV, NEAR, BNB
+
+Hangisinin spot hangisinin perp olduğu, o coin'i nerede (spot/vadeli) işlem açtığınıza göre
+seçildi — [Hasanwavebot](https://klonnist.github.io/Hasanwavebot/) botunun izlediği coin
+listesinden esinlenildi. Perp verisi spot'tan küçük bir farkla (funding rate bazlı) sapabilir;
+bkz. yukarıdaki "spot mu perp mi" notu — TimesFM'in yön tahmini pratikte ikisinde de hemen
+hemen aynı çıkar, ama giriş/TP/SL'in mutlak sayıları o coin'i gerçekte hangi enstrümanda işlem
+açtığınıza göre farklılaşabilir.
 
 ## Yerel Çalıştırma
 
@@ -85,7 +94,7 @@ timesfm[torch]` (sürüm belirtmeden) 2026 itibarıyla PyPI'den **timesfm 3.0.x*
   runner'da her seferinde indirilir, önceden hiçbir yerde barındırılmaz), `generate_forecasts.py`'yi
   çalıştırır ve ürettiği `docs/forecasts.json`'ı `[skip ci]` etiketiyle doğrudan `main`
   branch'ine commit'ler.
-- Runner CPU üzerinde çalışır (GPU yok); 200M parametrelik model için bu, 10 coin'lik
+- Runner CPU üzerinde çalışır (GPU yok); 200M parametrelik model için bu, 14 coin'lik
   bir batch'te makul sürede tamamlanır ama torch kurulumu + ilk indirme dahil workflow'a
   30 dakikalık zaman aşımı payı bırakılmıştır.
 
