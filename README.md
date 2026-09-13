@@ -42,17 +42,13 @@ bulunur (yeterli geçmiş veri yoksa `null` olabilir).
 
 ## Coinler
 
-Saatlik (`1H`) mum verisiyle, `generate_forecasts.py`'deki `COINS` sözlüğünde tanımlı:
+Hepsi **perp / vadeli** (`<COIN>-USDT-SWAP`), saatlik (`1H`) mum verisiyle — kullanıcı
+kaldıraçlı işlem açtığı için tüm coinler spot yerine perp fiyat/volatilite verisinden
+hesaplanıyor. Liste `generate_forecasts.py`'deki `COINS` sözlüğünde tanımlı:
 
-- **Spot** (`<COIN>-USDT`): BTC, ETH, SOL, XRP, DOT, LINK, LTC
-- **Perp / vadeli** (`<COIN>-USDT-SWAP`): ADA, AVAX, DOGE, ETHFI, CRV, NEAR, BNB
-
-Hangisinin spot hangisinin perp olduğu, o coin'i nerede (spot/vadeli) işlem açtığınıza göre
-seçildi — [Hasanwavebot](https://klonnist.github.io/Hasanwavebot/) botunun izlediği coin
-listesinden esinlenildi. Perp verisi spot'tan küçük bir farkla (funding rate bazlı) sapabilir;
-bkz. yukarıdaki "spot mu perp mi" notu — TimesFM'in yön tahmini pratikte ikisinde de hemen
-hemen aynı çıkar, ama giriş/TP/SL'in mutlak sayıları o coin'i gerçekte hangi enstrümanda işlem
-açtığınıza göre farklılaşabilir.
+BTC, ETH, SOL, XRP, ADA, AVAX, DOGE, DOT, LINK, LTC, ETHFI, CRV, NEAR, BNB —
+[Hasanwavebot](https://klonnist.github.io/Hasanwavebot/) botunun izlediği coin listesinden
+esinlenildi.
 
 ## Yerel Çalıştırma
 

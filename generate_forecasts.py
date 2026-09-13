@@ -26,19 +26,18 @@ import numpy as np
 from indicators import atr as compute_atr
 from okx_client import fetch_recent_candles
 
-# Bazilari spot (-USDT), bazilari perp/vadeli (-USDT-SWAP) - kullanici hangisinde
-# islem actigina gore sectirdi (bkz. README'deki spot/perp notu).
+# Hepsi perp/vadeli (-USDT-SWAP) - kullanici kaldiracli islem actigi icin.
 COINS = {
-    "BTC": "BTC-USDT",
-    "ETH": "ETH-USDT",
-    "SOL": "SOL-USDT",
-    "XRP": "XRP-USDT",
+    "BTC": "BTC-USDT-SWAP",
+    "ETH": "ETH-USDT-SWAP",
+    "SOL": "SOL-USDT-SWAP",
+    "XRP": "XRP-USDT-SWAP",
     "ADA": "ADA-USDT-SWAP",
     "AVAX": "AVAX-USDT-SWAP",
     "DOGE": "DOGE-USDT-SWAP",
-    "DOT": "DOT-USDT",
-    "LINK": "LINK-USDT",
-    "LTC": "LTC-USDT",
+    "DOT": "DOT-USDT-SWAP",
+    "LINK": "LINK-USDT-SWAP",
+    "LTC": "LTC-USDT-SWAP",
     "ETHFI": "ETHFI-USDT-SWAP",
     "CRV": "CRV-USDT-SWAP",
     "NEAR": "NEAR-USDT-SWAP",
