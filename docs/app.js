@@ -1,6 +1,7 @@
 let forecastData = null;
 let evaluationData = null;
-let backtestData = null;
+let backtestData = null; // null = henuz cekilmedi (buyuk dosya, sadece secilince cekilir)
+let backtestAvailable = null; // null = bilinmiyor, true/false HEAD kontrolunden sonra
 let activeCoin = null;
 let chart = null;
 let historyChart = null;
@@ -54,6 +55,15 @@ async function loadJsonOptional(path) {
     return await res.json();
   } catch (e) {
     return null;
+  }
+}
+
+async function checkFileExists(path) {
+  try {
+    const res = await fetch(path, { method: "HEAD" });
+    return res.ok;
+  } catch (e) {
+    return false;
   }
 }
 
@@ -275,7 +285,7 @@ function pickRecent(list, n) {
 function renderHistoryPanel(symbol) {
   const panel = document.getElementById("history-panel");
   const hasArchive = !!(evaluationData && evaluationData.coins);
-  const hasBacktest = !!(backtestData && backtestData.coins);
+  const hasBacktest = backtestAvailable === true;
 
   if (!hasArchive && !hasBacktest) {
     panel.innerHTML = `
@@ -326,10 +336,24 @@ function renderHistoryPanel(symbol) {
   renderHistoryBody(symbol);
 }
 
-function renderHistoryBody(symbol) {
+async function renderHistoryBody(symbol) {
   const body = document.getElementById("history-body");
-  const dataset = getActiveDataset(symbol);
   const sourceLabel = historyState.source === "backtest" ? "backtest" : "canlı arşiv";
+
+  if (historyState.source === "backtest" && !backtestData) {
+    body.innerHTML = `<div class="empty">Backtest verisi yükleniyor (büyük dosya olabilir, biraz sürebilir)…</div>`;
+    document.getElementById("cross-coin-panel").innerHTML = "";
+    backtestData = await loadJsonOptional("backtest.json");
+    if (activeCoin !== symbol || historyState.source !== "backtest") return; // bu sirada baska bir sekme/kaynak secildi
+    if (!backtestData) {
+      backtestAvailable = false;
+      historyState.source = "archive";
+      renderHistoryPanel(symbol);
+      return;
+    }
+  }
+
+  const dataset = getActiveDataset(symbol);
   if (!dataset) {
     body.innerHTML = `<div class="empty">${symbol} için ${sourceLabel} verisi yok.</div>`;
     document.getElementById("cross-coin-panel").innerHTML = "";
@@ -683,13 +707,15 @@ async function init() {
   document.getElementById("updated").textContent = "Son güncelleme: " + fmtTime(forecastData.generated_at);
   buildTabs(coins);
 
-  const [evalRes, backtestRes] = await Promise.all([
+  // evaluation.json kucuk, hemen cekilir; backtest.json onlarca MB olabilir - sadece
+  // varligini (HEAD) kontrol ederiz, kullanici "Backtest"i secince tembel indirilir.
+  const [evalRes, backtestExists] = await Promise.all([
     loadJsonOptional("evaluation.json"),
-    loadJsonOptional("backtest.json"),
+    checkFileExists("backtest.json"),
   ]);
   evaluationData = evalRes;
-  backtestData = backtestRes;
-  if (!evaluationData && backtestData) historyState.source = "backtest";
+  backtestAvailable = backtestExists;
+  if (!evaluationData && backtestAvailable) historyState.source = "backtest";
 
   selectCoin(symbols[0]);
 }
