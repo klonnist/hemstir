@@ -5,3 +5,6 @@ timesfm[torch]==2.0.2
 pandas>=2.0.0
 numpy>=1.24.0
 requests>=2.31.0
+# Oynaklik arastirmasi icin: HAR-RV regresyonu (statsmodels) ve GARCH(1,1) (arch).
+statsmodels>=0.14.0
+arch>=6.0.0
