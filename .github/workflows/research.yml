@@ -64,7 +64,13 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/research_dev.json docs/research_locked.json docs/locked_test_run.json 2>/dev/null || true
+          # Her dosyayi AYRI AYRI ekle - git add tek komutta birden fazla pathspec
+          # alinca, biri yoksa (orn. henuz kilitli test calismadiysa) TUMUNU
+          # basarisiz kilip HICBIRINI stage etmiyor (once bunun yuzunden
+          # research_dev.json commit'lenmemisti).
+          for f in docs/research_dev.json docs/research_locked.json docs/locked_test_run.json; do
+            [ -f "$f" ] && git add "$f"
+          done
           git diff --cached --quiet || git commit -m "Arastirma sonuclarini guncelle [skip ci]"
           git pull --rebase origin main
           git push origin HEAD:main
