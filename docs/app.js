@@ -6,7 +6,13 @@ let activeCoin = null;
 let chart = null;
 let historyChart = null;
 let equityChart = null;
+let calibrationChart = null;
+let researchDevData = null;
+let researchLockedData = null;
+let lockedTestMarker = null;
+let diagnosticsData = null;
 const historyState = { source: "archive", mode: "single_position", n: "20" };
+const researchState = { tab: "variants" };
 
 function fmtTime(iso) {
   if (!iso) return "—";
@@ -101,6 +107,7 @@ function selectCoin(symbol) {
     document.getElementById("chart-title").textContent = `${symbol} — artık takip edilmiyor`;
     document.getElementById("meta").innerHTML = "";
     renderHistoryPanel(symbol);
+    renderResearchPanel(symbol);
     return;
   }
 
@@ -108,6 +115,7 @@ function selectCoin(symbol) {
   renderChart(symbol);
   renderMeta(symbol);
   renderHistoryPanel(symbol);
+  renderResearchPanel(symbol);
 }
 
 const STRENGTH_LABELS = { guclu: "Güçlü", orta: "Orta", zayif: "Zayıf" };
@@ -703,6 +711,215 @@ function renderCrossCoinTable() {
   `;
 }
 
+// ---------------------------------------------------------------------------
+// Arastirma paneli: Varyantlar (A-F, gelistirme + kilitli test) ve Teshis
+// (cikis zamanlamasi, komisyon yuku, guven araligi kalibrasyonu).
+// ---------------------------------------------------------------------------
+
+function renderResearchPanel(symbol) {
+  const panel = document.getElementById("research-panel");
+  const hasResearch = !!(researchDevData && researchDevData.variants);
+  const hasDiagnostics = !!(diagnosticsData && diagnosticsData.coins);
+
+  if (!hasResearch && !hasDiagnostics) {
+    panel.innerHTML = "";
+    return;
+  }
+
+  panel.innerHTML = `
+    <div class="history-head">
+      <h2>Arastirma: Varyantlar &amp; Teshis</h2>
+      <div class="history-controls">
+        <select id="research-tab">
+          <option value="variants" ${!hasResearch ? "disabled" : ""}>Varyantlar (A-F)</option>
+          <option value="diagnostics" ${!hasDiagnostics ? "disabled" : ""}>Teşhis</option>
+        </select>
+      </div>
+    </div>
+    <div id="research-body"></div>
+  `;
+  if (!hasResearch && hasDiagnostics) researchState.tab = "diagnostics";
+  if (!hasDiagnostics && hasResearch) researchState.tab = "variants";
+
+  const sel = document.getElementById("research-tab");
+  sel.value = researchState.tab;
+  sel.addEventListener("change", () => { researchState.tab = sel.value; renderResearchBody(symbol); });
+
+  renderResearchBody(symbol);
+}
+
+function renderResearchBody(symbol) {
+  const body = document.getElementById("research-body");
+  if (researchState.tab === "diagnostics") {
+    renderDiagnosticsTab(body, symbol);
+  } else {
+    renderVariantsTab(body);
+  }
+}
+
+function sigLabel(diff) {
+  if (!diff || diff.significant === null || diff.significant === undefined) return "—";
+  const ci = diff.diff_ci;
+  const range = ci && ci.ci_low !== null ? `[${fmtPct(ci.ci_low, true)}, ${fmtPct(ci.ci_high, true)}]` : "";
+  return diff.significant
+    ? `<span class="pos">anlamlı fark ${range}</span>`
+    : `<span class="empty-inline">anlamlı değil ${range}</span>`;
+}
+
+function variantRow(code, info) {
+  const m = info.model;
+  const s = m.summary || {};
+  const boot = m.bootstrap_total_return || {};
+  const ciText = boot.ci_low !== null && boot.ci_low !== undefined
+    ? `${fmtPct(boot.mean, true)} [${fmtPct(boot.ci_low, true)}, ${fmtPct(boot.ci_high, true)}]`
+    : "—";
+  return `<tr>
+    <td><strong>${code}</strong><br><span class="empty-inline">${info.description}</span></td>
+    <td>${m.n}</td>
+    <td class="${(s.total_return_pct || 0) >= 0 ? "pos" : "neg"}">${ciText}</td>
+    <td>${s.win_rate_pct != null ? s.win_rate_pct.toFixed(1) + "%" : "—"}</td>
+    <td>${s.direction_accuracy_pct != null ? s.direction_accuracy_pct.toFixed(1) + "%" : "—"}</td>
+    <td class="neg">${fmtPct(s.max_drawdown_pct)}</td>
+    <td>${sigLabel(info.comparisons.always_buy.diff_vs_model)}</td>
+    <td>${sigLabel(info.comparisons.momentum.diff_vs_model)}</td>
+    <td>${sigLabel(info.comparisons.random.diff_vs_model)}</td>
+  </tr>`;
+}
+
+function renderVariantTable(title, data, note) {
+  if (!data || !data.variants) return "";
+  const codes = Object.keys(data.variants);
+  return `
+    <h3 class="history-subhead">${title}</h3>
+    ${note ? `<p class="empty-inline">${note}</p>` : ""}
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>Varyant</th><th>N</th><th>Net Getiri (ort. + %95 GA)</th><th>Kazanma%</th>
+          <th>Yön Doğ.%</th><th>Maks Düşüş</th><th>vs Her zaman AL</th><th>vs Momentum</th><th>vs Rastgele</th>
+        </tr></thead>
+        <tbody>${codes.map(c => variantRow(c, data.variants[c])).join("")}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderVariantsTab(container) {
+  let html = renderVariantTable(
+    `Geliştirme Dönemi (${researchDevData.period_start ? fmtTime(researchDevData.period_start) : "—"} → ${researchDevData.period_end ? fmtTime(researchDevData.period_end) : "—"})`,
+    researchDevData,
+    "Tüm ayar seçimleri SADECE bu dönemde yapıldı. Getiriler sabit pozisyon büyüklüğü varsayımıyla toplanır (bileşik değil), komisyon + funding maliyeti dahildir."
+  );
+
+  if (researchLockedData && researchLockedData.variants) {
+    const runInfo = lockedTestMarker
+      ? `Kilitli test ${fmtTime(lockedTestMarker.run_at)} tarihinde, SADECE ŞU BİR KEZ çalıştırıldı (varyantlar: ${(lockedTestMarker.variants || []).join(", ")}) — bir daha çalıştırılmadı.`
+      : "";
+    html += renderVariantTable(
+      `Kilitli Test (${fmtTime(researchLockedData.period_start)} → ${fmtTime(researchLockedData.period_end)})`,
+      researchLockedData,
+      runInfo
+    );
+  } else {
+    html += `<h3 class="history-subhead">Kilitli Test</h3><div class="empty">Henüz çalıştırılmadı — sadece geliştirme döneminde en iyi çıkan 1-2 varyant için, bir kez çalıştırılacak.</div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+function renderDiagnosticsTab(container, symbol) {
+  const coinDiag = diagnosticsData.coins[symbol];
+  if (!coinDiag) {
+    container.innerHTML = `<div class="empty">${symbol} için teşhis verisi yok (${diagnosticsData.coins_analyzed.join(", ")} coinleri için mevcut).</div>`;
+    return;
+  }
+
+  const r = coinDiag.returns;
+  const timing = coinDiag.exit_timing_distribution;
+  const timingRows = Object.entries(timing).sort((a, b) => b[1] - a[1]);
+  const pd = coinDiag.pure_direction_48h;
+
+  container.innerHTML = `
+    <h3 class="history-subhead">${symbol} — Brüt vs Net Getiri (mevcut sistem, backtest)</h3>
+    <div class="signal-grid">
+      ${statItem("Brüt Getiri", fmtPct(r.total_gross_pct, true), (r.total_gross_pct || 0) >= 0 ? "pos" : "neg")}
+      ${statItem("Net Getiri", fmtPct(r.total_net_pct, true), (r.total_net_pct || 0) >= 0 ? "pos" : "neg")}
+      ${statItem("Toplam Komisyon Yükü", fmtPct(r.total_fee_cost_pct), "neg")}
+      ${statItem("İşlem başı komisyon", fmtPct(coinDiag.fee_roundtrip_pct_per_trade))}
+    </div>
+
+    <h3 class="history-subhead">Saf Yön (TP/SL yok, 48s'te çık) — Aynı Sinyallerle</h3>
+    <div class="signal-grid">
+      ${statItem("Örnek", pd.n)}
+      ${statItem("Brüt Getiri", fmtPct(pd.total_gross_pct, true), (pd.total_gross_pct || 0) >= 0 ? "pos" : "neg")}
+      ${statItem("Net Getiri", fmtPct(pd.total_net_pct, true), (pd.total_net_pct || 0) >= 0 ? "pos" : "neg")}
+      ${statItem("Kazanma Oranı", pd.win_rate_pct != null ? pd.win_rate_pct.toFixed(1) + "%" : "—")}
+    </div>
+
+    <h3 class="history-subhead">Çıkış Zamanlaması Dağılımı</h3>
+    <div style="overflow-x:auto;">
+      <table><thead><tr><th>Çıkış · Süre kovası</th><th>İşlem</th></tr></thead>
+        <tbody>${timingRows.map(([k, v]) => `<tr><td>${k.replace("|", " · ")}</td><td>${v}</td></tr>`).join("")}</tbody>
+      </table>
+    </div>
+
+    <h3 class="history-subhead">Ufka Göre Yön Doğruluğu vs "Her Zaman AL"</h3>
+    <div style="overflow-x:auto;">
+      <table><thead><tr><th>Ufuk</th><th>Model</th><th>Her zaman AL</th><th>Fark</th></tr></thead>
+        <tbody>${Object.entries(coinDiag.direction_accuracy_by_horizon).map(([h, v]) => `<tr>
+          <td>${h}s</td>
+          <td>${v.model_accuracy_pct != null ? v.model_accuracy_pct.toFixed(1) + "%" : "—"}</td>
+          <td>${v.always_buy_accuracy_pct != null ? v.always_buy_accuracy_pct.toFixed(1) + "%" : "—"}</td>
+          <td class="${(v.diff_pct_points || 0) >= 0 ? "pos" : "neg"}">${v.diff_pct_points != null ? (v.diff_pct_points >= 0 ? "+" : "") + v.diff_pct_points.toFixed(1) + "pp" : "—"}</td>
+        </tr>`).join("")}</tbody>
+      </table>
+    </div>
+
+    <h3 class="history-subhead">Güven Aralığı Kalibrasyonu (beklenen kapsama: %80)</h3>
+    <div class="chart-wrap calibration-chart-wrap"><canvas id="calibration-chart"></canvas></div>
+  `;
+
+  renderCalibrationChart(coinDiag.confidence_band_calibration);
+}
+
+function renderCalibrationChart(calibration) {
+  const canvas = document.getElementById("calibration-chart");
+  if (!canvas) return;
+  if (calibrationChart) { calibrationChart.destroy(); calibrationChart = null; }
+
+  const horizons = Object.keys(calibration);
+  const actual = horizons.map(h => calibration[h].actual_coverage_pct);
+  const muted = cssVar("--muted") || "#8b93a7";
+  const accent = cssVar("--accent") || "#5b8cff";
+  const red = cssVar("--red") || "#ff5c5c";
+  const gridColor = cssVar("--card-border") || "#232838";
+
+  calibrationChart = new Chart(canvas.getContext("2d"), {
+    type: "bar",
+    data: {
+      labels: horizons.map(h => `${h}s`),
+      datasets: [
+        { label: "Gerçek kapsama", data: actual, backgroundColor: accent },
+        { label: "Beklenen (%80)", data: horizons.map(() => 80), type: "line", borderColor: red,
+          borderDash: [5, 4], pointRadius: 0, borderWidth: 2 },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      plugins: {
+        legend: { display: true, position: "top", labels: { color: muted, boxWidth: 12, font: { size: 11 } } },
+        tooltip: { callbacks: { label: (item) => `${item.dataset.label}: ${item.parsed.y.toFixed(1)}%` } },
+      },
+      scales: {
+        x: { ticks: { color: muted }, grid: { color: gridColor } },
+        y: { min: 0, max: 100, ticks: { color: muted, callback: (v) => v + "%" }, grid: { color: gridColor } },
+      },
+    },
+  });
+}
+
 async function init() {
   initTheme();
   try {
@@ -725,12 +942,22 @@ async function init() {
 
   // evaluation.json kucuk, hemen cekilir; backtest.json onlarca MB olabilir - sadece
   // varligini (HEAD) kontrol ederiz, kullanici "Backtest"i secince tembel indirilir.
-  const [evalRes, backtestExists] = await Promise.all([
+  // research_dev/locked.json ve diagnostics.json da kucuk (islem detayi yok, sadece
+  // ozet istatistik) - hemen cekilir.
+  const [evalRes, backtestExists, devRes, lockedRes, markerRes, diagRes] = await Promise.all([
     loadJsonOptional("evaluation.json"),
     checkFileExists("backtest.json"),
+    loadJsonOptional("research_dev.json"),
+    loadJsonOptional("research_locked.json"),
+    loadJsonOptional("locked_test_run.json"),
+    loadJsonOptional("diagnostics.json"),
   ]);
   evaluationData = evalRes;
   backtestAvailable = backtestExists;
+  researchDevData = devRes;
+  researchLockedData = lockedRes;
+  lockedTestMarker = markerRes;
+  diagnosticsData = diagRes;
   if (!evaluationData && backtestAvailable) historyState.source = "backtest";
 
   const retiredSymbols = evaluationData && evaluationData.coins
