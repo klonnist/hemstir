@@ -92,6 +92,8 @@ h1 { font-size: 22px; margin: 0 0 4px; }
   white-space: nowrap;
 }
 .tab-btn.active { border-color: var(--accent); color: var(--accent); }
+.tab-btn-retired { opacity: .55; font-size: 12px; }
+.tab-btn-retired.active { opacity: 1; }
 
 .panel {
   background: var(--card);

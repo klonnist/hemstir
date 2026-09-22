@@ -1,0 +1,480 @@
+{
+  "generated_at": "2026-09-22T17:11:21Z",
+  "source_backtest_generated_at": "2026-09-22T14:15:40Z",
+  "coins_analyzed": [
+    "BTC",
+    "ETH",
+    "XRP",
+    "SOL",
+    "AVAX"
+  ],
+  "leverage": 1.0,
+  "fee_pct": 0.05,
+  "coins": {
+    "BTC": {
+      "trade_count": 292,
+      "prediction_count": 292,
+      "fee_roundtrip_pct_per_trade": 0.1,
+      "returns": {
+        "total_gross_pct": 11.4664,
+        "total_net_pct": -17.7336,
+        "total_fee_cost_pct": 29.2
+      },
+      "exit_timing_distribution": {
+        "SL|<=6s": 39,
+        "SL|<=12s": 45,
+        "EXPIRED|<=48s": 13,
+        "SL|<=24s": 28,
+        "TP|<=48s": 11,
+        "TP|<=24s": 25,
+        "TP|<=12s": 37,
+        "TP|<=3s": 16,
+        "SL|<=3s": 41,
+        "SL|<=48s": 14,
+        "TP|<=6s": 23
+      },
+      "pure_direction_48h": {
+        "n": 292,
+        "total_gross_pct": 65.9935,
+        "total_net_pct": 36.7935,
+        "win_rate_pct": 56.16
+      },
+      "direction_accuracy_by_horizon": {
+        "6": {
+          "n": 292,
+          "model_accuracy_pct": 53.08,
+          "always_buy_accuracy_pct": 53.42,
+          "diff_pct_points": -0.34
+        },
+        "12": {
+          "n": 292,
+          "model_accuracy_pct": 52.4,
+          "always_buy_accuracy_pct": 54.79,
+          "diff_pct_points": -2.4
+        },
+        "24": {
+          "n": 292,
+          "model_accuracy_pct": 57.88,
+          "always_buy_accuracy_pct": 53.42,
+          "diff_pct_points": 4.45
+        },
+        "36": {
+          "n": 292,
+          "model_accuracy_pct": 58.56,
+          "always_buy_accuracy_pct": 54.79,
+          "diff_pct_points": 3.77
+        },
+        "48": {
+          "n": 292,
+          "model_accuracy_pct": 57.19,
+          "always_buy_accuracy_pct": 54.79,
+          "diff_pct_points": 2.4
+        }
+      },
+      "confidence_band_calibration": {
+        "6": {
+          "n": 292,
+          "actual_coverage_pct": 78.42,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -1.58
+        },
+        "12": {
+          "n": 292,
+          "actual_coverage_pct": 74.66,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -5.34
+        },
+        "24": {
+          "n": 292,
+          "actual_coverage_pct": 73.29,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -6.71
+        },
+        "36": {
+          "n": 292,
+          "actual_coverage_pct": 69.52,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -10.48
+        },
+        "48": {
+          "n": 292,
+          "actual_coverage_pct": 68.49,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -11.51
+        }
+      }
+    },
+    "ETH": {
+      "trade_count": 292,
+      "prediction_count": 292,
+      "fee_roundtrip_pct_per_trade": 0.1,
+      "returns": {
+        "total_gross_pct": 22.3863,
+        "total_net_pct": -6.8137,
+        "total_fee_cost_pct": 29.2
+      },
+      "exit_timing_distribution": {
+        "SL|<=6s": 44,
+        "SL|<=12s": 34,
+        "SL|<=3s": 44,
+        "SL|<=24s": 34,
+        "TP|<=24s": 20,
+        "TP|<=6s": 24,
+        "TP|<=12s": 36,
+        "TP|<=3s": 16,
+        "TP|<=48s": 19,
+        "EXPIRED|<=48s": 9,
+        "SL|<=48s": 12
+      },
+      "pure_direction_48h": {
+        "n": 292,
+        "total_gross_pct": -6.4429,
+        "total_net_pct": -35.6429,
+        "win_rate_pct": 53.77
+      },
+      "direction_accuracy_by_horizon": {
+        "6": {
+          "n": 292,
+          "model_accuracy_pct": 53.42,
+          "always_buy_accuracy_pct": 54.79,
+          "diff_pct_points": -1.37
+        },
+        "12": {
+          "n": 292,
+          "model_accuracy_pct": 53.08,
+          "always_buy_accuracy_pct": 58.56,
+          "diff_pct_points": -5.48
+        },
+        "24": {
+          "n": 292,
+          "model_accuracy_pct": 53.42,
+          "always_buy_accuracy_pct": 57.53,
+          "diff_pct_points": -4.11
+        },
+        "36": {
+          "n": 292,
+          "model_accuracy_pct": 56.85,
+          "always_buy_accuracy_pct": 57.53,
+          "diff_pct_points": -0.68
+        },
+        "48": {
+          "n": 292,
+          "model_accuracy_pct": 54.45,
+          "always_buy_accuracy_pct": 59.25,
+          "diff_pct_points": -4.79
+        }
+      },
+      "confidence_band_calibration": {
+        "6": {
+          "n": 292,
+          "actual_coverage_pct": 82.88,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": 2.88
+        },
+        "12": {
+          "n": 292,
+          "actual_coverage_pct": 77.4,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -2.6
+        },
+        "24": {
+          "n": 292,
+          "actual_coverage_pct": 72.6,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -7.4
+        },
+        "36": {
+          "n": 292,
+          "actual_coverage_pct": 70.55,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -9.45
+        },
+        "48": {
+          "n": 292,
+          "actual_coverage_pct": 68.49,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -11.51
+        }
+      }
+    },
+    "XRP": {
+      "trade_count": 292,
+      "prediction_count": 292,
+      "fee_roundtrip_pct_per_trade": 0.1,
+      "returns": {
+        "total_gross_pct": -13.9952,
+        "total_net_pct": -43.1952,
+        "total_fee_cost_pct": 29.2
+      },
+      "exit_timing_distribution": {
+        "SL|<=6s": 45,
+        "SL|<=48s": 16,
+        "TP|<=48s": 15,
+        "SL|<=24s": 30,
+        "SL|<=12s": 47,
+        "TP|<=12s": 25,
+        "SL|<=3s": 51,
+        "TP|<=24s": 26,
+        "TP|<=6s": 18,
+        "TP|<=3s": 10,
+        "EXPIRED|<=48s": 9
+      },
+      "pure_direction_48h": {
+        "n": 292,
+        "total_gross_pct": 118.2672,
+        "total_net_pct": 89.0672,
+        "win_rate_pct": 52.74
+      },
+      "direction_accuracy_by_horizon": {
+        "6": {
+          "n": 292,
+          "model_accuracy_pct": 45.89,
+          "always_buy_accuracy_pct": 48.97,
+          "diff_pct_points": -3.08
+        },
+        "12": {
+          "n": 292,
+          "model_accuracy_pct": 53.08,
+          "always_buy_accuracy_pct": 50.0,
+          "diff_pct_points": 3.08
+        },
+        "24": {
+          "n": 292,
+          "model_accuracy_pct": 55.82,
+          "always_buy_accuracy_pct": 47.95,
+          "diff_pct_points": 7.88
+        },
+        "36": {
+          "n": 292,
+          "model_accuracy_pct": 58.56,
+          "always_buy_accuracy_pct": 47.95,
+          "diff_pct_points": 10.62
+        },
+        "48": {
+          "n": 292,
+          "model_accuracy_pct": 54.45,
+          "always_buy_accuracy_pct": 44.52,
+          "diff_pct_points": 9.93
+        }
+      },
+      "confidence_band_calibration": {
+        "6": {
+          "n": 292,
+          "actual_coverage_pct": 80.48,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": 0.48
+        },
+        "12": {
+          "n": 292,
+          "actual_coverage_pct": 72.95,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -7.05
+        },
+        "24": {
+          "n": 292,
+          "actual_coverage_pct": 72.26,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -7.74
+        },
+        "36": {
+          "n": 292,
+          "actual_coverage_pct": 70.89,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -9.11
+        },
+        "48": {
+          "n": 292,
+          "actual_coverage_pct": 72.6,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -7.4
+        }
+      }
+    },
+    "SOL": {
+      "trade_count": 292,
+      "prediction_count": 292,
+      "fee_roundtrip_pct_per_trade": 0.1,
+      "returns": {
+        "total_gross_pct": 13.833,
+        "total_net_pct": -15.367,
+        "total_fee_cost_pct": 29.2
+      },
+      "exit_timing_distribution": {
+        "SL|<=6s": 44,
+        "TP|<=12s": 35,
+        "TP|<=6s": 14,
+        "SL|<=48s": 16,
+        "SL|<=24s": 26,
+        "SL|<=12s": 38,
+        "SL|<=3s": 48,
+        "TP|<=24s": 41,
+        "TP|<=48s": 17,
+        "TP|<=3s": 8,
+        "EXPIRED|<=48s": 5
+      },
+      "pure_direction_48h": {
+        "n": 292,
+        "total_gross_pct": -175.2118,
+        "total_net_pct": -204.4118,
+        "win_rate_pct": 49.32
+      },
+      "direction_accuracy_by_horizon": {
+        "6": {
+          "n": 292,
+          "model_accuracy_pct": 49.32,
+          "always_buy_accuracy_pct": 51.03,
+          "diff_pct_points": -1.71
+        },
+        "12": {
+          "n": 292,
+          "model_accuracy_pct": 51.03,
+          "always_buy_accuracy_pct": 51.37,
+          "diff_pct_points": -0.34
+        },
+        "24": {
+          "n": 292,
+          "model_accuracy_pct": 52.05,
+          "always_buy_accuracy_pct": 54.45,
+          "diff_pct_points": -2.4
+        },
+        "36": {
+          "n": 292,
+          "model_accuracy_pct": 50.0,
+          "always_buy_accuracy_pct": 52.4,
+          "diff_pct_points": -2.4
+        },
+        "48": {
+          "n": 292,
+          "model_accuracy_pct": 50.68,
+          "always_buy_accuracy_pct": 51.71,
+          "diff_pct_points": -1.03
+        }
+      },
+      "confidence_band_calibration": {
+        "6": {
+          "n": 292,
+          "actual_coverage_pct": 80.48,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": 0.48
+        },
+        "12": {
+          "n": 292,
+          "actual_coverage_pct": 77.4,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -2.6
+        },
+        "24": {
+          "n": 292,
+          "actual_coverage_pct": 72.26,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -7.74
+        },
+        "36": {
+          "n": 292,
+          "actual_coverage_pct": 68.49,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -11.51
+        },
+        "48": {
+          "n": 292,
+          "actual_coverage_pct": 66.78,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -13.22
+        }
+      }
+    },
+    "AVAX": {
+      "trade_count": 292,
+      "prediction_count": 292,
+      "fee_roundtrip_pct_per_trade": 0.1,
+      "returns": {
+        "total_gross_pct": 104.9529,
+        "total_net_pct": 75.7529,
+        "total_fee_cost_pct": 29.2
+      },
+      "exit_timing_distribution": {
+        "SL|<=6s": 35,
+        "TP|<=48s": 18,
+        "SL|<=24s": 15,
+        "TP|<=24s": 41,
+        "TP|<=12s": 36,
+        "SL|<=3s": 42,
+        "SL|<=12s": 36,
+        "TP|<=6s": 28,
+        "SL|<=48s": 16,
+        "TP|<=3s": 16,
+        "EXPIRED|<=48s": 9
+      },
+      "pure_direction_48h": {
+        "n": 292,
+        "total_gross_pct": 239.1387,
+        "total_net_pct": 209.9387,
+        "win_rate_pct": 59.93
+      },
+      "direction_accuracy_by_horizon": {
+        "6": {
+          "n": 292,
+          "model_accuracy_pct": 54.11,
+          "always_buy_accuracy_pct": 52.05,
+          "diff_pct_points": 2.05
+        },
+        "12": {
+          "n": 292,
+          "model_accuracy_pct": 56.16,
+          "always_buy_accuracy_pct": 50.0,
+          "diff_pct_points": 6.16
+        },
+        "24": {
+          "n": 292,
+          "model_accuracy_pct": 59.93,
+          "always_buy_accuracy_pct": 49.66,
+          "diff_pct_points": 10.27
+        },
+        "36": {
+          "n": 292,
+          "model_accuracy_pct": 58.9,
+          "always_buy_accuracy_pct": 48.63,
+          "diff_pct_points": 10.27
+        },
+        "48": {
+          "n": 292,
+          "model_accuracy_pct": 60.62,
+          "always_buy_accuracy_pct": 51.03,
+          "diff_pct_points": 9.59
+        }
+      },
+      "confidence_band_calibration": {
+        "6": {
+          "n": 292,
+          "actual_coverage_pct": 79.11,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -0.89
+        },
+        "12": {
+          "n": 292,
+          "actual_coverage_pct": 73.63,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -6.37
+        },
+        "24": {
+          "n": 292,
+          "actual_coverage_pct": 68.84,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -11.16
+        },
+        "36": {
+          "n": 292,
+          "actual_coverage_pct": 67.47,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -12.53
+        },
+        "48": {
+          "n": 292,
+          "actual_coverage_pct": 68.15,
+          "expected_coverage_pct": 80.0,
+          "diff_pct_points": -11.85
+        }
+      }
+    }
+  }
+}

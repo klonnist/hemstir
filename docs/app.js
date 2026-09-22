@@ -67,11 +67,15 @@ async function checkFileExists(path) {
   }
 }
 
-function buildTabs(coins) {
+function buildTabs(coins, retiredSymbols) {
   const tabs = document.getElementById("tabs");
-  tabs.innerHTML = Object.keys(coins).map(symbol =>
+  const active = Object.keys(coins).map(symbol =>
     `<button class="tab-btn" data-coin="${symbol}">${symbol}</button>`
-  ).join("");
+  );
+  const retired = (retiredSymbols || []).map(symbol =>
+    `<button class="tab-btn tab-btn-retired" data-coin="${symbol}" title="Artık izlenmiyor, sadece geçmiş veri">${symbol} 🕓</button>`
+  );
+  tabs.innerHTML = active.join("") + retired.join("");
   tabs.addEventListener("click", (e) => {
     const btn = e.target.closest(".tab-btn");
     if (btn && btn.dataset.coin) selectCoin(btn.dataset.coin);
@@ -87,6 +91,19 @@ function selectCoin(symbol) {
   document.querySelectorAll(".tab-btn[data-coin]").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.coin === symbol);
   });
+
+  if (!forecastData.coins[symbol]) {
+    // Artik takip edilmeyen (retired) coin: canli tahmin/sinyal/grafik yok,
+    // sadece Gecmis Performans bolumu (arsiv/backtest) gosterilir.
+    document.getElementById("signal-panel").innerHTML =
+      `<div class="empty">${symbol} artık aktif olarak takip edilmiyor (kapsam 5 major coin'e daraltıldı). Aşağıda geçmiş arşiv/backtest verisi hâlâ mevcut.</div>`;
+    if (chart) { chart.destroy(); chart = null; }
+    document.getElementById("chart-title").textContent = `${symbol} — artık takip edilmiyor`;
+    document.getElementById("meta").innerHTML = "";
+    renderHistoryPanel(symbol);
+    return;
+  }
+
   renderSignal(symbol);
   renderChart(symbol);
   renderMeta(symbol);
@@ -705,7 +722,6 @@ async function init() {
   }
 
   document.getElementById("updated").textContent = "Son güncelleme: " + fmtTime(forecastData.generated_at);
-  buildTabs(coins);
 
   // evaluation.json kucuk, hemen cekilir; backtest.json onlarca MB olabilir - sadece
   // varligini (HEAD) kontrol ederiz, kullanici "Backtest"i secince tembel indirilir.
@@ -716,6 +732,11 @@ async function init() {
   evaluationData = evalRes;
   backtestAvailable = backtestExists;
   if (!evaluationData && backtestAvailable) historyState.source = "backtest";
+
+  const retiredSymbols = evaluationData && evaluationData.coins
+    ? Object.keys(evaluationData.coins).filter(s => !coins[s])
+    : [];
+  buildTabs(coins, retiredSymbols);
 
   selectCoin(symbols[0]);
 }

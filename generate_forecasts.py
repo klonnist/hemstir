@@ -27,22 +27,22 @@ from indicators import atr as compute_atr
 from okx_client import fetch_recent_candles
 
 # Hepsi perp/vadeli (-USDT-SWAP) - kullanici kaldiracli islem actigi icin.
+# Kapsam bilerek 5 major coin'e daraltildi (bkz. README - "Kapsam ve metodoloji"):
+# daha fazla coin + daha fazla varyant = daha fazla cok-karsilastirma/overfitting
+# riski. Eski coinlerin (ADA/DOGE/DOT/LINK/ETHFI/CRV/NEAR/BNB/LTC) arsiv ve backtest
+# verisi silinmedi, sadece artik yeni calistirmalarda uretilmiyor - panelde "artik
+# takip edilmiyor" olarak isaretlenir.
 COINS = {
     "BTC": "BTC-USDT-SWAP",
     "ETH": "ETH-USDT-SWAP",
-    "SOL": "SOL-USDT-SWAP",
     "XRP": "XRP-USDT-SWAP",
-    "ADA": "ADA-USDT-SWAP",
+    "SOL": "SOL-USDT-SWAP",
     "AVAX": "AVAX-USDT-SWAP",
-    "DOGE": "DOGE-USDT-SWAP",
-    "DOT": "DOT-USDT-SWAP",
-    "LINK": "LINK-USDT-SWAP",
-    "LTC": "LTC-USDT-SWAP",
-    "ETHFI": "ETHFI-USDT-SWAP",
-    "CRV": "CRV-USDT-SWAP",
-    "NEAR": "NEAR-USDT-SWAP",
-    "BNB": "BNB-USDT-SWAP",
 }
+
+# Eski coinler - artik COINS'te degil ama gecmis arsiv/backtest verileri panelde
+# hala gorunebilir; bu liste "artik takip edilmiyor" etiketi icin kullanilir.
+RETIRED_COINS = ["ADA", "DOGE", "DOT", "LINK", "LTC", "ETHFI", "CRV", "NEAR", "BNB"]
 
 BAR = "1H"
 # OKX /market/candles tek istekte en fazla 300 mum doner (~12.5 gun); daha uzun
