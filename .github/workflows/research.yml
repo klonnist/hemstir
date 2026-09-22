@@ -1,0 +1,70 @@
+name: Arastirma (dev/kilitli test varyantlari)
+
+on:
+  workflow_dispatch:
+    inputs:
+      variants:
+        description: "Virgulle ayrilmis varyant kodlari (A,B,C,D,E,F)"
+        required: false
+        default: "A,B,C,D,E,F"
+      max_cutpoints:
+        description: "Kesim noktasi sayisini sinirla (0 = sinirsiz, sure probu icin kucuk tutun)"
+        required: false
+        default: "0"
+      locked:
+        description: "Kilitli test donemini calistir (dev yerine)"
+        required: false
+        default: "false"
+        type: boolean
+      force_locked_rerun:
+        description: "Kilitli test daha once calistiysa yine de tekrar calistir (DIKKAT: veri sizintisi riski)"
+        required: false
+        default: "false"
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: research
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Bagimliliklari kur
+        run: pip install -r requirements.txt
+
+      - name: Tahmin onbellegini geri yukle (varsa)
+        uses: actions/cache@v4
+        with:
+          path: scripts/cache/predictions
+          key: predict-cache-${{ github.run_id }}
+          restore-keys: |
+            predict-cache-
+
+      - name: Arastirmayi calistir
+        env:
+          RESEARCH_MAX_CUTPOINTS: ${{ inputs.max_cutpoints }}
+        run: |
+          ARGS="--variants ${{ inputs.variants }}"
+          if [ "${{ inputs.locked }}" = "true" ]; then ARGS="$ARGS --locked"; fi
+          if [ "${{ inputs.force_locked_rerun }}" = "true" ]; then ARGS="$ARGS --force-locked-rerun"; fi
+          python scripts/run_research.py $ARGS
+
+      - name: Sonuclari commit'le
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/research_dev.json docs/research_locked.json docs/locked_test_run.json 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "Arastirma sonuclarini guncelle [skip ci]"
+          git pull --rebase origin main
+          git push origin HEAD:main
