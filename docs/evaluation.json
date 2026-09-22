@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-22T14:04:47Z",
+  "generated_at": "2026-09-22T14:13:09Z",
   "source": "archive",
   "leverage": 1.0,
   "fee_pct": 0.05,
@@ -12,7 +12,7 @@
   "coins": {
     "BTC": {
       "inst_id": "BTC-USDT-SWAP",
-      "record_count": 13,
+      "record_count": 14,
       "sample_size": 12,
       "direction_accuracy_pct": {
         "6": 69.23,
@@ -640,6 +640,52 @@
             }
           },
           "direction_correct": false
+        },
+        {
+          "generated_at": "2026-09-22T14:13:08Z",
+          "coin": "BTC",
+          "inst_id": "BTC-USDT-SWAP",
+          "entry_ts": "2026-09-22T14:00:00Z",
+          "entry_price": 86289.0,
+          "side": "SELL",
+          "strength": "guclu",
+          "expected_move_pct": -3.572,
+          "take_profit": 84890.53948042,
+          "stop_loss": 87128.07631175,
+          "atr": 559.38420783,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-22T20:00:00Z",
+              "value": 86277.4609375,
+              "lower": 84975.109375,
+              "upper": 87418.703125
+            },
+            "12": {
+              "ts": "2026-09-23T02:00:00Z",
+              "value": 85823.765625,
+              "lower": 83608.5859375,
+              "upper": 87562.5625
+            },
+            "24": {
+              "ts": "2026-09-23T14:00:00Z",
+              "value": 84888.5390625,
+              "lower": 81355.890625,
+              "upper": 87796.015625
+            },
+            "36": {
+              "ts": "2026-09-24T02:00:00Z",
+              "value": 83832.1953125,
+              "lower": 79307.140625,
+              "upper": 87821.5546875
+            },
+            "48": {
+              "ts": "2026-09-24T14:00:00Z",
+              "value": 83207.046875,
+              "lower": 78507.5546875,
+              "upper": 87782.4140625
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
@@ -1642,7 +1688,7 @@
     },
     "ETH": {
       "inst_id": "ETH-USDT-SWAP",
-      "record_count": 13,
+      "record_count": 14,
       "sample_size": 12,
       "direction_accuracy_pct": {
         "6": 76.92,
@@ -2270,6 +2316,52 @@
             }
           },
           "direction_correct": true
+        },
+        {
+          "generated_at": "2026-09-22T14:13:08Z",
+          "coin": "ETH",
+          "inst_id": "ETH-USDT-SWAP",
+          "entry_ts": "2026-09-22T14:00:00Z",
+          "entry_price": 2755.07,
+          "side": "SELL",
+          "strength": "guclu",
+          "expected_move_pct": -1.741,
+          "take_profit": 2700.39097087,
+          "stop_loss": 2787.87741748,
+          "atr": 21.87161165,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-22T20:00:00Z",
+              "value": 2756.87719727,
+              "lower": 2715.69311523,
+              "upper": 2796.19726562
+            },
+            "12": {
+              "ts": "2026-09-23T02:00:00Z",
+              "value": 2751.41748047,
+              "lower": 2688.7578125,
+              "upper": 2805.56884766
+            },
+            "24": {
+              "ts": "2026-09-23T14:00:00Z",
+              "value": 2747.35961914,
+              "lower": 2648.75048828,
+              "upper": 2838.48364258
+            },
+            "36": {
+              "ts": "2026-09-24T02:00:00Z",
+              "value": 2723.50292969,
+              "lower": 2583.87695312,
+              "upper": 2845.95532227
+            },
+            "48": {
+              "ts": "2026-09-24T14:00:00Z",
+              "value": 2707.11376953,
+              "lower": 2548.91918945,
+              "upper": 2857.58251953
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
@@ -3269,7 +3361,7 @@
     },
     "SOL": {
       "inst_id": "SOL-USDT-SWAP",
-      "record_count": 13,
+      "record_count": 14,
       "sample_size": 12,
       "direction_accuracy_pct": {
         "6": 69.23,
@@ -3897,6 +3989,52 @@
             }
           },
           "direction_correct": false
+        },
+        {
+          "generated_at": "2026-09-22T14:13:08Z",
+          "coin": "SOL",
+          "inst_id": "SOL-USDT-SWAP",
+          "entry_ts": "2026-09-22T14:00:00Z",
+          "entry_price": 117.73,
+          "side": "SELL",
+          "strength": "guclu",
+          "expected_move_pct": -3.152,
+          "take_profit": 114.70736959,
+          "stop_loss": 119.54357824,
+          "atr": 1.20905216,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-22T20:00:00Z",
+              "value": 117.40312195,
+              "lower": 114.85216522,
+              "upper": 119.90907288
+            },
+            "12": {
+              "ts": "2026-09-23T02:00:00Z",
+              "value": 116.99081421,
+              "lower": 113.06156921,
+              "upper": 120.55526733
+            },
+            "24": {
+              "ts": "2026-09-23T14:00:00Z",
+              "value": 116.08253479,
+              "lower": 110.1918335,
+              "upper": 121.65666199
+            },
+            "36": {
+              "ts": "2026-09-24T02:00:00Z",
+              "value": 114.77507782,
+              "lower": 106.85991669,
+              "upper": 122.36574554
+            },
+            "48": {
+              "ts": "2026-09-24T14:00:00Z",
+              "value": 114.01921844,
+              "lower": 105.35483551,
+              "upper": 122.7540741
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
@@ -4978,7 +5116,7 @@
     },
     "XRP": {
       "inst_id": "XRP-USDT-SWAP",
-      "record_count": 13,
+      "record_count": 14,
       "sample_size": 12,
       "direction_accuracy_pct": {
         "6": 69.23,
@@ -5606,6 +5744,52 @@
             }
           },
           "direction_correct": false
+        },
+        {
+          "generated_at": "2026-09-22T14:13:08Z",
+          "coin": "XRP",
+          "inst_id": "XRP-USDT-SWAP",
+          "entry_ts": "2026-09-22T14:00:00Z",
+          "entry_price": 1.5791,
+          "side": "SELL",
+          "strength": "orta",
+          "expected_move_pct": -2.993,
+          "take_profit": 1.51702371,
+          "stop_loss": 1.61634578,
+          "atr": 0.02483052,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-22T20:00:00Z",
+              "value": 1.56654215,
+              "lower": 1.50547886,
+              "upper": 1.62586939
+            },
+            "12": {
+              "ts": "2026-09-23T02:00:00Z",
+              "value": 1.56123161,
+              "lower": 1.48059797,
+              "upper": 1.63496292
+            },
+            "24": {
+              "ts": "2026-09-23T14:00:00Z",
+              "value": 1.55982053,
+              "lower": 1.45040369,
+              "upper": 1.65241909
+            },
+            "36": {
+              "ts": "2026-09-24T02:00:00Z",
+              "value": 1.54391873,
+              "lower": 1.40968108,
+              "upper": 1.65966344
+            },
+            "48": {
+              "ts": "2026-09-24T14:00:00Z",
+              "value": 1.53183293,
+              "lower": 1.37701869,
+              "upper": 1.6640476
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
@@ -6608,7 +6792,7 @@
     },
     "ADA": {
       "inst_id": "ADA-USDT-SWAP",
-      "record_count": 13,
+      "record_count": 14,
       "sample_size": 12,
       "direction_accuracy_pct": {
         "6": 84.62,
@@ -7236,6 +7420,52 @@
             }
           },
           "direction_correct": false
+        },
+        {
+          "generated_at": "2026-09-22T14:13:08Z",
+          "coin": "ADA",
+          "inst_id": "ADA-USDT-SWAP",
+          "entry_ts": "2026-09-22T14:00:00Z",
+          "entry_price": 0.2529,
+          "side": "SELL",
+          "strength": "orta",
+          "expected_move_pct": -3.139,
+          "take_profit": 0.24161724,
+          "stop_loss": 0.25966965,
+          "atr": 0.0045131,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-22T20:00:00Z",
+              "value": 0.25105435,
+              "lower": 0.24302529,
+              "upper": 0.25760615
+            },
+            "12": {
+              "ts": "2026-09-23T02:00:00Z",
+              "value": 0.25037372,
+              "lower": 0.2393342,
+              "upper": 0.26016012
+            },
+            "24": {
+              "ts": "2026-09-23T14:00:00Z",
+              "value": 0.24894038,
+              "lower": 0.23495774,
+              "upper": 0.26422733
+            },
+            "36": {
+              "ts": "2026-09-24T02:00:00Z",
+              "value": 0.24552846,
+              "lower": 0.22679456,
+              "upper": 0.26558483
+            },
+            "48": {
+              "ts": "2026-09-24T14:00:00Z",
+              "value": 0.24496236,
+              "lower": 0.22362199,
+              "upper": 0.26742408
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
@@ -8238,7 +8468,7 @@
     },
     "AVAX": {
       "inst_id": "AVAX-USDT-SWAP",
-      "record_count": 13,
+      "record_count": 14,
       "sample_size": 12,
       "direction_accuracy_pct": {
         "6": 53.85,
@@ -8866,6 +9096,52 @@
             }
           },
           "direction_correct": false
+        },
+        {
+          "generated_at": "2026-09-22T14:13:08Z",
+          "coin": "AVAX",
+          "inst_id": "AVAX-USDT-SWAP",
+          "entry_ts": "2026-09-22T14:00:00Z",
+          "entry_price": 11.072,
+          "side": "SELL",
+          "strength": "orta",
+          "expected_move_pct": -2.873,
+          "take_profit": 10.58898791,
+          "stop_loss": 11.36180726,
+          "atr": 0.19320484,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-22T20:00:00Z",
+              "value": 11.05953026,
+              "lower": 10.48848438,
+              "upper": 11.6508255
+            },
+            "12": {
+              "ts": "2026-09-23T02:00:00Z",
+              "value": 11.01550484,
+              "lower": 10.16977406,
+              "upper": 11.92047882
+            },
+            "24": {
+              "ts": "2026-09-23T14:00:00Z",
+              "value": 10.93056488,
+              "lower": 9.76572227,
+              "upper": 12.31865311
+            },
+            "36": {
+              "ts": "2026-09-24T02:00:00Z",
+              "value": 10.83412075,
+              "lower": 9.30948257,
+              "upper": 12.64111805
+            },
+            "48": {
+              "ts": "2026-09-24T14:00:00Z",
+              "value": 10.7538662,
+              "lower": 9.009655,
+              "upper": 12.89480591
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
@@ -9863,7 +10139,7 @@
     },
     "DOGE": {
       "inst_id": "DOGE-USDT-SWAP",
-      "record_count": 13,
+      "record_count": 14,
       "sample_size": 12,
       "direction_accuracy_pct": {
         "6": 46.15,
@@ -10491,6 +10767,52 @@
             }
           },
           "direction_correct": false
+        },
+        {
+          "generated_at": "2026-09-22T14:13:08Z",
+          "coin": "DOGE",
+          "inst_id": "DOGE-USDT-SWAP",
+          "entry_ts": "2026-09-22T14:00:00Z",
+          "entry_price": 0.10082,
+          "side": "SELL",
+          "strength": "orta",
+          "expected_move_pct": -2.585,
+          "take_profit": 0.09568453,
+          "stop_loss": 0.10390128,
+          "atr": 0.00205419,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-22T20:00:00Z",
+              "value": 0.10046927,
+              "lower": 0.09705915,
+              "upper": 0.1039024
+            },
+            "12": {
+              "ts": "2026-09-23T02:00:00Z",
+              "value": 0.09981981,
+              "lower": 0.09436022,
+              "upper": 0.10482323
+            },
+            "24": {
+              "ts": "2026-09-23T14:00:00Z",
+              "value": 0.09924348,
+              "lower": 0.09180602,
+              "upper": 0.10619365
+            },
+            "36": {
+              "ts": "2026-09-24T02:00:00Z",
+              "value": 0.0981213,
+              "lower": 0.08878853,
+              "upper": 0.10711218
+            },
+            "48": {
+              "ts": "2026-09-24T14:00:00Z",
+              "value": 0.09821422,
+              "lower": 0.08807567,
+              "upper": 0.10844845
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
@@ -11514,7 +11836,7 @@
     },
     "DOT": {
       "inst_id": "DOT-USDT-SWAP",
-      "record_count": 13,
+      "record_count": 14,
       "sample_size": 12,
       "direction_accuracy_pct": {
         "6": 69.23,
@@ -12142,6 +12464,52 @@
             }
           },
           "direction_correct": true
+        },
+        {
+          "generated_at": "2026-09-22T14:13:08Z",
+          "coin": "DOT",
+          "inst_id": "DOT-USDT-SWAP",
+          "entry_ts": "2026-09-22T14:00:00Z",
+          "entry_price": 1.1776,
+          "side": "SELL",
+          "strength": "guclu",
+          "expected_move_pct": -4.035,
+          "take_profit": 1.13040218,
+          "stop_loss": 1.20591869,
+          "atr": 0.01887913,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-22T20:00:00Z",
+              "value": 1.17152393,
+              "lower": 1.13512003,
+              "upper": 1.21002555
+            },
+            "12": {
+              "ts": "2026-09-23T02:00:00Z",
+              "value": 1.16181993,
+              "lower": 1.10939264,
+              "upper": 1.21551383
+            },
+            "24": {
+              "ts": "2026-09-23T14:00:00Z",
+              "value": 1.14553893,
+              "lower": 1.07246602,
+              "upper": 1.22102726
+            },
+            "36": {
+              "ts": "2026-09-24T02:00:00Z",
+              "value": 1.13374567,
+              "lower": 1.04057121,
+              "upper": 1.23118901
+            },
+            "48": {
+              "ts": "2026-09-24T14:00:00Z",
+              "value": 1.13008678,
+              "lower": 1.02394426,
+              "upper": 1.24002886
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
@@ -13176,7 +13544,7 @@
     },
     "LINK": {
       "inst_id": "LINK-USDT-SWAP",
-      "record_count": 13,
+      "record_count": 14,
       "sample_size": 12,
       "direction_accuracy_pct": {
         "6": 69.23,
@@ -13804,6 +14172,52 @@
             }
           },
           "direction_correct": true
+        },
+        {
+          "generated_at": "2026-09-22T14:13:08Z",
+          "coin": "LINK",
+          "inst_id": "LINK-USDT-SWAP",
+          "entry_ts": "2026-09-22T14:00:00Z",
+          "entry_price": 13.089,
+          "side": "SELL",
+          "strength": "orta",
+          "expected_move_pct": -2.621,
+          "take_profit": 12.63069339,
+          "stop_loss": 13.36398396,
+          "atr": 0.18332264,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-22T20:00:00Z",
+              "value": 13.04704762,
+              "lower": 12.73631859,
+              "upper": 13.33953285
+            },
+            "12": {
+              "ts": "2026-09-23T02:00:00Z",
+              "value": 13.00557518,
+              "lower": 12.52782536,
+              "upper": 13.43379974
+            },
+            "24": {
+              "ts": "2026-09-23T14:00:00Z",
+              "value": 12.91785049,
+              "lower": 12.20202065,
+              "upper": 13.57328224
+            },
+            "36": {
+              "ts": "2026-09-24T02:00:00Z",
+              "value": 12.78721619,
+              "lower": 11.84649277,
+              "upper": 13.62425613
+            },
+            "48": {
+              "ts": "2026-09-24T14:00:00Z",
+              "value": 12.74590302,
+              "lower": 11.68661785,
+              "upper": 13.67731857
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
@@ -14875,7 +15289,7 @@
     },
     "LTC": {
       "inst_id": "LTC-USDT-SWAP",
-      "record_count": 13,
+      "record_count": 14,
       "sample_size": 12,
       "direction_accuracy_pct": {
         "6": 69.23,
@@ -15503,6 +15917,52 @@
             }
           },
           "direction_correct": true
+        },
+        {
+          "generated_at": "2026-09-22T14:13:08Z",
+          "coin": "LTC",
+          "inst_id": "LTC-USDT-SWAP",
+          "entry_ts": "2026-09-22T14:00:00Z",
+          "entry_price": 62.28,
+          "side": "SELL",
+          "strength": "orta",
+          "expected_move_pct": -2.294,
+          "take_profit": 60.0470978,
+          "stop_loss": 63.61974132,
+          "atr": 0.89316088,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-22T20:00:00Z",
+              "value": 61.97276306,
+              "lower": 59.84156418,
+              "upper": 64.6072998
+            },
+            "12": {
+              "ts": "2026-09-23T02:00:00Z",
+              "value": 61.67647552,
+              "lower": 58.61579132,
+              "upper": 65.32216644
+            },
+            "24": {
+              "ts": "2026-09-23T14:00:00Z",
+              "value": 61.53377533,
+              "lower": 57.85113525,
+              "upper": 66.41570282
+            },
+            "36": {
+              "ts": "2026-09-24T02:00:00Z",
+              "value": 61.03998184,
+              "lower": 56.39904785,
+              "upper": 66.96408081
+            },
+            "48": {
+              "ts": "2026-09-24T14:00:00Z",
+              "value": 60.85124969,
+              "lower": 55.64194489,
+              "upper": 67.48869324
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
@@ -16554,7 +17014,7 @@
     },
     "ETHFI": {
       "inst_id": "ETHFI-USDT-SWAP",
-      "record_count": 9,
+      "record_count": 10,
       "sample_size": 9,
       "direction_accuracy_pct": {
         "6": 77.78,
@@ -16998,6 +17458,52 @@
             }
           },
           "direction_correct": true
+        },
+        {
+          "generated_at": "2026-09-22T14:13:08Z",
+          "coin": "ETHFI",
+          "inst_id": "ETHFI-USDT-SWAP",
+          "entry_ts": "2026-09-22T14:00:00Z",
+          "entry_price": 0.7074,
+          "side": "SELL",
+          "strength": "orta",
+          "expected_move_pct": -2.372,
+          "take_profit": 0.67339299,
+          "stop_loss": 0.72780421,
+          "atr": 0.0136028,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-22T20:00:00Z",
+              "value": 0.70318198,
+              "lower": 0.68109471,
+              "upper": 0.73022127
+            },
+            "12": {
+              "ts": "2026-09-23T02:00:00Z",
+              "value": 0.70052534,
+              "lower": 0.6683616,
+              "upper": 0.74086267
+            },
+            "24": {
+              "ts": "2026-09-23T14:00:00Z",
+              "value": 0.69553941,
+              "lower": 0.65089685,
+              "upper": 0.75389826
+            },
+            "36": {
+              "ts": "2026-09-24T02:00:00Z",
+              "value": 0.69146264,
+              "lower": 0.63543618,
+              "upper": 0.76496786
+            },
+            "48": {
+              "ts": "2026-09-24T14:00:00Z",
+              "value": 0.69061863,
+              "lower": 0.62884802,
+              "upper": 0.77381188
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
@@ -17798,7 +18304,7 @@
     },
     "CRV": {
       "inst_id": "CRV-USDT-SWAP",
-      "record_count": 9,
+      "record_count": 10,
       "sample_size": 9,
       "direction_accuracy_pct": {
         "6": 77.78,
@@ -18242,6 +18748,52 @@
             }
           },
           "direction_correct": false
+        },
+        {
+          "generated_at": "2026-09-22T14:13:08Z",
+          "coin": "CRV",
+          "inst_id": "CRV-USDT-SWAP",
+          "entry_ts": "2026-09-22T14:00:00Z",
+          "entry_price": 0.3645,
+          "side": "SELL",
+          "strength": "orta",
+          "expected_move_pct": -3.507,
+          "take_profit": 0.345373,
+          "stop_loss": 0.3759762,
+          "atr": 0.0076508,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-22T20:00:00Z",
+              "value": 0.36074543,
+              "lower": 0.35018176,
+              "upper": 0.37040755
+            },
+            "12": {
+              "ts": "2026-09-23T02:00:00Z",
+              "value": 0.36020261,
+              "lower": 0.3476769,
+              "upper": 0.37307882
+            },
+            "24": {
+              "ts": "2026-09-23T14:00:00Z",
+              "value": 0.35775501,
+              "lower": 0.34158075,
+              "upper": 0.37278873
+            },
+            "36": {
+              "ts": "2026-09-24T02:00:00Z",
+              "value": 0.35296601,
+              "lower": 0.33322865,
+              "upper": 0.37205994
+            },
+            "48": {
+              "ts": "2026-09-24T14:00:00Z",
+              "value": 0.35171866,
+              "lower": 0.33046669,
+              "upper": 0.37093049
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
@@ -19056,7 +19608,7 @@
     },
     "NEAR": {
       "inst_id": "NEAR-USDT-SWAP",
-      "record_count": 9,
+      "record_count": 10,
       "sample_size": 9,
       "direction_accuracy_pct": {
         "6": 22.22,
@@ -19500,6 +20052,52 @@
             }
           },
           "direction_correct": false
+        },
+        {
+          "generated_at": "2026-09-22T14:13:08Z",
+          "coin": "NEAR",
+          "inst_id": "NEAR-USDT-SWAP",
+          "entry_ts": "2026-09-22T14:00:00Z",
+          "entry_price": 4.366,
+          "side": "SELL",
+          "strength": "guclu",
+          "expected_move_pct": -9.301,
+          "take_profit": 3.98387125,
+          "stop_loss": 4.59527725,
+          "atr": 0.1528515,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-22T20:00:00Z",
+              "value": 4.21652412,
+              "lower": 3.84225082,
+              "upper": 4.58863163
+            },
+            "12": {
+              "ts": "2026-09-23T02:00:00Z",
+              "value": 4.10014963,
+              "lower": 3.63357353,
+              "upper": 4.60416222
+            },
+            "24": {
+              "ts": "2026-09-23T14:00:00Z",
+              "value": 4.02811623,
+              "lower": 3.52699947,
+              "upper": 4.64031315
+            },
+            "36": {
+              "ts": "2026-09-24T02:00:00Z",
+              "value": 3.90425086,
+              "lower": 3.27397108,
+              "upper": 4.63259125
+            },
+            "48": {
+              "ts": "2026-09-24T14:00:00Z",
+              "value": 3.95990276,
+              "lower": 3.27939057,
+              "upper": 4.74304199
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
@@ -20297,7 +20895,7 @@
     },
     "BNB": {
       "inst_id": "BNB-USDT-SWAP",
-      "record_count": 9,
+      "record_count": 10,
       "sample_size": 9,
       "direction_accuracy_pct": {
         "6": 77.78,
@@ -20741,6 +21339,52 @@
             }
           },
           "direction_correct": true
+        },
+        {
+          "generated_at": "2026-09-22T14:13:08Z",
+          "coin": "BNB",
+          "inst_id": "BNB-USDT-SWAP",
+          "entry_ts": "2026-09-22T14:00:00Z",
+          "entry_price": 790.6,
+          "side": "SELL",
+          "strength": "orta",
+          "expected_move_pct": -1.042,
+          "take_profit": 776.30945764,
+          "stop_loss": 799.17432542,
+          "atr": 5.71621695,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-22T20:00:00Z",
+              "value": 790.03735352,
+              "lower": 778.82458496,
+              "upper": 800.98168945
+            },
+            "12": {
+              "ts": "2026-09-23T02:00:00Z",
+              "value": 788.32141113,
+              "lower": 771.84759521,
+              "upper": 804.66064453
+            },
+            "24": {
+              "ts": "2026-09-23T14:00:00Z",
+              "value": 786.25756836,
+              "lower": 762.51153564,
+              "upper": 811.35113525
+            },
+            "36": {
+              "ts": "2026-09-24T02:00:00Z",
+              "value": 783.35546875,
+              "lower": 750.98364258,
+              "upper": 815.36114502
+            },
+            "48": {
+              "ts": "2026-09-24T14:00:00Z",
+              "value": 782.36212158,
+              "lower": 744.48638916,
+              "upper": 819.13244629
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
