@@ -26,10 +26,13 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
 from eval_lib import (  # noqa: E402
     aggregate_trades,
     always_buy_side,
-    block_bootstrap_ci,
+    block_bootstrap_compound_return,
+    build_portfolio_equity_curve,
+    daily_returns_from_equity_curve,
     momentum_side,
     paired_diff_significance,
     random_side,
+    real_max_drawdown_pct,
 )
 from generate_forecasts import COINS  # noqa: E402
 from predict_cache import ensure_predictions, load_cache  # noqa: E402
@@ -129,7 +132,9 @@ def run_period(period_name: str, period_start: datetime, period_end: datetime,
         pred_caches[ctx] = ensure_predictions(coins_raw, cps, ctx, horizon_hours=48)
 
     rng = random.Random(RANDOM_SEED)
-    results = {}  # variant -> strategy -> list[trade]
+    results = {}  # variant -> strategy -> list[trade] (TUM sinyaller, ortusebilir)
+    results_sp = {}  # variant -> strategy -> coin -> list[trade] (coin basina TEK POZISYON,
+    #                   ORTUSMEZ - bilesik/portfoy metrikleri SADECE bunun icin gecerlidir)
     for v in variant_codes:
         ctx = VARIANT_CONTEXT[v]
         base_ctx = 300  # ATR/gelecek mum erisimi hep 1H ham veriden, baglam sadece tahmin icin
@@ -140,6 +145,8 @@ def run_period(period_name: str, period_start: datetime, period_end: datetime,
 
         fn = VARIANTS[v]
         strategy_trades = {name: [] for name in (["model"] + list(COMPARISON_SIDE_FNS))}
+        strategy_trades_sp = {name: {c: [] for c in coins_raw} for name in (["model"] + list(COMPARISON_SIDE_FNS))}
+        next_allowed = {}  # (strategy, coin) -> bu zamandan once yeni islem alma (tek pozisyon)
 
         use_cps = base_cps if v != "F" else cps
         for cutpoint in use_cps:
@@ -154,51 +161,80 @@ def run_period(period_name: str, period_start: datetime, period_end: datetime,
                 candles = coins_raw[symbol]
                 idx = idx_by_ts[symbol]
                 funding_lookup = funding_lookups.get(symbol, {})
+                ctx_closes = None
 
-                trade = fn(pred or pred_long, candles, idx, funding_lookup, LEVERAGE, FEE_PCT,
-                           DEFAULT_FUNDING_RATE_PCT, pred_long=pred_long)
-                if trade is not None:
-                    strategy_trades["model"].append(trade)
+                def take(strat_name, side_override=None):
+                    trade = fn(pred or pred_long, candles, idx, funding_lookup, LEVERAGE, FEE_PCT,
+                               DEFAULT_FUNDING_RATE_PCT, pred_long=pred_long, side_override=side_override)
+                    if trade is None:
+                        return
+                    strategy_trades[strat_name].append(trade)
+                    key = (strat_name, symbol)
+                    if next_allowed.get(key) is None or cutpoint >= next_allowed[key]:
+                        strategy_trades_sp[strat_name][symbol].append(trade)
+                        held = trade.get("hours_held") or 48
+                        next_allowed[key] = cutpoint + timedelta(hours=held)
 
+                take("model")
                 ctx_closes = context_closes_before(candles, idx, cp_str, 48)
                 for strat_name, side_fn in COMPARISON_SIDE_FNS.items():
                     side_override = side_fn(context_closes=ctx_closes, rng=rng)
-                    trade = fn(pred or pred_long, candles, idx, funding_lookup, LEVERAGE, FEE_PCT,
-                               DEFAULT_FUNDING_RATE_PCT, pred_long=pred_long, side_override=side_override)
-                    if trade is not None:
-                        strategy_trades[strat_name].append(trade)
+                    take(strat_name, side_override=side_override)
 
         results[v] = strategy_trades
+        results_sp[v] = strategy_trades_sp
         print(f"[{period_name}] Varyant {v}: model={len(strategy_trades['model'])} islem "
               f"(karsilastirma: {', '.join(f'{k}={len(v_)}' for k, v_ in strategy_trades.items() if k != 'model')})")
 
-    return results
+    return results, results_sp
 
 
-def summarize(results: dict, variant_codes: list) -> dict:
+def summarize(results: dict, results_sp: dict, variant_codes: list, date_range: tuple) -> dict:
+    """NOT (bug duzeltmesi, bkz. eval_lib.aggregate_trades docstring'i):
+      - 'summary' alanlari HALA TOPLAMSAL (additive) N-islem ozetidir (independent
+        mod, ortusen islemler) - compound_return_pct/max_drawdown_pct_additive de
+        icerir ama BILESIK degil (ortusme yuzunden gecerli degil).
+      - GERCEK bilesik/portfoy metrikleri (portfolio_*) SADECE coin basina TEK
+        POZISYON (results_sp) islemlerinden, ESIT AGIRLIKLI GUNLUK portfoy olarak
+        hesaplanir - bkz. eval_lib.build_portfolio_equity_curve. Bootstrap CI ve
+        anlamlilik testleri de artik BU portfoy GUNLUK getiri serisi uzerinde,
+        AYNI OLCEKTE (eski hata: CI islem-basina-ortalama olcegindeydi)."""
     out = {}
     for v in variant_codes:
         strategy_trades = results[v]
+        strategy_trades_sp = results_sp[v]
         model_trades = strategy_trades["model"]
-        model_pnls = [t["pnl_pct"] for t in model_trades]
-        bootstrap = block_bootstrap_ci(model_pnls, block_size=BLOCK_SIZE, n_boot=N_BOOT, seed=RANDOM_SEED)
+
+        model_curve = build_portfolio_equity_curve(strategy_trades_sp["model"], full_date_range=date_range)
+        model_daily = daily_returns_from_equity_curve(model_curve)
+        model_portfolio_bootstrap = block_bootstrap_compound_return(
+            model_daily, block_size=BLOCK_SIZE, n_boot=N_BOOT, seed=RANDOM_SEED)
+        model_portfolio_dd = real_max_drawdown_pct(model_curve)
 
         comparisons = {}
         for strat_name in COMPARISON_SIDE_FNS:
             comp_trades = strategy_trades[strat_name]
-            comp_pnls = [t["pnl_pct"] for t in comp_trades]
-            sig = paired_diff_significance(model_pnls, comp_pnls, block_size=BLOCK_SIZE, n_boot=N_BOOT,
+            comp_curve = build_portfolio_equity_curve(strategy_trades_sp[strat_name], full_date_range=date_range)
+            comp_daily = daily_returns_from_equity_curve(comp_curve)
+            # Anlamlilik testi artik PORTFOY GUNLUK GETIRI serileri uzerinde (full_date_range
+            # sayesinde tarihe gore hizali/eslesmis ciftler) - eski hata: islem pnl'leri
+            # dogrudan (farkli sayida, hizasiz) kiyaslaniyordu.
+            sig = paired_diff_significance(model_daily, comp_daily, block_size=BLOCK_SIZE, n_boot=N_BOOT,
                                             seed=RANDOM_SEED)
             comparisons[strat_name] = {
                 "summary": aggregate_trades(comp_trades),
-                "bootstrap": block_bootstrap_ci(comp_pnls, block_size=BLOCK_SIZE, n_boot=N_BOOT, seed=RANDOM_SEED),
+                "portfolio_compound_return_pct": round((comp_curve[-1][1] - 1) * 100, 4) if len(comp_curve) > 1 else None,
+                "portfolio_max_drawdown_pct": real_max_drawdown_pct(comp_curve),
                 "diff_vs_model": sig,
             }
 
         buy_only = [t for t in model_trades if t["side"] == "BUY"]
-        buy_only_pnls = [t["pnl_pct"] for t in buy_only]
-        always_buy_pnls = [t["pnl_pct"] for t in strategy_trades["always_buy"]]
-        buy_only_vs_always_buy = paired_diff_significance(buy_only_pnls, always_buy_pnls, block_size=BLOCK_SIZE,
+        buy_only_sp = {c: [t for t in trades if t["side"] == "BUY"] for c, trades in strategy_trades_sp["model"].items()}
+        buy_only_curve = build_portfolio_equity_curve(buy_only_sp, full_date_range=date_range)
+        buy_only_daily = daily_returns_from_equity_curve(buy_only_curve)
+        always_buy_curve = build_portfolio_equity_curve(strategy_trades_sp["always_buy"], full_date_range=date_range)
+        always_buy_daily = daily_returns_from_equity_curve(always_buy_curve)
+        buy_only_vs_always_buy = paired_diff_significance(buy_only_daily, always_buy_daily, block_size=BLOCK_SIZE,
                                                             n_boot=N_BOOT, seed=RANDOM_SEED)
 
         by_coin = {}
@@ -213,8 +249,10 @@ def summarize(results: dict, variant_codes: list) -> dict:
             "context_hours": VARIANT_CONTEXT[v],
             "model": {
                 "summary": aggregate_trades(model_trades),
-                "bootstrap_total_return": bootstrap,
                 "n": len(model_trades),
+                "portfolio_compound_return_pct": round((model_curve[-1][1] - 1) * 100, 4) if len(model_curve) > 1 else None,
+                "portfolio_max_drawdown_pct": model_portfolio_dd,
+                "portfolio_bootstrap": model_portfolio_bootstrap,
             },
             "buy_only": {
                 "summary": aggregate_trades(buy_only),
@@ -261,8 +299,9 @@ def main() -> int:
         output_path = os.path.join("docs", "research_dev.json")
 
     print(f"=== {period_name.upper()} donemi: {fmt(start)} -> {fmt(end)} | varyantlar: {variant_codes} ===")
-    results = run_period(period_name, start, end, variant_codes, coins_raw, funding_lookups)
-    summary = summarize(results, variant_codes)
+    results, results_sp = run_period(period_name, start, end, variant_codes, coins_raw, funding_lookups)
+    date_range = (start.strftime("%Y-%m-%d"), end.strftime("%Y-%m-%d"))
+    summary = summarize(results, results_sp, variant_codes, date_range)
 
     payload = {
         "generated_at": fmt(datetime.now(timezone.utc)),

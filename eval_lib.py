@@ -6,7 +6,7 @@ yazilmaz.
 """
 import random
 from dataclasses import dataclass, field
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 import numpy as np
 
@@ -185,16 +185,74 @@ COMPARISON_STRATEGIES = {
 # Toplulastirma
 # ---------------------------------------------------------------------------
 
+def compound_equity_curve(trades: list, start_equity: float = 1.0) -> list:
+    """trades'i entry_ts sirasina gore BILESIK olarak birlestirir (her islem sermayenin
+    TAMAMINI kullanir varsayimiyla - ORTUSEN (independent mod) islemlerde bu gercekci
+    DEGILDIR, sadece coin basina TEK POZISYON modunda anlamlidir, bkz. aggregate_trades).
+    Doner: [(entry_ts, equity), ...] - equity 1.0'dan baslar (yuzde degil, carpan)."""
+    ordered = sorted(trades, key=lambda t: t.get("entry_ts") or "")
+    equity = start_equity
+    curve = [(None, equity)]
+    for t in ordered:
+        pnl = t.get("pnl_pct")
+        if pnl is None:
+            continue
+        # Tek bir islemde -%100'den fazla kayip (kaldiracli likidasyon disinda) olmasin
+        # diye tabanli (equity negatife dusmesin).
+        equity = max(equity * (1 + pnl / 100), 0.0)
+        curve.append((t.get("entry_ts"), equity))
+    return curve
+
+
+def real_max_drawdown_pct(equity_curve: list) -> float:
+    """Standart tanim: tepe noktadan yuzde kac dustugu (bileşik equity egrisinden).
+    Sonuc (-100, 0] araliginda - additive/toplamsal versiyondaki gibi -%1773 gibi
+    'imkansiz' degerler CIKAMAZ (equity negatife dusemedigi icin taban -%100)."""
+    if not equity_curve:
+        return None
+    peak = equity_curve[0][1]
+    max_dd = 0.0
+    for _, eq in equity_curve:
+        peak = max(peak, eq)
+        if peak > 0:
+            dd = (eq / peak - 1) * 100
+            max_dd = min(max_dd, dd)
+    return round(max_dd, 4)
+
+
+def compound_return_pct(trades: list) -> float:
+    """Bilesik toplam getiri (%) - compound_equity_curve'un son degeri."""
+    curve = compound_equity_curve(trades)
+    if len(curve) < 2:
+        return None
+    return round((curve[-1][1] - 1) * 100, 4)
+
+
 def aggregate_trades(trades: list) -> dict:
     """trades: dict listesi, her biri en az {exit_reason, pnl_pct, entry_ts} icerir.
-    pnl_pct'ler sabit pozisyon buyuklugu varsayimiyla TOPLANIR (bilesik faiz degil) -
-    bu bir basitlestirme, bkz. panel/README aciklamasi."""
+
+    IKI FARKLI GETIRI METRIGI raporlanir, KARISTIRILMAMALI:
+      - total_return_pct: TOPLAMSAL (additive) - her islem sabit/kucuk bir pozisyon
+        buyuklugu ile ACILIP sermayeye geri EKLENMEDEN yan yana konsa ne olurdu
+        (orn. her islem icin ayni sabit teminati her seferinde yeniden kullanma).
+        ORTUSEN (independent mod) islemler icin bu daha anlamlidir (ayni anda birden
+        cok pozisyon acik olabilir, "sermayenin tamami" kavrami yoktur).
+      - compound_return_pct: BILESIK (compound) - sermayenin TAMAMININ her islemden
+        SONRAKI islem icin yeniden kullanildigi varsayimiyla. Bu SADECE islemler
+        ORTUSMUYORSA (coin basina TEK POZISYON modu) gercekci bir yorumdur; ortusen
+        islemlerde (independent mod) 'ayni anda birden fazla islemde ayni sermaye'
+        anlamina gelecegi icin YANILTICI olur - yine de hesaplanir ama boyle
+        etiketlenmelidir (bkz. caller).
+    max_drawdown_pct alanı artik BILESIK equity egrisinden (gercek, sinirli) hesaplanir;
+    eski toplamsal versiyon max_drawdown_pct_additive olarak ayrica tutulur."""
     n = len(trades)
     if n == 0:
         return {
             "count": 0, "win_rate_pct": None, "direction_accuracy_pct": None,
             "exit_distribution": {}, "avg_win_pct": None, "avg_loss_pct": None,
-            "total_return_pct": None, "max_drawdown_pct": None, "profit_factor": None,
+            "total_return_pct": None, "compound_return_pct": None,
+            "max_drawdown_pct": None, "max_drawdown_pct_additive": None,
+            "profit_factor": None,
         }
 
     wins = [t for t in trades if (t.get("pnl_pct") or 0) > 0]
@@ -206,11 +264,15 @@ def aggregate_trades(trades: list) -> dict:
     ordered = sorted(trades, key=lambda t: t.get("entry_ts") or "")
     cum = 0.0
     peak = 0.0
-    max_dd = 0.0
+    max_dd_additive = 0.0
     for t in ordered:
         cum += t.get("pnl_pct") or 0.0
         peak = max(peak, cum)
-        max_dd = min(max_dd, cum - peak)
+        max_dd_additive = min(max_dd_additive, cum - peak)
+
+    equity_curve = compound_equity_curve(trades)
+    compound_total = round((equity_curve[-1][1] - 1) * 100, 4) if len(equity_curve) > 1 else None
+    real_dd = real_max_drawdown_pct(equity_curve)
 
     gross_win = sum(t["pnl_pct"] for t in wins)
     gross_loss = abs(sum(t["pnl_pct"] for t in losses))
@@ -224,11 +286,76 @@ def aggregate_trades(trades: list) -> dict:
         "avg_win_pct": round(sum(t["pnl_pct"] for t in wins) / len(wins), 4) if wins else None,
         "avg_loss_pct": round(sum(t["pnl_pct"] for t in losses) / len(losses), 4) if losses else None,
         "total_return_pct": round(cum, 4),
-        "max_drawdown_pct": round(max_dd, 4),
+        "compound_return_pct": compound_total,
+        "max_drawdown_pct": real_dd,
+        "max_drawdown_pct_additive": round(max_dd_additive, 4),
         # gross_loss == 0 iken sonsuz olur - JSON'da gecersiz oldugu icin None birakilir
         # (frontend "kayipsiz" olarak yorumlar; ayirt etmek icin avg_loss_pct zaten None olur).
         "profit_factor": round(gross_win / gross_loss, 4) if gross_loss > 0 else None,
     }
+
+
+def build_portfolio_equity_curve(trades_by_coin: dict, start_equity: float = 1.0,
+                                  full_date_range: tuple = None) -> list:
+    """Esit agirlikli, GUNLUK yeniden dengelenen portfoy equity egrisi kurar.
+
+    trades_by_coin: {coin: [trade, ...]} - HER COIN'IN KENDI (tercihen coin basina
+    TEK POZISYON modundaki, ORTUSMEYEN) islem listesi. Yontem: her islemin pnl'i
+    KAPANIS (exit_ts) gununde gerceklesmis sayilir; o gun herhangi bir coin'de kapanan
+    islem varsa, o coin'in getirisi 1/N agirlikla portfoy gunluk getirisine katilir
+    (o gun kapanan islemi olmayan coinler o gun icin %0/nakit sayilir). Portfoy
+    getirisi bu gunluk degerlerin BILESIGIDIR.
+
+    full_date_range: (start_date, end_date) "YYYY-MM-DD" verilirse, ARADAKI TUM
+    gunler (islem kapanmayanlar dahil, %0 getiriyle) egriye dahil edilir - farkli
+    stratejilerin gunluk getiri serilerini TARIHE GORE HIZALI (eslesmis cift) hale
+    getirmek icin gerekir (orn. iki stratejinin anlamlilik testinde kiyaslanmasi).
+
+    Bu, 'N coin'in getirisini duz toplama' yerine standart bir esit-agirlikli,
+    yeniden dengelenen portfoy yaklasimidir - MAX DUSUS artik gercek ve sinirlidir."""
+    coins = list(trades_by_coin.keys())
+    n_coins = len(coins)
+    if n_coins == 0:
+        return []
+
+    # gun -> {coin: o gun kapanan islemlerin toplam pnl_pct'i (birden fazlaysa toplanir)}
+    daily = {}
+    for coin, trades in trades_by_coin.items():
+        for t in trades:
+            exit_ts = t.get("exit_ts")
+            pnl = t.get("pnl_pct")
+            if exit_ts is None or pnl is None:
+                continue
+            day = exit_ts[:10]  # "YYYY-MM-DD"
+            daily.setdefault(day, {}).setdefault(coin, 0.0)
+            daily[day][coin] += pnl
+
+    if full_date_range is not None:
+        start_day, end_day = full_date_range
+        d = datetime.strptime(start_day, "%Y-%m-%d")
+        end_d = datetime.strptime(end_day, "%Y-%m-%d")
+        while d <= end_d:
+            daily.setdefault(d.strftime("%Y-%m-%d"), {})
+            d += timedelta(days=1)
+
+    equity = start_equity
+    curve = [(None, equity)]
+    for day in sorted(daily.keys()):
+        day_returns = daily[day]
+        portfolio_return_pct = sum(day_returns.get(c, 0.0) for c in coins) / n_coins
+        equity = max(equity * (1 + portfolio_return_pct / 100), 0.0)
+        curve.append((day, equity))
+    return curve
+
+
+def daily_returns_from_equity_curve(curve: list) -> list:
+    """[(gun, equity), ...] -> gunluk yuzde getiri listesi, kronolojik sirada."""
+    returns = []
+    for i in range(1, len(curve)):
+        prev_eq = curve[i - 1][1]
+        eq = curve[i][1]
+        returns.append((eq / prev_eq - 1) * 100 if prev_eq > 0 else 0.0)
+    return returns
 
 
 # ---------------------------------------------------------------------------
@@ -325,6 +452,45 @@ def block_bootstrap_ci(values, block_size: int = 20, n_boot: int = 2000, ci: flo
     effective_n = max(1, n // block_size)
     return {
         "mean": round(float(statistic(values)), 4),
+        "ci_low": round(float(boot_stats[lo_i]), 4),
+        "ci_high": round(float(boot_stats[hi_i]), 4),
+        "n": n,
+        "effective_n": effective_n,
+        "block_size": block_size,
+        "n_boot": n_boot,
+    }
+
+
+def block_bootstrap_compound_return(pnls_in_order, block_size: int = 20, n_boot: int = 2000,
+                                     ci: float = 0.95, seed: int = 42) -> dict:
+    """block_bootstrap_ci'nin BILESIK GETIRI versiyonu: statistic=np.mean yerine her
+    bootstrap orneginde BILESIK TOPLAM GETIRIYI ((prod(1+r/100)-1)*100) hesaplar, boylece
+    donen CI, 'compound_return_pct' nokta tahminiyle AYNI OLCEKTEDIR (eski hata: CI
+    islem-basina-ORTALAMA olcegindeydi, nokta tahmin ise TOPLAM/bilesik olcekteydi).
+    pnls_in_order: ZATEN kronolojik sirali pnl_pct listesi (entry_ts'e gore)."""
+    values = np.asarray(pnls_in_order, dtype=float)
+    n = len(values)
+    if n == 0:
+        return {"mean": None, "ci_low": None, "ci_high": None, "n": 0, "effective_n": 0,
+                "block_size": block_size, "n_boot": n_boot}
+    block_size = max(1, min(block_size, n))
+    rng = np.random.default_rng(seed)
+    n_blocks = int(np.ceil(n / block_size))
+
+    def compound_stat(sample):
+        return (np.prod(1 + sample / 100) - 1) * 100
+
+    boot_stats = np.empty(n_boot)
+    for i in range(n_boot):
+        starts = rng.integers(0, n - block_size + 1, size=n_blocks)
+        sample = np.concatenate([values[s:s + block_size] for s in starts])[:n]
+        boot_stats[i] = compound_stat(sample)
+    boot_stats.sort()
+    lo_i = int((1 - ci) / 2 * n_boot)
+    hi_i = min(n_boot - 1, int((1 + ci) / 2 * n_boot))
+    effective_n = max(1, n // block_size)
+    return {
+        "mean": round(float(compound_stat(values)), 4),
         "ci_low": round(float(boot_stats[lo_i]), 4),
         "ci_high": round(float(boot_stats[hi_i]), 4),
         "n": n,
