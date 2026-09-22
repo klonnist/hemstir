@@ -7,17 +7,28 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from datetime import datetime, timezone  # noqa: E402
+
 import pytest  # noqa: E402
 
 from eval_lib import (  # noqa: E402
     aggregate_trades,
+    block_bootstrap_ci,
     direction_correct,
     forecast_error,
+    funding_cost_pct,
+    funding_events_between,
     in_confidence_band,
     liquidation_price,
     momentum_side,
+    paired_diff_significance,
+    prob_above_entry,
     simulate_trade,
 )
+
+
+def dt(s):
+    return datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
 
 
 def candle(ts, high, low, close):
@@ -186,3 +197,98 @@ def test_aggregate_trades_empty():
     agg = aggregate_trades([])
     assert agg["count"] == 0
     assert agg["win_rate_pct"] is None
+
+
+# ---------------------------------------------------------------------------
+# Funding maliyeti
+# ---------------------------------------------------------------------------
+
+def test_funding_events_between_finds_8h_boundaries():
+    events = funding_events_between(dt("2026-01-01T01:00:00Z"), dt("2026-01-01T20:00:00Z"))
+    assert events == [dt("2026-01-01T08:00:00Z"), dt("2026-01-01T16:00:00Z")]
+
+
+def test_funding_events_between_no_events_if_short_trade():
+    events = funding_events_between(dt("2026-01-01T01:00:00Z"), dt("2026-01-01T03:00:00Z"))
+    assert events == []
+
+
+def test_funding_cost_long_pays_when_rate_positive():
+    lookup = {dt("2026-01-01T08:00:00Z"): 0.0001, dt("2026-01-01T16:00:00Z"): 0.0001}  # %0.01 her biri
+    cost = funding_cost_pct(dt("2026-01-01T01:00:00Z"), dt("2026-01-01T20:00:00Z"), "BUY", 1.0, lookup)
+    assert cost == pytest.approx(0.02, abs=1e-6)  # 2 olay * %0.01
+
+
+def test_funding_cost_short_gains_when_rate_positive():
+    lookup = {dt("2026-01-01T08:00:00Z"): 0.0001}
+    cost = funding_cost_pct(dt("2026-01-01T01:00:00Z"), dt("2026-01-01T09:00:00Z"), "SELL", 1.0, lookup)
+    assert cost == pytest.approx(-0.01, abs=1e-6)
+
+
+def test_funding_cost_falls_back_to_default_when_missing():
+    cost = funding_cost_pct(dt("2026-01-01T01:00:00Z"), dt("2026-01-01T09:00:00Z"), "BUY", 1.0,
+                             funding_lookup={}, default_rate_pct=0.02)
+    assert cost == pytest.approx(0.02, abs=1e-6)
+
+
+def test_funding_cost_scales_with_leverage():
+    lookup = {dt("2026-01-01T08:00:00Z"): 0.0001}
+    cost = funding_cost_pct(dt("2026-01-01T01:00:00Z"), dt("2026-01-01T09:00:00Z"), "BUY", 5.0, lookup)
+    assert cost == pytest.approx(0.05, abs=1e-6)
+
+
+# ---------------------------------------------------------------------------
+# Olasilik filtresi
+# ---------------------------------------------------------------------------
+
+def test_prob_above_entry_at_median_is_half():
+    # q10..q90 esit araliklarla 90..170, medyan (q50, 5. eleman) = 130
+    qs = [0] + [90, 100, 110, 120, 130, 140, 150, 160, 170]
+    assert prob_above_entry(130, qs) == pytest.approx(0.5, abs=1e-6)
+
+
+def test_prob_above_entry_below_band_is_high():
+    qs = [0] + [90, 100, 110, 120, 130, 140, 150, 160, 170]
+    assert prob_above_entry(50, qs) == 0.95
+
+
+def test_prob_above_entry_above_band_is_low():
+    qs = [0] + [90, 100, 110, 120, 130, 140, 150, 160, 170]
+    assert prob_above_entry(200, qs) == 0.05
+
+
+def test_prob_above_entry_none_when_insufficient_data():
+    assert prob_above_entry(100, None) is None
+    assert prob_above_entry(100, [1, 2, 3]) is None
+
+
+# ---------------------------------------------------------------------------
+# Blok bootstrap
+# ---------------------------------------------------------------------------
+
+def test_block_bootstrap_ci_constant_series_is_tight():
+    res = block_bootstrap_ci([1.0] * 100, block_size=10, n_boot=500, seed=1)
+    assert res["mean"] == pytest.approx(1.0)
+    assert res["ci_low"] == pytest.approx(1.0, abs=1e-9)
+    assert res["ci_high"] == pytest.approx(1.0, abs=1e-9)
+    assert res["effective_n"] == 10
+
+
+def test_block_bootstrap_ci_empty():
+    res = block_bootstrap_ci([])
+    assert res["n"] == 0
+    assert res["mean"] is None
+
+
+def test_paired_diff_significance_detects_clear_difference():
+    a = [2.0] * 50
+    b = [0.0] * 50
+    res = paired_diff_significance(a, b, block_size=5, n_boot=500, seed=1)
+    assert res["significant"] is True
+    assert res["diff_ci"]["ci_low"] > 0
+
+
+def test_paired_diff_significance_no_difference_when_identical():
+    a = [1.0, -1.0] * 25
+    res = paired_diff_significance(a, a, block_size=5, n_boot=500, seed=1)
+    assert res["significant"] is False

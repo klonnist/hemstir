@@ -1,0 +1,11 @@
+{
+  "computed_at": "2026-09-22T17:25:52Z",
+  "common_start": "2025-09-22T17:00:00Z",
+  "common_end": "2026-09-22T17:00:00Z",
+  "dev_start": "2025-09-22T17:00:00Z",
+  "dev_end": "2026-06-05T05:00:00Z",
+  "gap_hours": 48,
+  "locked_start": "2026-06-07T05:00:00Z",
+  "locked_end": "2026-09-22T17:00:00Z",
+  "dev_fraction": 0.7
+}

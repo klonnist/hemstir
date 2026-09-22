@@ -9,6 +9,23 @@ BASE_URL = "https://www.okx.com"
 COLUMNS = ["ts", "open", "high", "low", "close", "volume", "vol_ccy", "vol_ccy_quote", "confirm"]
 
 
+def _get_with_retry(url, params, timeout=15, retries=5, backoff=1.5):
+    """Baglanti kopmasi/zaman asimi gibi gecici hatalara karsi ustel geri cekilmeyle
+    yeniden dener - uzun sayfalamali cekimler (12 aylik veri) tek bir gecici agi
+    sorununda tumden basarisiz olmasin diye."""
+    last_err = None
+    for attempt in range(retries):
+        try:
+            resp = requests.get(url, params=params, timeout=timeout)
+            resp.raise_for_status()
+            return resp
+        except requests.exceptions.RequestException as e:
+            last_err = e
+            if attempt < retries - 1:
+                time.sleep(backoff ** attempt)
+    raise last_err
+
+
 def _to_ms(dt_like) -> int:
     if isinstance(dt_like, (int, float)):
         return int(dt_like)
@@ -32,12 +49,10 @@ def _rows_to_df(rows) -> pd.DataFrame:
 
 def fetch_recent_candles(inst_id: str, bar: str, limit: int = 300) -> pd.DataFrame:
     """En guncel `limit` mum verisini doner (limit <= 300, OKX API'nin tek istek siniri)."""
-    resp = requests.get(
+    resp = _get_with_retry(
         f"{BASE_URL}/api/v5/market/candles",
         params={"instId": inst_id, "bar": bar, "limit": min(limit, 300)},
-        timeout=15,
     )
-    resp.raise_for_status()
     payload = resp.json()
     if payload.get("code") != "0":
         raise RuntimeError(f"OKX API hatasi ({inst_id}): {payload}")
@@ -59,8 +74,7 @@ def fetch_history_candles(inst_id: str, bar: str, start, end=None, pause: float 
         params = {"instId": inst_id, "bar": bar, "limit": 100}
         if after is not None:
             params["after"] = after
-        resp = requests.get(f"{BASE_URL}/api/v5/market/history-candles", params=params, timeout=15)
-        resp.raise_for_status()
+        resp = _get_with_retry(f"{BASE_URL}/api/v5/market/history-candles", params=params)
         payload = resp.json()
         if payload.get("code") != "0":
             raise RuntimeError(f"OKX API hatasi ({inst_id}): {payload}")
@@ -84,6 +98,54 @@ def fetch_history_candles(inst_id: str, bar: str, start, end=None, pause: float 
     df = _rows_to_df(all_rows)
     if df.empty:
         return df
+    mask = (df["timestamp"] >= pd.Timestamp(start_ms, unit="ms", tz="UTC")) & (
+        df["timestamp"] <= pd.Timestamp(end_ms, unit="ms", tz="UTC")
+    )
+    return df.loc[mask].reset_index(drop=True)
+
+
+def fetch_funding_rate_history(inst_id: str, start, end=None, pause: float = 0.15) -> pd.DataFrame:
+    """[start, end] araligindaki (dahil) gercek funding rate gecmisini sayfalayarak
+    ceker (8 saatte bir tek kayit). OKX bu ucu sinirli bir gecmis icin tutuyor olabilir
+    (garanti 12 ay degil) - donen DataFrame bos ya da kismi olabilir, cagiran taraf
+    (scripts/) eksik donem icin sabit bir varsayilana dusmeli."""
+    start_ms = _to_ms(start)
+    end_ms = _to_ms(end) if end is not None else int(datetime.now(timezone.utc).timestamp() * 1000)
+
+    all_rows = []
+    after = None
+    seen_ts = set()
+    while True:
+        params = {"instId": inst_id, "limit": 100}
+        if after is not None:
+            params["after"] = after
+        resp = _get_with_retry(f"{BASE_URL}/api/v5/public/funding-rate-history", params=params)
+        payload = resp.json()
+        if payload.get("code") != "0":
+            raise RuntimeError(f"OKX API hatasi ({inst_id}): {payload}")
+        rows = payload["data"]
+        if not rows:
+            break
+
+        new_rows = [r for r in rows if r["fundingTime"] not in seen_ts]
+        if not new_rows:
+            break
+        for r in new_rows:
+            seen_ts.add(r["fundingTime"])
+        all_rows.extend(new_rows)
+
+        oldest_ts = min(int(r["fundingTime"]) for r in rows)
+        after = oldest_ts
+        if oldest_ts <= start_ms:
+            break
+        time.sleep(pause)
+
+    if not all_rows:
+        return pd.DataFrame(columns=["timestamp", "funding_rate"])
+    df = pd.DataFrame(all_rows)
+    df["timestamp"] = pd.to_datetime(df["fundingTime"].astype("int64"), unit="ms", utc=True)
+    df["funding_rate"] = df["realizedRate"].astype(float)
+    df = df[["timestamp", "funding_rate"]].sort_values("timestamp").reset_index(drop=True)
     mask = (df["timestamp"] >= pd.Timestamp(start_ms, unit="ms", tz="UTC")) & (
         df["timestamp"] <= pd.Timestamp(end_ms, unit="ms", tz="UTC")
     )

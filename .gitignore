@@ -1,3 +1,10 @@
 __pycache__/
 *.pyc
 .env
+
+# TimesFM tahmin onbellegi (predict_cache.py) - buyuk olabilir (GB), tekrar
+# uretilebilir (bkz. scripts/run_research.py); CI'da actions/cache ile
+# calistirmalar arasi saklanir, git gecmisine commit edilmez. Ham OHLCV/funding
+# ve split.json (scripts/cache/raw, funding, split.json) KUCUK ve YENIDEN
+# URETILEMEZ (split.json donuk olmali) - bunlar commit edilir.
+scripts/cache/predictions/

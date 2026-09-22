@@ -92,19 +92,25 @@ def signal_strength(expected_move: float, atr_value: float) -> str:
     return "zayif"
 
 
-def load_model(batch_size: int):
-    """TimesFM 2.5 modelini yukler ve verilen batch boyutu icin derler.
+def load_model(batch_size: int, context_hours: int = None, horizon_hours: int = None):
+    """TimesFM 2.5 modelini yukler ve verilen batch boyutu/baglam/ufuk icin derler.
+    context_hours/horizon_hours verilmezse modul varsayilanlari (CONTEXT_HOURS/
+    HORIZON_HOURS) kullanilir - scripts/predict_cache.py gibi farkli baglam
+    uzunluklariyla (orn. Varyant F icin 1024 saat) calisan yerler acikca gecer.
 
     torch_compile=False: CI'da her calistirmada sifirdan derleme (torch.compile)
     yapmak yerine dogrudan eager modda calistirir - inference suresi bu olcekte
     (10 kisa seri, CPU) onemsiz, CI guvenilirligi daha degerli."""
     import timesfm
 
+    context_hours = context_hours if context_hours is not None else CONTEXT_HOURS
+    horizon_hours = horizon_hours if horizon_hours is not None else HORIZON_HOURS
+
     model = timesfm.TimesFM_2p5_200M_torch.from_pretrained(CHECKPOINT_REPO, torch_compile=False)
     model.compile(
         timesfm.ForecastConfig(
-            max_context=CONTEXT_HOURS,
-            max_horizon=HORIZON_HOURS,
+            max_context=context_hours,
+            max_horizon=horizon_hours,
             per_core_batch_size=batch_size,  # tum coinler tek batch'te islensin
             normalize_inputs=True,
             use_continuous_quantile_head=True,
@@ -116,12 +122,13 @@ def load_model(batch_size: int):
     return model
 
 
-def run_forecast(model, inputs: list) -> tuple:
+def run_forecast(model, inputs: list, horizon_hours: int = None) -> tuple:
     """Tum coinlerin kapanis serilerini tek batch cagrisinda tahmin eder.
 
     Doner: (point_forecast, quantile_forecast), sekil (n_seri, horizon) ve
     (n_seri, horizon, 10) - kantil kolonlari [0.1, 0.2, ..., 0.9] kapsar."""
-    return model.forecast(horizon=HORIZON_HOURS, inputs=inputs)
+    horizon_hours = horizon_hours if horizon_hours is not None else HORIZON_HOURS
+    return model.forecast(horizon=horizon_hours, inputs=inputs)
 
 
 def confidence_band(quantile_row) -> tuple:
