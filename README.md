@@ -333,6 +333,26 @@ Hugging Face'ten anonim indirilir) — ek bir secret tanımlamanıza gerek yok.
   ve tercih tarayıcıda hatırlanır) — yeni bölüm dahil tüm panel için geçerli.
 - Mobilde de düzgün görünecek şekilde responsive.
 
+## Kilitli Test Sonucu (2026-09-22, D ve F)
+
+Gelişme döneminde (12 ay, 5 coin, 4865 sinyal) en iyi çıkan **D** (olasılık filtresi) ve
+**F** (uzun bağlam) varyantları, ~3.5 aylık kilitli test döneminde (2026-06-07 → 2026-09-22,
+daha önce hiç görülmemiş) **bir kez** çalıştırıldı:
+
+- **Hiçbiri, hiçbir karşılaştırma stratejisini (her zaman AL / momentum / rastgele)
+  istatistiksel olarak anlamlı şekilde geçemedi** (%95 blok bootstrap GA'sı sıfırı kapsıyor).
+- **F**'nin gelişme döneminde "her zaman AL"a karşı gördüğü anlamlı fark kilitli testte
+  **kayboldu** (net getiri -%0.03'ten -%0.47'ye kötüleşti) — gelişme dönemindeki farkın
+  gerçek bir kalıp değil, o döneme özgü gürültü olduğunu düşündürüyor (tam da kilitli test
+  mekanizmasının yakalaması gereken durum).
+- **D** kilitli testte biraz iyileşti (-%0.12 → -%0.073) ama yine istatistiksel olarak
+  sıfırdan ayırt edilemez kaldı.
+- Yön doğruluğu kilitli testte de ~%53-57 (yazı-tura seviyesine yakın); coin bazında D'de
+  sadece AVAX pozitif (+%20.2), F'de hiçbir coin pozitif değil.
+
+**Sonuç: bu 5 coin + bu dönemlerde, test edilen hiçbir varyant kanıtlanmış bir avantaj
+göstermedi.** Detaylar `docs/research_locked.json` ve panelin Varyantlar sekmesinde.
+
 ## Sorumluluk Reddi
 
 Bu panel istatistiksel bir zero-shot zaman serisi modelinin çıktısını gösterir; yatırım veya
