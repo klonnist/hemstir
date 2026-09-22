@@ -30,11 +30,25 @@ göndermez, sadece istatistiksel bir tahmin ve buna bağlı bir seviye önerisi 
 - `scripts/backtest.py` — walk-forward backtest: geçmişte her 6 saatte bir TimesFM'i SADECE
   o ana kadarki veriyle çalıştırıp aynı sinyal mantığını uygular, `docs/backtest.json` üretir
   (ayrı, manuel tetiklenen workflow — bkz. aşağı)
+- `scripts/diagnostics.py` — **model YENİDEN ÇALIŞTIRILMADAN**, mevcut `docs/backtest.json`
+  üzerinden brüt/net getiri, komisyon yükü, çıkış zamanlaması, "saf yön" karşılaştırması,
+  ufka göre yön doğruluğu ve güven aralığı kalibrasyonu hesaplar → `docs/diagnostics.json`
+- `scripts/research_data.py` — 5 coin için ~12 aylık 1H OHLCV + (varsa) gerçek funding
+  geçmişi çeker, **gelişme/kilitli-test bölmesini** hesaplayıp `scripts/cache/split.json`'a
+  **DONUK** yazar (bkz. "Metodoloji")
+- `scripts/variants.py` — 6 sabit (taranmayan) backtest varyantı (A-F)
+- `scripts/predict_cache.py` — TimesFM tahminlerini (coin, kesim noktası, bağlam) başına
+  önbellekler; aynı bağlamı paylaşan varyantlar tahmini tekrar üretmez
+- `scripts/run_research.py` — gelişme/kilitli-test dönemini orkestre eder, varyantları +
+  karşılaştırma stratejilerini çalıştırır, blok bootstrap güven aralıklarıyla
+  `docs/research_dev.json` / `docs/research_locked.json` üretir
 - `docs/` — GitHub Pages ile yayınlanan statik panel (`index.html`, `style.css`, `app.js`)
-  ve Actions'ın periyodik olarak commit'lediği `forecasts.json` / `history/` / `evaluation.json`
-  / `backtest.json`
+  ve Actions'ın periyodik olarak commit'lediği veri dosyaları (`forecasts.json`, `history/`,
+  `evaluation.json`, `backtest.json`, `diagnostics.json`, `research_dev.json`,
+  `research_locked.json`, `locked_test_run.json`)
 - `.github/workflows/generate_forecasts.yml` — otomasyon (her 6 saatte bir + manuel tetikleme)
 - `.github/workflows/backtest.yml` — walk-forward backtest'i manuel tetikler (uzun sürebilir)
+- `.github/workflows/research.yml` — gelişme/kilitli-test varyant araştırmasını manuel tetikler
 - `requirements.txt` — Python bağımlılıkları
 
 ## AL/SAT + TP/SL Sinyali Nasıl Hesaplanır
@@ -58,13 +72,17 @@ bulunur (yeterli geçmiş veri yoksa `null` olabilir).
 
 ## Coinler
 
-Hepsi **perp / vadeli** (`<COIN>-USDT-SWAP`), saatlik (`1H`) mum verisiyle — kullanıcı
-kaldıraçlı işlem açtığı için tüm coinler spot yerine perp fiyat/volatilite verisinden
-hesaplanıyor. Liste `generate_forecasts.py`'deki `COINS` sözlüğünde tanımlı:
+**Canlı takip edilen (5 major coin)**: BTC, ETH, XRP, SOL, AVAX — hepsi **perp/vadeli**
+(`<COIN>-USDT-SWAP`), saatlik (`1H`) mum verisiyle. Liste `generate_forecasts.py`'deki
+`COINS` sözlüğünde tanımlı. Kapsam bilerek 5 coine daraltıldı: daha fazla coin + daha fazla
+varyant/parametre denemesi = daha fazla çok-karşılaştırma (multiple comparisons) ve aşırı
+uyum (overfitting) riski — bkz. aşağıdaki "Metodoloji" bölümü.
 
-BTC, ETH, SOL, XRP, ADA, AVAX, DOGE, DOT, LINK, LTC, ETHFI, CRV, NEAR, BNB —
-[Hasanwavebot](https://klonnist.github.io/Hasanwavebot/) botunun izlediği coin listesinden
-esinlenildi.
+**Artık takip edilmeyen (eski)**: ADA, DOGE, DOT, LINK, LTC, ETHFI, CRV, NEAR, BNB —
+başlangıçta [Hasanwavebot](https://klonnist.github.io/Hasanwavebot/) botunun izlediği coin
+listesinden esinlenilmişti. Bu coinlerin arşiv/backtest verisi **silinmedi**, panelde 🕓
+işaretiyle hâlâ görülebilir (`generate_forecasts.py`'deki `RETIRED_COINS`), ama yeni
+tahmin/backtest/araştırma çalıştırmalarına dahil edilmiyor.
 
 ## Yerel Çalıştırma
 
@@ -95,6 +113,78 @@ timesfm[torch]` (sürüm belirtmeden) 2026 itibarıyla PyPI'den **timesfm 3.0.x*
 > sabitlenmiştir (bu paket sürümü, 2.5 model mimarisini/checkpoint'ini Apache-2.0 API'siyle
 > yükleyen `TimesFM_2p5_200M_torch` sınıfını içerir). `requirements.txt`'i kendiniz
 > güncellerseniz hangi sürümün hangi lisansla geldiğini kontrol edin.
+
+## Metodoloji: Dürüst Değerlendirme (Overfitting'den Kaçınma)
+
+Bu bölüm, modelin gerçek bir avantajı olup olmadığını **kendini kandırmadan** ölçmek için
+kurulan sürece dair. Amaç modeli iyi göstermek değil — bulgular olumsuzsa (nitekim çoğunlukla
+öyle çıktı, bkz. teşhis raporu) bunu açıkça söylemek.
+
+### Gelişme / Kilitli Test Bölmesi
+
+`scripts/research_data.py`, 5 coin için ortak veri aralığının (~12 ay) **ilk %70**'ini
+"gelişme" (dev), aralarında **48 saatlik boşlukla**, son **%30**'unu "kilitli test" (locked)
+olarak ayırır. Bölme tarihi **bir kez hesaplanıp `scripts/cache/split.json`'a donuk yazılır**
+— veri zamanla güncellense bile bölme kaymaz; değiştirmek `FORCE_RESPLIT=1` gerektirir (bu,
+sonuçları görmeden ÖNCE yapılmalı — sonradan değiştirmek veri sızıntısıdır).
+
+**Kural**: tüm varyant karşılaştırmaları ve ayar seçimleri SADECE gelişme döneminde yapılır.
+Kilitli test, gelişme döneminde en iyi çıkan **en fazla 2 varyant** için **bir kez** çalışır.
+`scripts/run_research.py --locked` çalıştıktan sonra `docs/locked_test_run.json`'a
+kaydedilir; **`--force-locked-rerun` verilmedikçe bir daha çalışmaz** — bunu kendiniz
+zorlarsanız (örn. sonucu beğenmediğiniz için tekrar denemek), bu tanım gereği veri
+sızıntısıdır ve kilitli testin tüm anlamını ortadan kaldırır.
+
+### Altı Sabit Varyant (Taranmadı)
+
+Rastgele parametre taraması yapılmadı — sadece şu 6 varyant (`scripts/variants.py`) test
+edildi, hepsi karşılaştırma stratejileriyle (her zaman AL, momentum, rastgele) **aynı çıkış
+kurallarıyla** kıyaslandı:
+
+| Kod | Ad | Açıklama |
+|---|---|---|
+| A | Referans | Mevcut sistem: 1H ATR(14), TP=2.5×ATR/SL=1.5×ATR, ufuk=48s |
+| B | Saf yön | TP/SL yok, 48. saat kapanışında çık |
+| C | Ufka uyumlu TP/SL | ATR'yi 4H mumlardan hesapla (aynı 1.5/2.5 katsayıları) |
+| D | Olasılık filtresi | Kantillerden P(yön doğru) hesapla, sadece ≥%60 ise işlem aç (eşik sabit) |
+| E | Kısa ufuk | 24 saatlik tahmin, 24. saat kapanışında çık |
+| F | Uzun bağlam | 1024 saatlik bağlam + B'nin (saf yön) çıkışı |
+
+A/B/C/D/E **aynı** TimesFM tahminini (bağlam=300s) paylaşır — sadece çıkış kuralı farklı;
+`scripts/predict_cache.py` tahmini bu yüzden **bir kez** üretir. Sadece F kendi (bağlam=1024s)
+tahminini gerektirir.
+
+### Maliyetler
+
+- **Komisyon**: işlem başı (giriş+çıkış) ayarlanabilir, varsayılan %0.05+%0.05.
+- **Funding**: OKX'in gerçek funding geçmişi (`/api/v5/public/funding-rate-history`) çekilir
+  ve pozisyon açıkken geçen her 8 saatlik funding anında uygulanır. **Önemli sınırlama**: OKX
+  bu uca sınırlı bir geçmiş tutuyor (bu proje kurulduğunda ~3 ay) — 12 aylık pencerenin büyük
+  kısmı için GERÇEK funding verisi YOKTUR; o dönemler için ayarlanabilir sabit bir varsayılan
+  oran kullanılır (`DEFAULT_FUNDING_RATE_PCT`, varsayılan %0.01/8s). `docs/research_dev.json`
+  hangi coin/dönemde gerçek veri kullanıldığını raporlamaz ayrıntılı olarak — bu bilinen bir
+  basitleştirme.
+
+### İstatistiksel Güvenilirlik
+
+- **Blok bootstrap** (`eval_lib.block_bootstrap_ci`): getiri/kazanma oranı/yön doğruluğu için
+  %95 güven aralığı, ardışık pencerelerin/coinler arası korelasyonun bağımsız gözlem sayısını
+  şiştirmesine karşı basit (iid) bootstrap yerine kullanılır — komşu değerler blok halinde
+  örneklenir (varsayılan blok=20 işlem). `effective_n` (≈ n/blok boyu) kaba bir bağımsız
+  örnek sayısı tahminidir.
+- **Eşleşmiş fark anlamlılığı** (`eval_lib.paired_diff_significance`): her varyantın
+  karşılaştırma stratejilerinden farkının %95 GA'sı sıfırı kapsıyorsa panelde **"anlamlı
+  fark yok"** olarak işaretlenir — sadece nokta tahmini farkına bakıp "daha iyi" denmez.
+- Coin başına örnek sayısı 30'un altındaysa panelde güvenilmezlik uyarısı gösterilir.
+
+### Teşhis Raporu (`scripts/diagnostics.py`)
+
+Yeni varyantları çalıştırmadan ÖNCE, mevcut (referans) sistemin sonucunu neyin belirlediğini
+anlamak için model **yeniden çalıştırılmadan** (sadece gerçek OKX fiyatı çekilerek) şunlar
+hesaplandı: brüt vs net getiri + komisyon yükü, çıkış zamanlama dağılımı (SL'lerin çoğu ilk
+3-6 saatte mi tetikleniyor?), TP/SL'siz "saf yön" sonucu, ufka göre yön doğruluğu vs "her
+zaman AL" tabanı, güven aralığı kalibrasyonu (gerçek fiyat q10-q90 bandında beklenen ~%80
+sıklıkta mı kalıyor). Sonuçlar `docs/diagnostics.json`'da ve panelin "Teşhis" sekmesinde.
 
 ## Tahmin Arşivi ve Geçmiş Performans
 
@@ -137,6 +227,28 @@ TimesFM'in kendi tahminine ek olarak üç **karşılaştırma stratejisi** de ay
 takip et) ve **rastgele yön** — model bunlardan belirgin şekilde iyi değilse panelde bu
 açıkça görülür.
 
+## Araştırmayı Çalıştırma (Varyantlar, Gelişme/Kilitli Test)
+
+```bash
+# 1) Veri + bolme (bir kez; split.json zaten repo'da var, tekrar gerekmez)
+python scripts/research_data.py
+
+# 2) Gelistirme donemi - tum varyantlar
+python scripts/run_research.py --variants A,B,C,D,E,F
+# hizli test icin: RESEARCH_MAX_CUTPOINTS=20 python scripts/run_research.py --variants A
+
+# 3) Kilitli test - SADECE gelistirmede en iyi cikan 1-2 varyant, BIR KEZ
+python scripts/run_research.py --locked --variants B,C
+# tekrar calismaz (docs/locked_test_run.json var) - zorlamak icin (veri sizintisi riski!):
+python scripts/run_research.py --locked --variants B,C --force-locked-rerun
+```
+
+`.github/workflows/research.yml` aynısını CI'da yapar; tahmin önbelleğini (`scripts/cache/predictions/`,
+büyük olabilir, git'e commit edilmez) `actions/cache` ile çalıştırmalar arası saklar, böylece
+yarıda kesilen bir çalıştırma kaldığı yerden devam edebilir. Gerçek ölçüm: 5 coin × ~973 kesim
+noktası (bağlam=300) + ~852 kesim noktası (bağlam=1024, sadece F) ≈ **~33 dakika** (12 aylık
+gelişme döneminin tamamı, tüm 6 varyant) — 340 dakikalık zaman aşımının çok altında.
+
 ## Metrikler Ne Anlama Gelir
 
 - **Yön doğruluğu**: fiyat, tahmin edilen yöne (6/12/24/48. saatte) gerçekten gitti mi (%).
@@ -169,7 +281,7 @@ açıkça görülür.
   (tahmin + arşive kayıt) ve `scripts/evaluate_archive.py`'yi (arşiv değerlendirmesi)
   çalıştırır, `docs/forecasts.json` + `docs/history/` + `docs/evaluation.json`'ı `[skip ci]`
   etiketiyle doğrudan `main` branch'ine commit'ler.
-- Runner CPU üzerinde çalışır (GPU yok); 200M parametrelik model için bu, 14 coin'lik
+- Runner CPU üzerinde çalışır (GPU yok); 200M parametrelik model için bu, 5 coin'lik
   bir batch'te makul sürede tamamlanır ama torch kurulumu + ilk indirme dahil workflow'a
   40 dakikalık zaman aşımı payı bırakılmıştır.
 
@@ -178,6 +290,14 @@ açıkça görülür.
 - Repo → **Actions** → *Walk-forward backtest calistir* → **Run workflow** — gün sayısı,
   kesim aralığı, kaldıraç, komisyon, kesim noktası sınırı ve coin alt kümesini inputlardan
   ayarlayabilirsiniz. `docs/backtest.json`'ı üretip commit'ler.
+
+`.github/workflows/research.yml` (sadece manuel, isteğe bağlı):
+
+- Repo → **Actions** → *Arastirma (dev/kilitli test varyantlari)* → **Run workflow** —
+  varyant listesi, kesim noktası sınırı, `locked`/`force_locked_rerun` bayraklarını
+  inputlardan ayarlayabilirsiniz. Tahmin önbelleğini `actions/cache` ile saklar (yarıda
+  kesilirse kaldığı yerden devam eder), `docs/research_dev.json` ya da (kilitli modda)
+  `docs/research_locked.json` + `docs/locked_test_run.json`'ı commit'ler.
 
 ## GitHub Secrets / Pages Ayarı
 
@@ -203,6 +323,12 @@ Hugging Face'ten anonim indirilir) — ek bir secret tanımlamanıza gerek yok.
   (TP/SL/süre doldu) işaretleri, kümülatif kâr/zarar (equity) eğrisi — model vs. karşılaştırma
   stratejileri, özet kartları (sinyal gücüne ve yöne göre kırılmış) ve tüm coinleri
   karşılaştıran bir tablo içerir. Örnek sayısı azsa uyarı gösterir.
+- **Arastirma: Varyantlar & Teşhis** bölümü: "Varyantlar" sekmesi A-F'nin gelişme (ve varsa
+  kilitli test) sonuçlarını net getiri + %95 bootstrap güven aralığı, kazanma oranı, yön
+  doğruluğu, maks düşüş ve karşılaştırma stratejileriyle eşleşmiş anlamlılık farkıyla
+  tablolar; kilitli test çalışmadıysa açıkça belirtir, çalıştıysa tarihini gösterir.
+  "Teşhis" sekmesi (aktif coin için) brüt/net getiri + komisyon yükü, saf yön karşılaştırması,
+  çıkış zamanlaması, ufka göre yön doğruluğu ve güven aralığı kalibrasyon grafiğini gösterir.
 - Açık/koyu tema desteği (sistem tercihine göre başlar, sağ üstteki düğmeyle değiştirilebilir
   ve tercih tarayıcıda hatırlanır) — yeni bölüm dahil tüm panel için geçerli.
 - Mobilde de düzgün görünecek şekilde responsive.
