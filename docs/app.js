@@ -757,32 +757,32 @@ function renderResearchBody(symbol) {
   }
 }
 
-function sigLabel(diff) {
+function sigLabel(diff, compDirAcc) {
   if (!diff || diff.significant === null || diff.significant === undefined) return "—";
   const ci = diff.diff_ci;
   const range = ci && ci.ci_low !== null ? `[${fmtPct(ci.ci_low, true)}, ${fmtPct(ci.ci_high, true)}]` : "";
-  return diff.significant
+  const dirText = compDirAcc != null ? ` · taban yön doğ.: ${compDirAcc.toFixed(1)}%` : "";
+  return (diff.significant
     ? `<span class="pos">anlamlı fark ${range}</span>`
-    : `<span class="empty-inline">anlamlı değil ${range}</span>`;
+    : `<span class="empty-inline">anlamlı değil ${range}</span>`) + `<br><span class="empty-inline">${dirText}</span>`;
 }
 
 function variantRow(code, info) {
   const m = info.model;
   const s = m.summary || {};
-  const boot = m.bootstrap_total_return || {};
+  const boot = m.portfolio_bootstrap || {};
   const ciText = boot.ci_low !== null && boot.ci_low !== undefined
     ? `${fmtPct(boot.mean, true)} [${fmtPct(boot.ci_low, true)}, ${fmtPct(boot.ci_high, true)}]`
     : "—";
   return `<tr>
     <td><strong>${code}</strong><br><span class="empty-inline">${info.description}</span></td>
     <td>${m.n}</td>
-    <td class="${(s.total_return_pct || 0) >= 0 ? "pos" : "neg"}">${ciText}</td>
-    <td>${s.win_rate_pct != null ? s.win_rate_pct.toFixed(1) + "%" : "—"}</td>
+    <td class="${(m.portfolio_compound_return_pct || 0) >= 0 ? "pos" : "neg"}">${ciText}</td>
     <td>${s.direction_accuracy_pct != null ? s.direction_accuracy_pct.toFixed(1) + "%" : "—"}</td>
-    <td class="neg">${fmtPct(s.max_drawdown_pct)}</td>
-    <td>${sigLabel(info.comparisons.always_buy.diff_vs_model)}</td>
-    <td>${sigLabel(info.comparisons.momentum.diff_vs_model)}</td>
-    <td>${sigLabel(info.comparisons.random.diff_vs_model)}</td>
+    <td class="neg">${fmtPct(m.portfolio_max_drawdown_pct)}</td>
+    <td>${sigLabel(info.comparisons.always_buy.diff_vs_model, info.comparisons.always_buy.summary.direction_accuracy_pct)}</td>
+    <td>${sigLabel(info.comparisons.momentum.diff_vs_model, info.comparisons.momentum.summary.direction_accuracy_pct)}</td>
+    <td>${sigLabel(info.comparisons.random.diff_vs_model, info.comparisons.random.summary.direction_accuracy_pct)}</td>
   </tr>`;
 }
 
@@ -795,12 +795,16 @@ function renderVariantTable(title, data, note) {
     <div style="overflow-x:auto;">
       <table>
         <thead><tr>
-          <th>Varyant</th><th>N</th><th>Net Getiri (ort. + %95 GA)</th><th>Kazanma%</th>
-          <th>Yön Doğ.%</th><th>Maks Düşüş</th><th>vs Her zaman AL</th><th>vs Momentum</th><th>vs Rastgele</th>
+          <th>Varyant</th><th>N (sinyal)</th><th>Portföy Bileşik Getiri (+%95 GA)</th>
+          <th>Yön Doğ.%</th><th>Portföy Maks Düşüş</th>
+          <th>vs Her zaman AL</th><th>vs Momentum</th><th>vs Rastgele</th>
         </tr></thead>
         <tbody>${codes.map(c => variantRow(c, data.variants[c])).join("")}</tbody>
       </table>
     </div>
+    <p class="empty-inline">Portföy: 5 coin'e eşit ağırlıklı (⅕), coin başına tek pozisyonlu (örtüşmeyen)
+    işlemlerden, günlük yeniden dengelenerek bileşik hesaplanır. "vs" sütunlarındaki "taban yön doğ."
+    o karşılaştırma stratejisinin AYNI dönemdeki kendi yön doğruluğudur (model ile kıyaslamak için).</p>
   `;
 }
 
@@ -808,7 +812,7 @@ function renderVariantsTab(container) {
   let html = renderVariantTable(
     `Geliştirme Dönemi (${researchDevData.period_start ? fmtTime(researchDevData.period_start) : "—"} → ${researchDevData.period_end ? fmtTime(researchDevData.period_end) : "—"})`,
     researchDevData,
-    "Tüm ayar seçimleri SADECE bu dönemde yapıldı. Getiriler sabit pozisyon büyüklüğü varsayımıyla toplanır (bileşik değil), komisyon + funding maliyeti dahildir."
+    "Tüm ayar seçimleri SADECE bu dönemde yapıldı. Getiriler eşit ağırlıklı, günlük yeniden dengelenen bir portföyde bileşik hesaplanır (komisyon + funding maliyeti dahil)."
   );
 
   if (researchLockedData && researchLockedData.variants) {
