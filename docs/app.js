@@ -1,6 +1,11 @@
 let forecastData = null;
+let evaluationData = null;
+let backtestData = null;
 let activeCoin = null;
 let chart = null;
+let historyChart = null;
+let equityChart = null;
+const historyState = { source: "archive", mode: "single_position", n: "20" };
 
 function fmtTime(iso) {
   if (!iso) return "—";
@@ -42,6 +47,16 @@ async function loadForecasts() {
   return res.json();
 }
 
+async function loadJsonOptional(path) {
+  try {
+    const res = await fetch(path + "?_=" + Date.now());
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (e) {
+    return null;
+  }
+}
+
 function buildTabs(coins) {
   const tabs = document.getElementById("tabs");
   tabs.innerHTML = Object.keys(coins).map(symbol =>
@@ -65,6 +80,7 @@ function selectCoin(symbol) {
   renderSignal(symbol);
   renderChart(symbol);
   renderMeta(symbol);
+  renderHistoryPanel(symbol);
 }
 
 const STRENGTH_LABELS = { guclu: "Güçlü", orta: "Orta", zayif: "Zayıf" };
@@ -228,6 +244,424 @@ function renderChart(symbol) {
   chart = new Chart(document.getElementById("chart").getContext("2d"), config);
 }
 
+// ---------------------------------------------------------------------------
+// Gecmis Performans: arsivlenmis gercek tahminler (evaluationData) ve/veya
+// walk-forward backtest (backtestData) sonuclarini gosterir. Ikisi de ayni
+// sekle sahip JSON'lar (bkz. scripts/evaluate_archive.py, scripts/backtest.py).
+// ---------------------------------------------------------------------------
+
+const STRATEGY_LABELS = { model: "TimesFM (model)", always_buy: "Her zaman AL", momentum: "Momentum takip", random: "Rastgele yon" };
+const STRATEGY_COLOR_VARS = { model: "--accent", always_buy: "--muted", momentum: "--green", random: "--red" };
+
+function fmtPct(v, withSign) {
+  if (v === null || v === undefined || Number.isNaN(v)) return "—";
+  const sign = withSign && v > 0 ? "+" : "";
+  return sign + v.toFixed(2) + "%";
+}
+
+function getActiveDataset(symbol) {
+  const src = historyState.source === "backtest" ? backtestData : evaluationData;
+  if (!src || !src.coins || !src.coins[symbol]) return null;
+  return src.coins[symbol];
+}
+
+function pickRecent(list, n) {
+  if (!list) return [];
+  if (n === "all") return list;
+  const count = parseInt(n, 10) || 20;
+  return list.slice(-count);
+}
+
+function renderHistoryPanel(symbol) {
+  const panel = document.getElementById("history-panel");
+  const hasArchive = !!(evaluationData && evaluationData.coins);
+  const hasBacktest = !!(backtestData && backtestData.coins);
+
+  if (!hasArchive && !hasBacktest) {
+    panel.innerHTML = `
+      <h2>Geçmiş Performans</h2>
+      <div class="empty">Henüz değerlendirme verisi yok — arşiv birkaç çalıştırma biriktikten sonra burada görünecek.</div>
+    `;
+    document.getElementById("cross-coin-panel").innerHTML = "";
+    return;
+  }
+
+  if (historyState.source === "backtest" && !hasBacktest) historyState.source = "archive";
+  if (historyState.source === "archive" && !hasArchive) historyState.source = "backtest";
+
+  panel.innerHTML = `
+    <div class="history-head">
+      <h2>Geçmiş Performans</h2>
+      <div class="history-controls">
+        <select id="history-source">
+          <option value="archive" ${!hasArchive ? "disabled" : ""}>Canlı arşiv (gerçek tahminler)</option>
+          <option value="backtest" ${!hasBacktest ? "disabled" : ""}>Backtest (geriye dönük simülasyon)</option>
+        </select>
+        <select id="history-mode">
+          <option value="single_position">Coin başına tek pozisyon</option>
+          <option value="independent">Her sinyal bağımsız işlem</option>
+        </select>
+        <select id="history-n">
+          <option value="10">Son 10 tahmin</option>
+          <option value="20">Son 20 tahmin</option>
+          <option value="50">Son 50 tahmin</option>
+          <option value="all">Tümü</option>
+        </select>
+      </div>
+    </div>
+    <div id="history-body"></div>
+  `;
+
+  const sourceSel = document.getElementById("history-source");
+  const modeSel = document.getElementById("history-mode");
+  const nSel = document.getElementById("history-n");
+  sourceSel.value = historyState.source;
+  modeSel.value = historyState.mode;
+  nSel.value = historyState.n;
+
+  sourceSel.addEventListener("change", () => { historyState.source = sourceSel.value; renderHistoryBody(symbol); });
+  modeSel.addEventListener("change", () => { historyState.mode = modeSel.value; renderHistoryBody(symbol); });
+  nSel.addEventListener("change", () => { historyState.n = nSel.value; renderHistoryBody(symbol); });
+
+  renderHistoryBody(symbol);
+}
+
+function renderHistoryBody(symbol) {
+  const body = document.getElementById("history-body");
+  const dataset = getActiveDataset(symbol);
+  const sourceLabel = historyState.source === "backtest" ? "backtest" : "canlı arşiv";
+  if (!dataset) {
+    body.innerHTML = `<div class="empty">${symbol} için ${sourceLabel} verisi yok.</div>`;
+    document.getElementById("cross-coin-panel").innerHTML = "";
+    return;
+  }
+
+  const sampleSize = dataset.sample_size || 0;
+  const warning = sampleSize < 30
+    ? `<div class="sample-warning">⚠️ Örnek sayısı az (${sampleSize} işlem) — istatistiksel olarak güvenilir değil, yorumlarken temkinli olun.</div>`
+    : "";
+
+  body.innerHTML = `
+    ${warning}
+    <div class="chart-wrap history-chart-wrap"><canvas id="history-chart"></canvas></div>
+    <div class="chart-wrap equity-chart-wrap"><canvas id="equity-chart"></canvas></div>
+    <div id="history-summary"></div>
+  `;
+
+  renderHistoryChart(dataset);
+  renderEquityChart(dataset);
+  renderHistorySummary(dataset);
+  renderCrossCoinTable();
+}
+
+function checkpointsToPoints(entryTs, entryPrice, checkpoints) {
+  const pts = [{ x: Date.parse(entryTs), y: entryPrice }];
+  ["6", "12", "24", "36", "48"].forEach(h => {
+    const cp = checkpoints && checkpoints[h];
+    if (cp && cp.value !== null && cp.value !== undefined) pts.push({ x: Date.parse(cp.ts), y: cp.value });
+  });
+  return pts;
+}
+
+function renderHistoryChart(dataset) {
+  const canvas = document.getElementById("history-chart");
+  if (historyChart) { historyChart.destroy(); historyChart = null; }
+  const preds = pickRecent(dataset.predictions || [], historyState.n);
+  if (!preds.length) {
+    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    return;
+  }
+
+  const accent = cssVar("--accent") || "#5b8cff";
+  const green = cssVar("--green") || "#3ddc84";
+  const red = cssVar("--red") || "#ff5c5c";
+  const muted = cssVar("--muted") || "#8b93a7";
+  const gridColor = cssVar("--card-border") || "#232838";
+
+  const baseline = preds
+    .map(p => ({ x: Date.parse(p.entry_ts), y: p.entry_price }))
+    .sort((a, b) => a.x - b.x);
+
+  const datasets = [{
+    label: "Gerçek fiyat (tahmin anları)",
+    data: baseline,
+    borderColor: accent,
+    backgroundColor: accent,
+    borderWidth: 2,
+    pointRadius: 0,
+    tension: 0.1,
+    order: 10,
+    meta: { kind: "baseline" },
+  }];
+
+  preds.forEach(p => {
+    const color = p.direction_correct === true ? green : p.direction_correct === false ? red : muted;
+    datasets.push({
+      label: "Geçmiş tahmin",
+      data: checkpointsToPoints(p.entry_ts, p.entry_price, p.checkpoints),
+      borderColor: color,
+      backgroundColor: color,
+      borderWidth: 1.5,
+      borderDash: [4, 3],
+      pointRadius: 0,
+      tension: 0,
+      order: 5,
+      meta: { kind: "prediction", side: p.side, strength: p.strength, directionCorrect: p.direction_correct },
+    });
+    datasets.push({
+      label: "Giriş",
+      data: [{ x: Date.parse(p.entry_ts), y: p.entry_price }],
+      showLine: false,
+      pointStyle: "triangle",
+      rotation: p.side === "SELL" ? 180 : 0,
+      pointRadius: 5,
+      pointHoverRadius: 7,
+      pointBackgroundColor: p.side === "SELL" ? red : green,
+      pointBorderColor: p.side === "SELL" ? red : green,
+      order: 1,
+      meta: { kind: "entry", side: p.side, price: p.entry_price },
+    });
+  });
+
+  const modelEntry = dataset.strategies && dataset.strategies.model && dataset.strategies.model[historyState.mode];
+  const modelTrades = (modelEntry && modelEntry.trades) || [];
+  const shownEntryTs = new Set(preds.map(p => p.entry_ts));
+  modelTrades.filter(t => shownEntryTs.has(t.entry_ts) && t.exit_ts && t.exit_price !== null).forEach(t => {
+    const isWin = t.exit_reason === "TP";
+    const isLoss = t.exit_reason === "SL" || t.exit_reason === "LIQUIDATION";
+    const color = isWin ? green : isLoss ? red : muted;
+    datasets.push({
+      label: "Çıkış",
+      data: [{ x: Date.parse(t.exit_ts), y: t.exit_price }],
+      showLine: false,
+      pointStyle: isWin ? "circle" : isLoss ? "crossRot" : "rect",
+      pointRadius: 5,
+      pointHoverRadius: 7,
+      pointBackgroundColor: color,
+      pointBorderColor: color,
+      order: 1,
+      meta: { kind: "exit", exitReason: t.exit_reason, pnlPct: t.pnl_pct },
+    });
+  });
+
+  historyChart = new Chart(canvas.getContext("2d"), {
+    type: "line",
+    data: { datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      interaction: { mode: "point", intersect: true },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: (items) => items.length ? fmtTime(new Date(items[0].parsed.x).toISOString()) : "",
+            label: (item) => {
+              const m = item.dataset.meta || {};
+              if (m.kind === "entry") return `${m.side === "SELL" ? "SAT" : "AL"} girişi: ${fmtPrice(m.price)}`;
+              if (m.kind === "exit") {
+                const pnl = m.pnlPct !== null && m.pnlPct !== undefined ? fmtPct(m.pnlPct, true) : "—";
+                return `Çıkış (${m.exitReason}): ${fmtPrice(item.parsed.y)} · K/Z: ${pnl}`;
+              }
+              if (m.kind === "prediction") {
+                return `Tahmin (${m.side || "?"}, ${STRENGTH_LABELS[m.strength] || m.strength || "—"}): ${fmtPrice(item.parsed.y)}`;
+              }
+              return `${fmtPrice(item.parsed.y)} USDT`;
+            },
+          },
+        },
+      },
+      scales: {
+        x: {
+          type: "linear",
+          ticks: { color: muted, maxTicksLimit: 8, callback: (v) => fmtTime(new Date(v).toISOString()) },
+          grid: { color: gridColor },
+        },
+        y: {
+          ticks: { color: muted, callback: (v) => fmtPrice(v) },
+          grid: { color: gridColor },
+        },
+      },
+    },
+  });
+}
+
+function buildEquityCurve(trades) {
+  const sorted = [...trades].sort((a, b) => Date.parse(a.entry_ts) - Date.parse(b.entry_ts));
+  let cum = 0;
+  return sorted.map(t => {
+    cum += (t.pnl_pct || 0);
+    return { x: Date.parse(t.entry_ts), y: Math.round(cum * 10000) / 10000 };
+  });
+}
+
+function renderEquityChart(dataset) {
+  const canvas = document.getElementById("equity-chart");
+  if (equityChart) { equityChart.destroy(); equityChart = null; }
+
+  const muted = cssVar("--muted") || "#8b93a7";
+  const gridColor = cssVar("--card-border") || "#232838";
+  const datasets = [];
+  Object.keys(dataset.strategies || {}).forEach(strat => {
+    const entry = dataset.strategies[strat][historyState.mode];
+    if (!entry || !entry.trades || !entry.trades.length) return;
+    const color = cssVar(STRATEGY_COLOR_VARS[strat] || "--muted") || "#8b93a7";
+    datasets.push({
+      label: STRATEGY_LABELS[strat] || strat,
+      data: buildEquityCurve(entry.trades),
+      borderColor: color,
+      backgroundColor: color,
+      borderWidth: strat === "model" ? 2.5 : 1.5,
+      pointRadius: 0,
+      tension: 0.1,
+    });
+  });
+
+  if (!datasets.length) {
+    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    return;
+  }
+
+  equityChart = new Chart(canvas.getContext("2d"), {
+    type: "line",
+    data: { datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      interaction: { mode: "nearest", intersect: false },
+      plugins: {
+        legend: { display: true, position: "top", labels: { color: muted, boxWidth: 12, font: { size: 11 } } },
+        tooltip: {
+          callbacks: {
+            title: (items) => items.length ? fmtTime(new Date(items[0].parsed.x).toISOString()) : "",
+            label: (item) => `${item.dataset.label}: ${fmtPct(item.parsed.y, true)}`,
+          },
+        },
+      },
+      scales: {
+        x: {
+          type: "linear",
+          ticks: { color: muted, maxTicksLimit: 8, callback: (v) => fmtTime(new Date(v).toISOString()) },
+          grid: { color: gridColor },
+        },
+        y: {
+          ticks: { color: muted, callback: (v) => Number(v).toFixed(2) + "%" },
+          grid: { color: gridColor },
+        },
+      },
+    },
+  });
+}
+
+function exitDistLabel(dist) {
+  if (!dist || !Object.keys(dist).length) return "—";
+  return Object.entries(dist).map(([k, v]) => `${k}: ${v}`).join(" · ");
+}
+
+function statItem(label, value, cls) {
+  return `<div class="signal-item"><div class="label">${label}</div><div class="value ${cls || ""}">${value}</div></div>`;
+}
+
+function renderAggCards(agg) {
+  if (!agg || !agg.count) {
+    return `<div class="empty">Yeterli işlem yok.</div>`;
+  }
+  return `<div class="signal-grid">
+    ${statItem("İşlem Sayısı", agg.count)}
+    ${statItem("Yön Doğruluğu", agg.direction_accuracy_pct != null ? agg.direction_accuracy_pct.toFixed(1) + "%" : "—")}
+    ${statItem("Kazanma Oranı", agg.win_rate_pct != null ? agg.win_rate_pct.toFixed(1) + "%" : "—")}
+    ${statItem("Dağılım (TP·SL·Süre)", exitDistLabel(agg.exit_distribution))}
+    ${statItem("Ort. Kazanç", fmtPct(agg.avg_win_pct, true), "pos")}
+    ${statItem("Ort. Kayıp", fmtPct(agg.avg_loss_pct, true), "neg")}
+    ${statItem("Toplam Getiri", fmtPct(agg.total_return_pct, true), (agg.total_return_pct || 0) >= 0 ? "pos" : "neg")}
+    ${statItem("Maks. Düşüş", fmtPct(agg.max_drawdown_pct), "neg")}
+    ${statItem("Profit Factor", agg.profit_factor != null ? agg.profit_factor.toFixed(2) : "—")}
+  </div>`;
+}
+
+function renderHistorySummary(dataset) {
+  const container = document.getElementById("history-summary");
+  const modelEntry = dataset.strategies && dataset.strategies.model && dataset.strategies.model[historyState.mode];
+
+  let html = `<h3 class="history-subhead">TimesFM Sinyali — Genel</h3>${renderAggCards(modelEntry)}`;
+
+  if (modelEntry && modelEntry.by_strength) {
+    html += `<h3 class="history-subhead">Sinyal Gücüne Göre</h3><div class="breakdown-grid">`;
+    ["guclu", "orta", "zayif"].forEach(s => {
+      html += `<div><h4>${STRENGTH_LABELS[s] || s}</h4>${renderAggCards(modelEntry.by_strength[s])}</div>`;
+    });
+    html += `</div>`;
+  }
+  if (modelEntry && modelEntry.by_side) {
+    html += `<h3 class="history-subhead">Yöne Göre</h3><div class="breakdown-grid">`;
+    ["BUY", "SELL"].forEach(s => {
+      html += `<div><h4>${s === "BUY" ? "AL" : "SAT"}</h4>${renderAggCards(modelEntry.by_side[s])}</div>`;
+    });
+    html += `</div>`;
+  }
+
+  const compStrategies = Object.keys(dataset.strategies || {}).filter(s => s !== "model");
+  if (compStrategies.length) {
+    html += `<h3 class="history-subhead">Karşılaştırma Stratejileri</h3><div class="breakdown-grid">`;
+    compStrategies.forEach(strat => {
+      const entry = dataset.strategies[strat][historyState.mode];
+      html += `<div><h4>${STRATEGY_LABELS[strat] || strat}</h4>${renderAggCards(entry)}</div>`;
+    });
+    html += `</div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+function renderCrossCoinTable() {
+  const container = document.getElementById("cross-coin-panel");
+  const src = historyState.source === "backtest" ? backtestData : evaluationData;
+  if (!src || !src.coins || !Object.keys(src.coins).length) {
+    container.innerHTML = "";
+    return;
+  }
+
+  const rows = Object.entries(src.coins).map(([symbol, c]) => {
+    const modelEntry = c.strategies && c.strategies.model && c.strategies.model[historyState.mode];
+    const dirAcc48 = c.direction_accuracy_pct && c.direction_accuracy_pct["48"];
+    return { symbol, agg: modelEntry, sample: c.sample_size || 0, dirAcc48 };
+  }).sort((a, b) => {
+    const av = a.agg && a.agg.total_return_pct !== null && a.agg.total_return_pct !== undefined ? a.agg.total_return_pct : -Infinity;
+    const bv = b.agg && b.agg.total_return_pct !== null && b.agg.total_return_pct !== undefined ? b.agg.total_return_pct : -Infinity;
+    return bv - av;
+  });
+
+  const sourceLabel = historyState.source === "backtest" ? "Backtest" : "Canlı Arşiv";
+  const modeLabel = historyState.mode === "independent" ? "her sinyal bağımsız işlem" : "coin başına tek pozisyon";
+  const lowSample = rows.some(r => r.sample > 0 && r.sample < 30);
+
+  container.innerHTML = `
+    <h2>Tüm Coinler — ${sourceLabel} (${modeLabel})</h2>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>Coin</th><th>İşlem</th><th>Yön Doğ. (48s)</th><th>Kazanma %</th>
+          <th>Toplam Getiri</th><th>Maks. Düşüş</th><th>Profit Factor</th>
+        </tr></thead>
+        <tbody>
+          ${rows.map(r => `<tr>
+            <td>${r.symbol}</td>
+            <td>${r.sample}</td>
+            <td>${r.dirAcc48 != null ? r.dirAcc48.toFixed(1) + "%" : "—"}</td>
+            <td>${r.agg && r.agg.win_rate_pct != null ? r.agg.win_rate_pct.toFixed(1) + "%" : "—"}</td>
+            <td class="${r.agg && (r.agg.total_return_pct || 0) >= 0 ? "pos" : "neg"}">${r.agg ? fmtPct(r.agg.total_return_pct, true) : "—"}</td>
+            <td class="neg">${r.agg ? fmtPct(r.agg.max_drawdown_pct) : "—"}</td>
+            <td>${r.agg && r.agg.profit_factor != null ? r.agg.profit_factor.toFixed(2) : "—"}</td>
+          </tr>`).join("")}
+        </tbody>
+      </table>
+    </div>
+    ${lowSample ? `<p class="sample-warning">⚠️ Bazı coinlerde örnek sayısı 30'un altında — istatistiksel olarak güvenilir değil.</p>` : ""}
+  `;
+}
+
 async function init() {
   initTheme();
   try {
@@ -248,6 +682,15 @@ async function init() {
 
   document.getElementById("updated").textContent = "Son güncelleme: " + fmtTime(forecastData.generated_at);
   buildTabs(coins);
+
+  const [evalRes, backtestRes] = await Promise.all([
+    loadJsonOptional("evaluation.json"),
+    loadJsonOptional("backtest.json"),
+  ]);
+  evaluationData = evalRes;
+  backtestData = backtestRes;
+  if (!evaluationData && backtestData) historyState.source = "backtest";
+
   selectCoin(symbols[0]);
 }
 

@@ -64,6 +64,16 @@ TP_ATR_MULT = 2.5
 # sadece "guclu/orta/zayif" etiketini belirler, sinyali gizlemez.
 SIGNAL_ATR_THRESHOLDS = (1.0, 2.0)  # zayif < 1.0 ATR <= orta < 2.0 ATR <= guclu
 
+# Tahmin arsivi: her calistirmada docs/history/<COIN>.jsonl'a bir kayit eklenir
+# (bkz. build_archive_record/append_archive_record). 48 tahmin noktasinin tamami
+# yerine sadece bu saatlerdeki degerler saklanir (dosya kontrolsuz buyumesin diye);
+# 6/12/24/48 degerlendirme ufuklarinin hepsini kapsar, 36 grafik icin ara nokta.
+ARCHIVE_CHECKPOINT_HOURS = [6, 12, 24, 36, 48]
+HISTORY_DIR = os.environ.get("HISTORY_DIR", os.path.join("docs", "history"))
+# coin basina ~800 kayit (6 saatte bir calisirsa ~200 gun) - daha eskisi budanir.
+ARCHIVE_MAX_RECORDS = int(os.environ.get("ARCHIVE_MAX_RECORDS", "800"))
+WRITE_ARCHIVE = os.environ.get("WRITE_ARCHIVE", "1") != "0"
+
 
 def compute_tp_sl(entry_price: float, atr_value: float, side: str) -> tuple:
     """(stop_loss, take_profit) doner - crypto-trader/okx_trader/strategy.py ile ayni mantik."""
@@ -124,10 +134,10 @@ def confidence_band(quantile_row) -> tuple:
     return float(np.min(tail)), float(np.max(tail))
 
 
-def build_series(symbol: str, inst_id: str) -> tuple:
-    df = fetch_recent_candles(inst_id, BAR, limit=CONTEXT_HOURS)
+def build_series_from_df(df) -> tuple:
+    """Saf fonksiyon (ag erisimi yok) - canli akis ve backtest'in ikisi de kullanir."""
     if df.empty:
-        raise RuntimeError(f"{symbol} ({inst_id}) icin OKX'ten veri alinamadi.")
+        raise RuntimeError("Bos DataFrame - OKX'ten veri alinamadi.")
     history = [
         {"ts": row.timestamp.strftime("%Y-%m-%dT%H:%M:%SZ"), "close": round(float(row.close), 8)}
         for row in df.itertuples()
@@ -135,6 +145,97 @@ def build_series(symbol: str, inst_id: str) -> tuple:
     atr_series = compute_atr(df, period=ATR_PERIOD)
     atr_value = float(atr_series.iloc[-1]) if not np.isnan(atr_series.iloc[-1]) else None
     return history, df["close"].to_numpy(dtype=np.float64), atr_value
+
+
+def build_series(symbol: str, inst_id: str) -> tuple:
+    df = fetch_recent_candles(inst_id, BAR, limit=CONTEXT_HOURS)
+    if df.empty:
+        raise RuntimeError(f"{symbol} ({inst_id}) icin OKX'ten veri alinamadi.")
+    return build_series_from_df(df)
+
+
+def build_forecast_points(last_ts, points, quantiles) -> list:
+    """Her saat icin {ts, value, lower, upper} - canli akis ve backtest'in ikisi de kullanir."""
+    forecast_points = []
+    for h in range(len(points)):
+        ts = last_ts + timedelta(hours=h + 1)
+        lower, upper = confidence_band(quantiles[h] if quantiles is not None else None)
+        forecast_points.append({
+            "ts": ts.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "value": round(float(points[h]), 8),
+            "lower": round(lower, 8) if lower is not None else None,
+            "upper": round(upper, 8) if upper is not None else None,
+        })
+    return forecast_points
+
+
+def build_signal(entry_price: float, atr_value, forecast_end_value) -> dict:
+    """Son tahmin noktasina (ufuk sonu) gore BUY/SELL + ATR bazli TP/SL. Yeterli
+    veri yoksa None doner. `forecasts.json`'daki `signal` alaniyla birebir ayni sekil -
+    backtest.py da her kesim noktasinda bunu cagirir."""
+    if atr_value is None or forecast_end_value is None:
+        return None
+    expected_move = float(forecast_end_value) - entry_price
+    side = "BUY" if expected_move >= 0 else "SELL"
+    sl, tp = compute_tp_sl(entry_price, atr_value, side)
+    return {
+        "side": side,
+        "strength": signal_strength(expected_move, atr_value),
+        "entry_price": round(entry_price, 8),
+        "atr": round(atr_value, 8),
+        "expected_move": round(expected_move, 8),
+        "expected_move_pct": round(expected_move / entry_price * 100, 3),
+        "take_profit": round(tp, 8),
+        "stop_loss": round(sl, 8),
+        "risk_reward": round(TP_ATR_MULT / SL_ATR_MULT, 3),
+    }
+
+
+def build_archive_record(symbol: str, inst_id: str, generated_at: str, entry_ts: str,
+                          entry_price: float, signal, forecast_points: list) -> dict:
+    """Tam 48 noktalik tahmin yerine sadece ARCHIVE_CHECKPOINT_HOURS'taki degerleri
+    tutan kompakt kayit - docs/history/<COIN>.jsonl'a yazilir."""
+    checkpoints = {}
+    for h in ARCHIVE_CHECKPOINT_HOURS:
+        idx = h - 1
+        if 0 <= idx < len(forecast_points):
+            fp = forecast_points[idx]
+            checkpoints[str(h)] = {
+                "ts": fp["ts"], "value": fp["value"], "lower": fp["lower"], "upper": fp["upper"],
+            }
+    record = {
+        "generated_at": generated_at,
+        "coin": symbol,
+        "inst_id": inst_id,
+        "entry_ts": entry_ts,
+        "entry_price": round(entry_price, 8),
+        "side": signal["side"] if signal else None,
+        "strength": signal["strength"] if signal else None,
+        "expected_move_pct": signal["expected_move_pct"] if signal else None,
+        "take_profit": signal["take_profit"] if signal else None,
+        "stop_loss": signal["stop_loss"] if signal else None,
+        "atr": signal["atr"] if signal else None,
+        "checkpoints": checkpoints,
+    }
+    return record
+
+
+def append_archive_record(symbol: str, record: dict, history_dir: str = None, max_records: int = None) -> None:
+    history_dir = history_dir or HISTORY_DIR
+    max_records = ARCHIVE_MAX_RECORDS if max_records is None else max_records
+    os.makedirs(history_dir, exist_ok=True)
+    path = os.path.join(history_dir, f"{symbol}.jsonl")
+    lines = []
+    if os.path.exists(path):
+        with open(path, "r", encoding="utf-8") as f:
+            lines = [ln for ln in f.read().splitlines() if ln.strip()]
+    # Ayni (generated_at, coin) icin tekrar calistirilirsa eski kaydi degistir.
+    lines = [ln for ln in lines if json.loads(ln).get("generated_at") != record["generated_at"]]
+    lines.append(json.dumps(record, ensure_ascii=False))
+    if len(lines) > max_records:
+        lines = lines[-max_records:]
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
 
 
 def main() -> int:
@@ -162,41 +263,17 @@ def main() -> int:
     model = load_model(batch_size=len(inputs))
     point_forecast, quantile_forecast = run_forecast(model, inputs)
 
+    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     coins_payload = {}
     for i, symbol in enumerate(ordered_symbols):
         last_ts = datetime.strptime(histories[symbol][-1]["ts"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
         points = point_forecast[i]
         quantiles = quantile_forecast[i] if quantile_forecast is not None else None
 
-        forecast_points = []
-        for h in range(len(points)):
-            ts = last_ts + timedelta(hours=h + 1)
-            lower, upper = confidence_band(quantiles[h] if quantiles is not None else None)
-            forecast_points.append({
-                "ts": ts.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                "value": round(float(points[h]), 8),
-                "lower": round(lower, 8) if lower is not None else None,
-                "upper": round(upper, 8) if upper is not None else None,
-            })
-
+        forecast_points = build_forecast_points(last_ts, points, quantiles)
         entry_price = float(series_by_symbol[symbol][-1])
         atr_value = atr_by_symbol[symbol]
-        signal = None
-        if atr_value is not None and points[-1] is not None:
-            expected_move = float(points[-1]) - entry_price
-            side = "BUY" if expected_move >= 0 else "SELL"
-            sl, tp = compute_tp_sl(entry_price, atr_value, side)
-            signal = {
-                "side": side,
-                "strength": signal_strength(expected_move, atr_value),
-                "entry_price": round(entry_price, 8),
-                "atr": round(atr_value, 8),
-                "expected_move": round(expected_move, 8),
-                "expected_move_pct": round(expected_move / entry_price * 100, 3),
-                "take_profit": round(tp, 8),
-                "stop_loss": round(sl, 8),
-                "risk_reward": round(TP_ATR_MULT / SL_ATR_MULT, 3),
-            }
+        signal = build_signal(entry_price, atr_value, points[-1] if len(points) else None)
 
         coins_payload[symbol] = {
             "inst_id": COINS[symbol],
@@ -205,8 +282,15 @@ def main() -> int:
             "signal": signal,
         }
 
+        if WRITE_ARCHIVE:
+            record = build_archive_record(
+                symbol, COINS[symbol], generated_at,
+                histories[symbol][-1]["ts"], entry_price, signal, forecast_points,
+            )
+            append_archive_record(symbol, record)
+
     payload = {
-        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "generated_at": generated_at,
         "model": "Google TimesFM 2.5 (200M, zero-shot, yeniden egitim yok)",
         "checkpoint": CHECKPOINT_REPO,
         "bar": BAR,
