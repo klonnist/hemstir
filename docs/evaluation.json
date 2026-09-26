@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-26T06:10:07Z",
+  "generated_at": "2026-09-26T12:09:35Z",
   "source": "archive",
   "leverage": 1.0,
   "fee_pct": 0.05,
@@ -12,35 +12,35 @@
   "coins": {
     "BTC": {
       "inst_id": "BTC-USDT-SWAP",
-      "record_count": 29,
-      "sample_size": 27,
+      "record_count": 30,
+      "sample_size": 28,
       "direction_accuracy_pct": {
-        "6": 57.14,
-        "12": 44.44,
-        "24": 48.0,
-        "36": 56.52,
-        "48": 52.38
+        "6": 58.62,
+        "12": 42.86,
+        "24": 46.15,
+        "36": 58.33,
+        "48": 50.0
       },
       "in_confidence_band_pct": {
-        "6": 75.0,
-        "12": 62.96,
-        "24": 68.0,
-        "36": 82.61,
-        "48": 61.9
+        "6": 75.86,
+        "12": 64.29,
+        "24": 69.23,
+        "36": 83.33,
+        "48": 63.64
       },
       "mae": {
-        "6": 400.658482,
-        "12": 542.946528,
-        "24": 1056.690812,
-        "36": 925.379416,
-        "48": 1567.207515
+        "6": 395.164224,
+        "12": 527.454967,
+        "24": 1038.536118,
+        "36": 898.717578,
+        "48": 1581.446094
       },
       "mape_pct": {
-        "6": 0.49,
-        "12": 0.665,
-        "24": 1.301,
-        "36": 1.147,
-        "48": 2.015
+        "6": 0.483,
+        "12": 0.646,
+        "24": 1.278,
+        "36": 1.114,
+        "48": 2.025
       },
       "predictions": [
         {
@@ -1053,7 +1053,7 @@
               "upper": 85712.59375
             }
           },
-          "direction_correct": null
+          "direction_correct": false
         },
         {
           "generated_at": "2026-09-24T18:11:30Z",
@@ -1376,26 +1376,72 @@
             }
           },
           "direction_correct": null
+        },
+        {
+          "generated_at": "2026-09-26T12:09:34Z",
+          "coin": "BTC",
+          "inst_id": "BTC-USDT-SWAP",
+          "entry_ts": "2026-09-26T12:00:00Z",
+          "entry_price": 84102.6,
+          "side": "SELL",
+          "strength": "zayif",
+          "expected_move_pct": -0.219,
+          "take_profit": 83397.8647259,
+          "stop_loss": 84525.44116446,
+          "atr": 281.89410964,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-26T18:00:00Z",
+              "value": 84094.1015625,
+              "lower": 83569.09375,
+              "upper": 84752.0078125
+            },
+            "12": {
+              "ts": "2026-09-27T00:00:00Z",
+              "value": 84142.5,
+              "lower": 83200.109375,
+              "upper": 85119.859375
+            },
+            "24": {
+              "ts": "2026-09-27T12:00:00Z",
+              "value": 84091.2734375,
+              "lower": 82457.96875,
+              "upper": 85732.984375
+            },
+            "36": {
+              "ts": "2026-09-28T00:00:00Z",
+              "value": 83964.7890625,
+              "lower": 81766.84375,
+              "upper": 86036.78125
+            },
+            "48": {
+              "ts": "2026-09-28T12:00:00Z",
+              "value": 83918.0625,
+              "lower": 81164.09375,
+              "upper": 86278.6171875
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
         "model": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 37.04,
-            "direction_accuracy_pct": 51.85,
+            "count": 28,
+            "win_rate_pct": 32.14,
+            "direction_accuracy_pct": 46.43,
             "exit_distribution": {
               "SL": 16,
               "TP": 9,
-              "INSUFFICIENT_DATA": 2
+              "INSUFFICIENT_DATA": 3
             },
-            "avg_win_pct": 1.067,
-            "avg_loss_pct": -0.6707,
-            "total_return_pct": -0.7317,
-            "compound_return_pct": -0.8432,
+            "avg_win_pct": 1.1785,
+            "avg_loss_pct": -0.6438,
+            "total_return_pct": -1.625,
+            "compound_return_pct": -1.7266,
             "max_drawdown_pct": -4.8253,
             "max_drawdown_pct_additive": -4.9254,
-            "profit_factor": 0.9358,
+            "profit_factor": 0.8671,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -1703,10 +1749,10 @@
                 "side": "SELL",
                 "strength": "orta",
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 83897.6,
-                "hours_held": 12,
-                "pnl_pct": -0.15211445144472904,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
+                "hours_held": 18,
+                "pnl_pct": -0.4167413799477494,
                 "direction_correct": false
               },
               {
@@ -1715,11 +1761,23 @@
                 "side": "SELL",
                 "strength": "orta",
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 83897.6,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
+                "hours_held": 12,
+                "pnl_pct": -0.20067245870466416,
+                "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 83897.5,
+                "side": "SELL",
+                "strength": "orta",
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
                 "hours_held": 6,
-                "pnl_pct": 0.06338449858331283,
-                "direction_correct": true
+                "pnl_pct": -0.3646085997794928,
+                "direction_correct": false
               }
             ],
             "by_strength": {
@@ -1740,21 +1798,21 @@
                 "profit_factor": 0.3647
               },
               "orta": {
-                "count": 6,
-                "win_rate_pct": 66.67,
-                "direction_accuracy_pct": 66.67,
+                "count": 7,
+                "win_rate_pct": 42.86,
+                "direction_accuracy_pct": 42.86,
                 "exit_distribution": {
                   "SL": 1,
                   "TP": 3,
-                  "INSUFFICIENT_DATA": 2
+                  "INSUFFICIENT_DATA": 3
                 },
-                "avg_win_pct": 1.0301,
-                "avg_loss_pct": -0.27,
-                "total_return_pct": 3.5804,
-                "compound_return_pct": 3.6161,
-                "max_drawdown_pct": -0.3878,
-                "max_drawdown_pct_additive": -0.3878,
-                "profit_factor": 7.6312
+                "avg_win_pct": 1.3523,
+                "avg_loss_pct": -0.3425,
+                "total_return_pct": 2.6871,
+                "compound_return_pct": 2.693,
+                "max_drawdown_pct": -0.9789,
+                "max_drawdown_pct_additive": -0.982,
+                "profit_factor": 2.9616
               },
               "zayif": {
                 "count": 5,
@@ -1791,21 +1849,21 @@
                 "profit_factor": 0.0909
               },
               "SELL": {
-                "count": 15,
-                "win_rate_pct": 60.0,
-                "direction_accuracy_pct": 80.0,
+                "count": 16,
+                "win_rate_pct": 50.0,
+                "direction_accuracy_pct": 68.75,
                 "exit_distribution": {
                   "TP": 8,
                   "SL": 5,
-                  "INSUFFICIENT_DATA": 2
+                  "INSUFFICIENT_DATA": 3
                 },
-                "avg_win_pct": 1.1273,
-                "avg_loss_pct": -0.9393,
-                "total_return_pct": 4.5104,
-                "compound_return_pct": 4.5117,
+                "avg_win_pct": 1.2603,
+                "avg_loss_pct": -0.8082,
+                "total_return_pct": 3.6171,
+                "compound_return_pct": 3.5806,
                 "max_drawdown_pct": -2.2768,
                 "max_drawdown_pct_additive": -2.2898,
-                "profit_factor": 1.8004
+                "profit_factor": 1.5595
               }
             }
           },
@@ -1819,12 +1877,12 @@
               "INSUFFICIENT_DATA": 1
             },
             "avg_win_pct": 1.1066,
-            "avg_loss_pct": -0.6861,
-            "total_return_pct": 0.9963,
-            "compound_return_pct": 0.9586,
+            "avg_loss_pct": -0.739,
+            "total_return_pct": 0.7317,
+            "compound_return_pct": 0.6911,
             "max_drawdown_pct": -1.5741,
             "max_drawdown_pct_additive": -1.5796,
-            "profit_factor": 1.2904,
+            "profit_factor": 1.198,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -1928,10 +1986,10 @@
                 "side": "SELL",
                 "strength": "orta",
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 83897.6,
-                "hours_held": 12,
-                "pnl_pct": -0.15211445144472904,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
+                "hours_held": 18,
+                "pnl_pct": -0.4167413799477494,
                 "direction_correct": false
               }
             ],
@@ -1961,12 +2019,12 @@
                   "INSUFFICIENT_DATA": 1
                 },
                 "avg_win_pct": 1.3548,
-                "avg_loss_pct": -0.1521,
-                "total_return_pct": 1.2027,
-                "compound_return_pct": 1.2007,
-                "max_drawdown_pct": -0.1521,
-                "max_drawdown_pct_additive": -0.1521,
-                "profit_factor": 8.9066
+                "avg_loss_pct": -0.4167,
+                "total_return_pct": 0.9381,
+                "compound_return_pct": 0.9324,
+                "max_drawdown_pct": -0.4167,
+                "max_drawdown_pct_additive": -0.4167,
+                "profit_factor": 3.251
               },
               "zayif": {
                 "count": 2,
@@ -2012,33 +2070,33 @@
                   "INSUFFICIENT_DATA": 1
                 },
                 "avg_win_pct": 1.3007,
-                "avg_loss_pct": -0.8065,
-                "total_return_pct": 1.4828,
-                "compound_return_pct": 1.455,
+                "avg_loss_pct": -0.8947,
+                "total_return_pct": 1.2181,
+                "compound_return_pct": 1.1861,
                 "max_drawdown_pct": -1.1949,
                 "max_drawdown_pct_additive": -1.1949,
-                "profit_factor": 1.6129
+                "profit_factor": 1.4538
               }
             }
           }
         },
         "always_buy": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 7.41,
-            "direction_accuracy_pct": 18.52,
+            "count": 28,
+            "win_rate_pct": 17.86,
+            "direction_accuracy_pct": 25.0,
             "exit_distribution": {
               "SL": 23,
               "TP": 2,
-              "INSUFFICIENT_DATA": 2
+              "INSUFFICIENT_DATA": 3
             },
-            "avg_win_pct": 1.0016,
-            "avg_loss_pct": -0.7137,
-            "total_return_pct": -15.8403,
-            "compound_return_pct": -14.7254,
-            "max_drawdown_pct": -14.7254,
-            "max_drawdown_pct_additive": -15.8403,
-            "profit_factor": 0.1123,
+            "avg_win_pct": 0.477,
+            "avg_loss_pct": -0.7623,
+            "total_return_pct": -15.147,
+            "compound_return_pct": -14.1322,
+            "max_drawdown_pct": -14.4593,
+            "max_drawdown_pct_additive": -15.5291,
+            "profit_factor": 0.136,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -2346,10 +2404,10 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 83897.6,
-                "hours_held": 12,
-                "pnl_pct": -0.04788554855527097,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
+                "hours_held": 18,
+                "pnl_pct": 0.21674137994774942,
                 "direction_correct": true
               },
               {
@@ -2358,30 +2416,42 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 83897.6,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
+                "hours_held": 12,
+                "pnl_pct": 0.0006724587046641611,
+                "direction_correct": true
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 83897.5,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
                 "hours_held": 6,
-                "pnl_pct": -0.2633844985833128,
-                "direction_correct": false
+                "pnl_pct": 0.1646085997794928,
+                "direction_correct": true
               }
             ]
           },
           "single_position": {
             "count": 9,
-            "win_rate_pct": 22.22,
+            "win_rate_pct": 33.33,
             "direction_accuracy_pct": 44.44,
             "exit_distribution": {
               "SL": 6,
               "TP": 2,
               "INSUFFICIENT_DATA": 1
             },
-            "avg_win_pct": 1.0016,
-            "avg_loss_pct": -0.7846,
-            "total_return_pct": -3.4888,
-            "compound_return_pct": -3.4671,
+            "avg_win_pct": 0.7399,
+            "avg_loss_pct": -0.9073,
+            "total_return_pct": -3.2242,
+            "compound_return_pct": -3.2116,
             "max_drawdown_pct": -3.6482,
             "max_drawdown_pct_additive": -3.6978,
-            "profit_factor": 0.3647,
+            "profit_factor": 0.4078,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -2485,10 +2555,10 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 83897.6,
-                "hours_held": 12,
-                "pnl_pct": -0.04788554855527097,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
+                "hours_held": 18,
+                "pnl_pct": 0.21674137994774942,
                 "direction_correct": true
               }
             ]
@@ -2496,21 +2566,21 @@
         },
         "momentum": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 7.41,
-            "direction_accuracy_pct": 18.52,
+            "count": 28,
+            "win_rate_pct": 17.86,
+            "direction_accuracy_pct": 25.0,
             "exit_distribution": {
               "SL": 23,
               "TP": 2,
-              "INSUFFICIENT_DATA": 2
+              "INSUFFICIENT_DATA": 3
             },
-            "avg_win_pct": 1.0016,
-            "avg_loss_pct": -0.7137,
-            "total_return_pct": -15.8403,
-            "compound_return_pct": -14.7254,
-            "max_drawdown_pct": -14.7254,
-            "max_drawdown_pct_additive": -15.8403,
-            "profit_factor": 0.1123,
+            "avg_win_pct": 0.477,
+            "avg_loss_pct": -0.7623,
+            "total_return_pct": -15.147,
+            "compound_return_pct": -14.1322,
+            "max_drawdown_pct": -14.4593,
+            "max_drawdown_pct_additive": -15.5291,
+            "profit_factor": 0.136,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -2818,10 +2888,10 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 83897.6,
-                "hours_held": 12,
-                "pnl_pct": -0.04788554855527097,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
+                "hours_held": 18,
+                "pnl_pct": 0.21674137994774942,
                 "direction_correct": true
               },
               {
@@ -2830,30 +2900,42 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 83897.6,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
+                "hours_held": 12,
+                "pnl_pct": 0.0006724587046641611,
+                "direction_correct": true
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 83897.5,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
                 "hours_held": 6,
-                "pnl_pct": -0.2633844985833128,
-                "direction_correct": false
+                "pnl_pct": 0.1646085997794928,
+                "direction_correct": true
               }
             ]
           },
           "single_position": {
             "count": 9,
-            "win_rate_pct": 22.22,
+            "win_rate_pct": 33.33,
             "direction_accuracy_pct": 44.44,
             "exit_distribution": {
               "SL": 6,
               "TP": 2,
               "INSUFFICIENT_DATA": 1
             },
-            "avg_win_pct": 1.0016,
-            "avg_loss_pct": -0.7846,
-            "total_return_pct": -3.4888,
-            "compound_return_pct": -3.4671,
+            "avg_win_pct": 0.7399,
+            "avg_loss_pct": -0.9073,
+            "total_return_pct": -3.2242,
+            "compound_return_pct": -3.2116,
             "max_drawdown_pct": -3.6482,
             "max_drawdown_pct_additive": -3.6978,
-            "profit_factor": 0.3647,
+            "profit_factor": 0.4078,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -2957,10 +3039,10 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 83897.6,
-                "hours_held": 12,
-                "pnl_pct": -0.04788554855527097,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
+                "hours_held": 18,
+                "pnl_pct": 0.21674137994774942,
                 "direction_correct": true
               }
             ]
@@ -2968,21 +3050,21 @@
         },
         "random": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 33.33,
-            "direction_accuracy_pct": 48.15,
+            "count": 28,
+            "win_rate_pct": 39.29,
+            "direction_accuracy_pct": 50.0,
             "exit_distribution": {
               "SL": 16,
               "TP": 9,
-              "INSUFFICIENT_DATA": 2
+              "INSUFFICIENT_DATA": 3
             },
-            "avg_win_pct": 1.0835,
-            "avg_loss_pct": -0.6708,
-            "total_return_pct": -2.3228,
-            "compound_return_pct": -2.4044,
+            "avg_win_pct": 0.9063,
+            "avg_loss_pct": -0.7134,
+            "total_return_pct": -2.1587,
+            "compound_return_pct": -2.2446,
             "max_drawdown_pct": -6.6666,
             "max_drawdown_pct_additive": -6.8637,
-            "profit_factor": 0.8076,
+            "profit_factor": 0.822,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -3290,10 +3372,10 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 83897.6,
-                "hours_held": 12,
-                "pnl_pct": -0.04788554855527097,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
+                "hours_held": 18,
+                "pnl_pct": 0.21674137994774942,
                 "direction_correct": true
               },
               {
@@ -3302,30 +3384,42 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 83897.6,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
+                "hours_held": 12,
+                "pnl_pct": 0.0006724587046641611,
+                "direction_correct": true
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 83897.5,
+                "side": "SELL",
+                "strength": null,
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
                 "hours_held": 6,
-                "pnl_pct": -0.2633844985833128,
+                "pnl_pct": -0.3646085997794928,
                 "direction_correct": false
               }
             ]
           },
           "single_position": {
             "count": 9,
-            "win_rate_pct": 33.33,
+            "win_rate_pct": 44.44,
             "direction_accuracy_pct": 55.56,
             "exit_distribution": {
               "SL": 5,
               "TP": 3,
               "INSUFFICIENT_DATA": 1
             },
-            "avg_win_pct": 1.0918,
-            "avg_loss_pct": -0.7614,
-            "total_return_pct": -1.2932,
-            "compound_return_pct": -1.3279,
+            "avg_win_pct": 0.873,
+            "avg_loss_pct": -0.9041,
+            "total_return_pct": -1.0286,
+            "compound_return_pct": -1.0667,
             "max_drawdown_pct": -1.5741,
             "max_drawdown_pct_additive": -1.5796,
-            "profit_factor": 0.7169,
+            "profit_factor": 0.7725,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -3429,10 +3523,10 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 83897.6,
-                "hours_held": 12,
-                "pnl_pct": -0.04788554855527097,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 84119.5,
+                "hours_held": 18,
+                "pnl_pct": 0.21674137994774942,
                 "direction_correct": true
               }
             ]
@@ -3442,35 +3536,35 @@
     },
     "ETH": {
       "inst_id": "ETH-USDT-SWAP",
-      "record_count": 29,
-      "sample_size": 27,
+      "record_count": 30,
+      "sample_size": 28,
       "direction_accuracy_pct": {
-        "6": 60.71,
-        "12": 51.85,
-        "24": 32.0,
-        "36": 60.87,
-        "48": 66.67
+        "6": 58.62,
+        "12": 53.57,
+        "24": 30.77,
+        "36": 58.33,
+        "48": 68.18
       },
       "in_confidence_band_pct": {
-        "6": 67.86,
-        "12": 92.59,
-        "24": 84.0,
+        "6": 68.97,
+        "12": 92.86,
+        "24": 84.62,
         "36": 100.0,
-        "48": 66.67
+        "48": 68.18
       },
       "mae": {
-        "6": 22.868858,
-        "12": 23.250745,
-        "24": 36.320373,
-        "36": 30.597399,
-        "48": 48.183631
+        "6": 22.2568,
+        "12": 22.402259,
+        "24": 36.256339,
+        "36": 30.007727,
+        "48": 47.912446
       },
       "mape_pct": {
-        "6": 0.882,
-        "12": 0.891,
-        "24": 1.388,
-        "36": 1.171,
-        "48": 1.906
+        "6": 0.858,
+        "12": 0.859,
+        "24": 1.384,
+        "36": 1.148,
+        "48": 1.891
       },
       "predictions": [
         {
@@ -4483,7 +4577,7 @@
               "upper": 2769.52124023
             }
           },
-          "direction_correct": null
+          "direction_correct": true
         },
         {
           "generated_at": "2026-09-24T18:11:30Z",
@@ -4806,26 +4900,72 @@
             }
           },
           "direction_correct": null
+        },
+        {
+          "generated_at": "2026-09-26T12:09:34Z",
+          "coin": "ETH",
+          "inst_id": "ETH-USDT-SWAP",
+          "entry_ts": "2026-09-26T12:00:00Z",
+          "entry_price": 2688.5,
+          "side": "BUY",
+          "strength": "zayif",
+          "expected_move_pct": 0.17,
+          "take_profit": 2717.37454014,
+          "stop_loss": 2671.17527591,
+          "atr": 11.54981606,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-26T18:00:00Z",
+              "value": 2688.203125,
+              "lower": 2660.01220703,
+              "upper": 2716.48291016
+            },
+            "12": {
+              "ts": "2026-09-27T00:00:00Z",
+              "value": 2689.57641602,
+              "lower": 2642.76977539,
+              "upper": 2735.21630859
+            },
+            "24": {
+              "ts": "2026-09-27T12:00:00Z",
+              "value": 2691.83276367,
+              "lower": 2610.69091797,
+              "upper": 2769.85424805
+            },
+            "36": {
+              "ts": "2026-09-28T00:00:00Z",
+              "value": 2692.75561523,
+              "lower": 2578.53857422,
+              "upper": 2801.80810547
+            },
+            "48": {
+              "ts": "2026-09-28T12:00:00Z",
+              "value": 2693.06982422,
+              "lower": 2551.44091797,
+              "upper": 2819.49023438
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
         "model": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 62.96,
-            "direction_accuracy_pct": 70.37,
+            "count": 28,
+            "win_rate_pct": 60.71,
+            "direction_accuracy_pct": 67.86,
             "exit_distribution": {
               "TP": 16,
               "SL": 8,
-              "INSUFFICIENT_DATA": 3
+              "INSUFFICIENT_DATA": 4
             },
-            "avg_win_pct": 1.2404,
-            "avg_loss_pct": -1.0102,
-            "total_return_pct": 10.9848,
-            "compound_return_pct": 11.3761,
+            "avg_win_pct": 1.2376,
+            "avg_loss_pct": -0.9212,
+            "total_return_pct": 10.9063,
+            "compound_return_pct": 11.2891,
             "max_drawdown_pct": -3.7018,
             "max_drawdown_pct_additive": -3.7484,
-            "profit_factor": 2.0874,
+            "profit_factor": 2.0763,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -5097,10 +5237,10 @@
                 "side": "BUY",
                 "strength": "zayif",
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
-                "hours_held": 30,
-                "pnl_pct": -0.4102984952749881,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 36,
+                "pnl_pct": -0.2982050197091394,
                 "direction_correct": false
               },
               {
@@ -5133,11 +5273,11 @@
                 "side": "SELL",
                 "strength": "zayif",
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
-                "hours_held": 12,
-                "pnl_pct": -0.028936314287526854,
-                "direction_correct": true
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 18,
+                "pnl_pct": -0.14129879117322527,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-26T00:00:00Z",
@@ -5145,10 +5285,22 @@
                 "side": "SELL",
                 "strength": "zayif",
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 12,
+                "pnl_pct": -0.03124440199354407,
+                "direction_correct": true
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 2685.24,
+                "side": "BUY",
+                "strength": "zayif",
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
                 "hours_held": 6,
-                "pnl_pct": 0.0809944661034861,
+                "pnl_pct": 0.03406622871699974,
                 "direction_correct": true
               }
             ],
@@ -5185,76 +5337,76 @@
                 "profit_factor": 3.8577
               },
               "zayif": {
-                "count": 18,
-                "win_rate_pct": 50.0,
-                "direction_accuracy_pct": 66.67,
+                "count": 19,
+                "win_rate_pct": 47.37,
+                "direction_accuracy_pct": 63.16,
                 "exit_distribution": {
                   "SL": 7,
                   "TP": 8,
-                  "INSUFFICIENT_DATA": 3
+                  "INSUFFICIENT_DATA": 4
                 },
-                "avg_win_pct": 1.3876,
-                "avg_loss_pct": -0.9612,
-                "total_return_pct": 3.8369,
-                "compound_return_pct": 3.7567,
+                "avg_win_pct": 1.3824,
+                "avg_loss_pct": -0.8683,
+                "total_return_pct": 3.7584,
+                "compound_return_pct": 3.6757,
                 "max_drawdown_pct": -3.7018,
                 "max_drawdown_pct_additive": -3.7484,
-                "profit_factor": 1.4435
+                "profit_factor": 1.4329
               }
             },
             "by_side": {
               "BUY": {
-                "count": 6,
-                "win_rate_pct": 33.33,
-                "direction_accuracy_pct": 33.33,
+                "count": 7,
+                "win_rate_pct": 42.86,
+                "direction_accuracy_pct": 42.86,
                 "exit_distribution": {
                   "SL": 3,
                   "TP": 2,
-                  "INSUFFICIENT_DATA": 1
+                  "INSUFFICIENT_DATA": 2
                 },
-                "avg_win_pct": 1.7379,
-                "avg_loss_pct": -1.0151,
-                "total_return_pct": -0.5846,
-                "compound_return_pct": -0.6359,
+                "avg_win_pct": 1.1699,
+                "avg_loss_pct": -0.9871,
+                "total_return_pct": -0.4385,
+                "compound_return_pct": -0.4901,
                 "max_drawdown_pct": -3.6058,
                 "max_drawdown_pct_additive": -3.6501,
-                "profit_factor": 0.856
+                "profit_factor": 0.8889
               },
               "SELL": {
                 "count": 21,
-                "win_rate_pct": 71.43,
-                "direction_accuracy_pct": 80.95,
+                "win_rate_pct": 66.67,
+                "direction_accuracy_pct": 76.19,
                 "exit_distribution": {
                   "TP": 14,
                   "SL": 5,
                   "INSUFFICIENT_DATA": 2
                 },
-                "avg_win_pct": 1.1741,
-                "avg_loss_pct": -1.0069,
-                "total_return_pct": 11.5694,
-                "compound_return_pct": 12.0888,
+                "avg_win_pct": 1.2521,
+                "avg_loss_pct": -0.8836,
+                "total_return_pct": 11.3448,
+                "compound_return_pct": 11.8373,
                 "max_drawdown_pct": -1.7172,
                 "max_drawdown_pct_additive": -1.7246,
-                "profit_factor": 2.915
+                "profit_factor": 2.8342
               }
             }
           },
           "single_position": {
             "count": 10,
             "win_rate_pct": 50.0,
-            "direction_accuracy_pct": 60.0,
+            "direction_accuracy_pct": 50.0,
             "exit_distribution": {
               "TP": 5,
               "SL": 4,
               "INSUFFICIENT_DATA": 1
             },
             "avg_win_pct": 1.5793,
-            "avg_loss_pct": -1.012,
-            "total_return_pct": 2.8365,
-            "compound_return_pct": 2.7768,
+            "avg_loss_pct": -1.0345,
+            "total_return_pct": 2.7242,
+            "compound_return_pct": 2.6613,
             "max_drawdown_pct": -2.6422,
             "max_drawdown_pct_additive": -2.6597,
-            "profit_factor": 1.5606,
+            "profit_factor": 1.5267,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -5370,11 +5522,11 @@
                 "side": "SELL",
                 "strength": "zayif",
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
-                "hours_held": 12,
-                "pnl_pct": -0.028936314287526854,
-                "direction_correct": true
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 18,
+                "pnl_pct": -0.14129879117322527,
+                "direction_correct": false
               }
             ],
             "by_strength": {
@@ -5411,19 +5563,19 @@
               "zayif": {
                 "count": 7,
                 "win_rate_pct": 42.86,
-                "direction_accuracy_pct": 71.43,
+                "direction_accuracy_pct": 57.14,
                 "exit_distribution": {
                   "SL": 3,
                   "TP": 3,
                   "INSUFFICIENT_DATA": 1
                 },
                 "avg_win_pct": 1.6313,
-                "avg_loss_pct": -0.9024,
-                "total_return_pct": 1.2844,
-                "compound_return_pct": 1.2287,
+                "avg_loss_pct": -0.9305,
+                "total_return_pct": 1.1721,
+                "compound_return_pct": 1.1149,
                 "max_drawdown_pct": -1.5297,
                 "max_drawdown_pct_additive": -1.5297,
-                "profit_factor": 1.3558
+                "profit_factor": 1.3149
               }
             },
             "by_side": {
@@ -5446,40 +5598,40 @@
               "SELL": {
                 "count": 8,
                 "win_rate_pct": 50.0,
-                "direction_accuracy_pct": 62.5,
+                "direction_accuracy_pct": 50.0,
                 "exit_distribution": {
                   "TP": 4,
                   "SL": 3,
                   "INSUFFICIENT_DATA": 1
                 },
                 "avg_win_pct": 1.5074,
-                "avg_loss_pct": -0.9627,
-                "total_return_pct": 2.1787,
-                "compound_return_pct": 2.128,
+                "avg_loss_pct": -0.9908,
+                "total_return_pct": 2.0664,
+                "compound_return_pct": 2.0132,
                 "max_drawdown_pct": -2.9581,
                 "max_drawdown_pct_additive": -2.9803,
-                "profit_factor": 1.5658
+                "profit_factor": 1.5214
               }
             }
           }
         },
         "always_buy": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 18.52,
-            "direction_accuracy_pct": 22.22,
+            "count": 28,
+            "win_rate_pct": 21.43,
+            "direction_accuracy_pct": 28.57,
             "exit_distribution": {
               "SL": 19,
               "TP": 5,
-              "INSUFFICIENT_DATA": 3
+              "INSUFFICIENT_DATA": 4
             },
-            "avg_win_pct": 1.6199,
-            "avg_loss_pct": -0.9104,
-            "total_return_pct": -11.9287,
-            "compound_return_pct": -11.3994,
+            "avg_win_pct": 1.3556,
+            "avg_loss_pct": -0.8951,
+            "total_return_pct": -11.5579,
+            "compound_return_pct": -11.0697,
             "max_drawdown_pct": -14.5457,
             "max_drawdown_pct_additive": -15.6089,
-            "profit_factor": 0.4044,
+            "profit_factor": 0.4131,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -5751,10 +5903,10 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
-                "hours_held": 30,
-                "pnl_pct": -0.4102984952749881,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 36,
+                "pnl_pct": -0.2982050197091394,
                 "direction_correct": false
               },
               {
@@ -5787,11 +5939,11 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
-                "hours_held": 12,
-                "pnl_pct": -0.17106368571247316,
-                "direction_correct": false
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 18,
+                "pnl_pct": -0.058701208826774744,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-26T00:00:00Z",
@@ -5799,30 +5951,42 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
-                "hours_held": 6,
-                "pnl_pct": -0.2809944661034861,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 12,
+                "pnl_pct": -0.16875559800645595,
                 "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 2685.24,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 6,
+                "pnl_pct": 0.03406622871699974,
+                "direction_correct": true
               }
             ]
           },
           "single_position": {
             "count": 10,
             "win_rate_pct": 30.0,
-            "direction_accuracy_pct": 40.0,
+            "direction_accuracy_pct": 50.0,
             "exit_distribution": {
               "SL": 6,
               "TP": 3,
               "INSUFFICIENT_DATA": 1
             },
             "avg_win_pct": 1.762,
-            "avg_loss_pct": -1.0062,
-            "total_return_pct": -1.7573,
-            "compound_return_pct": -1.8309,
+            "avg_loss_pct": -0.9902,
+            "total_return_pct": -1.645,
+            "compound_return_pct": -1.7204,
             "max_drawdown_pct": -4.7397,
             "max_drawdown_pct_additive": -4.8255,
-            "profit_factor": 0.7505,
+            "profit_factor": 0.7627,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -5938,32 +6102,32 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
-                "hours_held": 12,
-                "pnl_pct": -0.17106368571247316,
-                "direction_correct": false
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 18,
+                "pnl_pct": -0.058701208826774744,
+                "direction_correct": true
               }
             ]
           }
         },
         "momentum": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 18.52,
-            "direction_accuracy_pct": 22.22,
+            "count": 28,
+            "win_rate_pct": 21.43,
+            "direction_accuracy_pct": 28.57,
             "exit_distribution": {
               "SL": 19,
               "TP": 5,
-              "INSUFFICIENT_DATA": 3
+              "INSUFFICIENT_DATA": 4
             },
-            "avg_win_pct": 1.6199,
-            "avg_loss_pct": -0.9104,
-            "total_return_pct": -11.9287,
-            "compound_return_pct": -11.3994,
+            "avg_win_pct": 1.3556,
+            "avg_loss_pct": -0.8951,
+            "total_return_pct": -11.5579,
+            "compound_return_pct": -11.0697,
             "max_drawdown_pct": -14.5457,
             "max_drawdown_pct_additive": -15.6089,
-            "profit_factor": 0.4044,
+            "profit_factor": 0.4131,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -6235,10 +6399,10 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
-                "hours_held": 30,
-                "pnl_pct": -0.4102984952749881,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 36,
+                "pnl_pct": -0.2982050197091394,
                 "direction_correct": false
               },
               {
@@ -6271,11 +6435,11 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
-                "hours_held": 12,
-                "pnl_pct": -0.17106368571247316,
-                "direction_correct": false
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 18,
+                "pnl_pct": -0.058701208826774744,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-26T00:00:00Z",
@@ -6283,30 +6447,42 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
-                "hours_held": 6,
-                "pnl_pct": -0.2809944661034861,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 12,
+                "pnl_pct": -0.16875559800645595,
                 "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 2685.24,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 6,
+                "pnl_pct": 0.03406622871699974,
+                "direction_correct": true
               }
             ]
           },
           "single_position": {
             "count": 10,
             "win_rate_pct": 30.0,
-            "direction_accuracy_pct": 40.0,
+            "direction_accuracy_pct": 50.0,
             "exit_distribution": {
               "SL": 6,
               "TP": 3,
               "INSUFFICIENT_DATA": 1
             },
             "avg_win_pct": 1.762,
-            "avg_loss_pct": -1.0062,
-            "total_return_pct": -1.7573,
-            "compound_return_pct": -1.8309,
+            "avg_loss_pct": -0.9902,
+            "total_return_pct": -1.645,
+            "compound_return_pct": -1.7204,
             "max_drawdown_pct": -4.7397,
             "max_drawdown_pct_additive": -4.8255,
-            "profit_factor": 0.7505,
+            "profit_factor": 0.7627,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -6422,44 +6598,44 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
-                "hours_held": 12,
-                "pnl_pct": -0.17106368571247316,
-                "direction_correct": false
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 18,
+                "pnl_pct": -0.058701208826774744,
+                "direction_correct": true
               }
             ]
           }
         },
         "random": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 37.04,
-            "direction_accuracy_pct": 59.26,
+            "count": 28,
+            "win_rate_pct": 32.14,
+            "direction_accuracy_pct": 50.0,
             "exit_distribution": {
+              "SL": 16,
               "TP": 9,
-              "SL": 15,
               "INSUFFICIENT_DATA": 3
             },
-            "avg_win_pct": 1.3285,
-            "avg_loss_pct": -0.9354,
-            "total_return_pct": -2.617,
-            "compound_return_pct": -2.7689,
-            "max_drawdown_pct": -9.5292,
-            "max_drawdown_pct_additive": -9.9102,
-            "profit_factor": 0.8354,
+            "avg_win_pct": 1.4987,
+            "avg_loss_pct": -0.9019,
+            "total_return_pct": -3.6476,
+            "compound_return_pct": -3.7775,
+            "max_drawdown_pct": -7.0022,
+            "max_drawdown_pct_additive": -7.1528,
+            "profit_factor": 0.7871,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
                 "entry_price": 2522.26,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "TP",
+                "exit_reason": "SL",
                 "exit_ts": "2026-09-13T08:00:00Z",
-                "exit_price": 2491.5390894,
+                "exit_price": 2503.82745364,
                 "hours_held": 12,
-                "pnl_pct": 1.1179914283222199,
-                "direction_correct": false
+                "pnl_pct": -0.8307948569933247,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T00:00:00Z",
@@ -6476,38 +6652,38 @@
               {
                 "entry_ts": "2026-09-13T06:00:00Z",
                 "entry_price": 2522.54,
-                "side": "BUY",
-                "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-13T08:00:00Z",
-                "exit_price": 2510.29914809,
-                "hours_held": 2,
-                "pnl_pct": -0.5852589814234838,
-                "direction_correct": false
-              },
-              {
-                "entry_ts": "2026-09-13T07:00:00Z",
-                "entry_price": 2515.82,
                 "side": "SELL",
                 "strength": null,
                 "exit_reason": "TP",
                 "exit_ts": "2026-09-13T08:00:00Z",
-                "exit_price": 2494.02531423,
-                "hours_held": 1,
-                "pnl_pct": 0.7663054501116865,
+                "exit_price": 2502.13858015,
+                "hours_held": 2,
+                "pnl_pct": 0.7087649690391395,
                 "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T07:00:00Z",
-                "entry_price": 2515.39,
+                "entry_price": 2515.82,
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "SL",
                 "exit_ts": "2026-09-13T08:00:00Z",
-                "exit_price": 2501.94719524,
+                "exit_price": 2502.74318854,
                 "hours_held": 1,
-                "pnl_pct": -0.634422286802442,
+                "pnl_pct": -0.6197832700670156,
                 "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-13T07:00:00Z",
+                "entry_price": 2515.39,
+                "side": "SELL",
+                "strength": null,
+                "exit_reason": "TP",
+                "exit_ts": "2026-09-13T08:00:00Z",
+                "exit_price": 2492.9853254,
+                "hours_held": 1,
+                "pnl_pct": 0.7907038113374033,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T12:00:00Z",
@@ -6536,74 +6712,74 @@
               {
                 "entry_ts": "2026-09-13T16:00:00Z",
                 "entry_price": 2499.16,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "TP",
-                "exit_ts": "2026-09-14T00:00:00Z",
-                "exit_price": 2464.99957503,
-                "hours_held": 8,
-                "pnl_pct": 1.266876269426521,
-                "direction_correct": true
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-13T22:00:00Z",
+                "exit_price": 2478.66374501,
+                "hours_held": 6,
+                "pnl_pct": -0.9201257616559235,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-13T16:00:00Z",
                 "entry_price": 2504.09,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-13T22:00:00Z",
-                "exit_price": 2483.59374501,
-                "hours_held": 6,
-                "pnl_pct": -0.9185111152155144,
-                "direction_correct": false
+                "exit_reason": "TP",
+                "exit_ts": "2026-09-13T23:00:00Z",
+                "exit_price": 2469.92957503,
+                "hours_held": 7,
+                "pnl_pct": 1.2641851920258393,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T17:00:00Z",
                 "entry_price": 2508.74,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "TP",
+                "exit_reason": "SL",
                 "exit_ts": "2026-09-13T22:00:00Z",
-                "exit_price": 2475.38031967,
+                "exit_price": 2488.7241918,
                 "hours_held": 5,
-                "pnl_pct": 1.229738447387941,
-                "direction_correct": true
+                "pnl_pct": -0.8978430684327537,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-13T18:00:00Z",
                 "entry_price": 2504.69,
-                "side": "BUY",
-                "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-13T22:00:00Z",
-                "exit_price": 2485.79256586,
-                "hours_held": 4,
-                "pnl_pct": -0.8544819576474456,
-                "direction_correct": false
-              },
-              {
-                "entry_ts": "2026-09-13T19:00:00Z",
-                "entry_price": 2506.25,
                 "side": "SELL",
                 "strength": null,
                 "exit_reason": "TP",
                 "exit_ts": "2026-09-13T22:00:00Z",
-                "exit_price": 2474.55001687,
-                "hours_held": 3,
-                "pnl_pct": 1.1648372319202,
+                "exit_price": 2473.19427643,
+                "hours_held": 4,
+                "pnl_pct": 1.1574699294124153,
                 "direction_correct": true
+              },
+              {
+                "entry_ts": "2026-09-13T19:00:00Z",
+                "entry_price": 2506.25,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-13T22:00:00Z",
+                "exit_price": 2487.23001012,
+                "hours_held": 3,
+                "pnl_pct": -0.8589023391521274,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-22T14:00:00Z",
                 "entry_price": 2755.07,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-23T11:00:00Z",
-                "exit_price": 2722.26258253,
-                "hours_held": 21,
-                "pnl_pct": -1.2908015939703879,
-                "direction_correct": false
+                "exit_reason": "TP",
+                "exit_ts": "2026-09-23T14:00:00Z",
+                "exit_price": 2700.39097088,
+                "hours_held": 24,
+                "pnl_pct": 1.8846693232839797,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-22T18:00:00Z",
@@ -6620,14 +6796,14 @@
               {
                 "entry_ts": "2026-09-23T00:00:00Z",
                 "entry_price": 2751.61,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
                 "exit_reason": "SL",
-                "exit_ts": "2026-09-23T03:00:00Z",
-                "exit_price": 2782.03398846,
-                "hours_held": 3,
+                "exit_ts": "2026-09-23T11:00:00Z",
+                "exit_price": 2721.18601154,
+                "hours_held": 11,
                 "pnl_pct": -1.2056795278037296,
-                "direction_correct": true
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-23T06:00:00Z",
@@ -6668,26 +6844,26 @@
               {
                 "entry_ts": "2026-09-24T00:00:00Z",
                 "entry_price": 2685.07,
-                "side": "BUY",
-                "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-24T08:00:00Z",
-                "exit_price": 2654.90894625,
-                "hours_held": 8,
-                "pnl_pct": -1.223287428446931,
-                "direction_correct": true
-              },
-              {
-                "entry_ts": "2026-09-24T06:00:00Z",
-                "entry_price": 2687.35,
                 "side": "SELL",
                 "strength": null,
                 "exit_reason": "TP",
                 "exit_ts": "2026-09-24T09:00:00Z",
-                "exit_price": 2637.67014763,
-                "hours_held": 3,
-                "pnl_pct": 1.7486558273019845,
-                "direction_correct": true
+                "exit_price": 2634.80157708,
+                "hours_held": 9,
+                "pnl_pct": 1.7721457140782124,
+                "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-24T06:00:00Z",
+                "entry_price": 2687.35,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-24T08:00:00Z",
+                "exit_price": 2657.54208857,
+                "hours_held": 2,
+                "pnl_pct": -1.209193496381191,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-24T12:00:00Z",
@@ -6716,14 +6892,14 @@
               {
                 "entry_ts": "2026-09-25T00:00:00Z",
                 "entry_price": 2694.18,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
-                "hours_held": 30,
-                "pnl_pct": -0.4102984952749881,
-                "direction_correct": false
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-25T11:00:00Z",
+                "exit_price": 2726.46784394,
+                "hours_held": 11,
+                "pnl_pct": -1.298429352715861,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-25T06:00:00Z",
@@ -6755,54 +6931,66 @@
                 "side": "SELL",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
-                "hours_held": 12,
-                "pnl_pct": -0.028936314287526854,
-                "direction_correct": true
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 18,
+                "pnl_pct": -0.14129879117322527,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-26T00:00:00Z",
                 "entry_price": 2690.69,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 12,
+                "pnl_pct": -0.16875559800645595,
+                "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 2685.24,
                 "side": "SELL",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
                 "hours_held": 6,
-                "pnl_pct": 0.0809944661034861,
-                "direction_correct": true
+                "pnl_pct": -0.23406622871699975,
+                "direction_correct": false
               }
             ]
           },
           "single_position": {
-            "count": 10,
-            "win_rate_pct": 50.0,
-            "direction_accuracy_pct": 70.0,
+            "count": 9,
+            "win_rate_pct": 44.44,
+            "direction_accuracy_pct": 77.78,
             "exit_distribution": {
-              "TP": 5,
               "SL": 4,
+              "TP": 4,
               "INSUFFICIENT_DATA": 1
             },
-            "avg_win_pct": 1.659,
-            "avg_loss_pct": -0.9597,
-            "total_return_pct": 3.4965,
-            "compound_return_pct": 3.4528,
-            "max_drawdown_pct": -3.8767,
-            "max_drawdown_pct_additive": -3.9277,
-            "profit_factor": 1.7287,
+            "avg_win_pct": 1.9487,
+            "avg_loss_pct": -0.8369,
+            "total_return_pct": 3.6102,
+            "compound_return_pct": 3.5748,
+            "max_drawdown_pct": -2.5704,
+            "max_drawdown_pct_additive": -2.5927,
+            "profit_factor": 1.8627,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
                 "entry_price": 2522.26,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "TP",
+                "exit_reason": "SL",
                 "exit_ts": "2026-09-13T08:00:00Z",
-                "exit_price": 2491.5390894,
+                "exit_price": 2503.82745364,
                 "hours_held": 12,
-                "pnl_pct": 1.1179914283222199,
-                "direction_correct": false
+                "pnl_pct": -0.8307948569933247,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T12:00:00Z",
@@ -6819,38 +7007,26 @@
               {
                 "entry_ts": "2026-09-13T16:00:00Z",
                 "entry_price": 2499.16,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "TP",
-                "exit_ts": "2026-09-14T00:00:00Z",
-                "exit_price": 2464.99957503,
-                "hours_held": 8,
-                "pnl_pct": 1.266876269426521,
-                "direction_correct": true
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-13T22:00:00Z",
+                "exit_price": 2478.66374501,
+                "hours_held": 6,
+                "pnl_pct": -0.9201257616559235,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-22T14:00:00Z",
                 "entry_price": 2755.07,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-23T11:00:00Z",
-                "exit_price": 2722.26258253,
-                "hours_held": 21,
-                "pnl_pct": -1.2908015939703879,
-                "direction_correct": false
-              },
-              {
-                "entry_ts": "2026-09-23T12:00:00Z",
-                "entry_price": 2725.12,
-                "side": "BUY",
-                "strength": null,
-                "exit_reason": "SL",
+                "exit_reason": "TP",
                 "exit_ts": "2026-09-23T14:00:00Z",
-                "exit_price": 2695.51650536,
-                "hours_held": 2,
-                "pnl_pct": -1.1863189376981589,
-                "direction_correct": false
+                "exit_price": 2700.39097088,
+                "hours_held": 24,
+                "pnl_pct": 1.8846693232839797,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-23T18:00:00Z",
@@ -6906,11 +7082,11 @@
                 "side": "SELL",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 2685.82,
-                "hours_held": 12,
-                "pnl_pct": -0.028936314287526854,
-                "direction_correct": true
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 2688.84,
+                "hours_held": 18,
+                "pnl_pct": -0.14129879117322527,
+                "direction_correct": false
               }
             ]
           }
@@ -6919,35 +7095,35 @@
     },
     "XRP": {
       "inst_id": "XRP-USDT-SWAP",
-      "record_count": 29,
-      "sample_size": 27,
+      "record_count": 30,
+      "sample_size": 28,
       "direction_accuracy_pct": {
-        "6": 57.14,
-        "12": 55.56,
-        "24": 68.0,
-        "36": 65.22,
-        "48": 66.67
+        "6": 55.17,
+        "12": 53.57,
+        "24": 69.23,
+        "36": 62.5,
+        "48": 63.64
       },
       "in_confidence_band_pct": {
-        "6": 64.29,
-        "12": 62.96,
-        "24": 52.0,
-        "36": 56.52,
-        "48": 76.19
+        "6": 65.52,
+        "12": 64.29,
+        "24": 53.85,
+        "36": 58.33,
+        "48": 77.27
       },
       "mae": {
-        "6": 0.021901,
-        "12": 0.030496,
-        "24": 0.05421,
-        "36": 0.057416,
-        "48": 0.047002
+        "6": 0.0214,
+        "12": 0.030339,
+        "24": 0.053455,
+        "36": 0.055033,
+        "48": 0.048396
       },
       "mape_pct": {
-        "6": 1.46,
-        "12": 2.055,
-        "24": 3.674,
-        "36": 3.887,
-        "48": 3.244
+        "6": 1.426,
+        "12": 2.042,
+        "24": 3.619,
+        "36": 3.726,
+        "48": 3.325
       },
       "predictions": [
         {
@@ -7960,7 +8136,7 @@
               "upper": 1.5920341
             }
           },
-          "direction_correct": null
+          "direction_correct": false
         },
         {
           "generated_at": "2026-09-24T18:11:30Z",
@@ -8283,26 +8459,72 @@
             }
           },
           "direction_correct": null
+        },
+        {
+          "generated_at": "2026-09-26T12:09:34Z",
+          "coin": "XRP",
+          "inst_id": "XRP-USDT-SWAP",
+          "entry_ts": "2026-09-26T12:00:00Z",
+          "entry_price": 1.5468,
+          "side": "SELL",
+          "strength": "guclu",
+          "expected_move_pct": -3.418,
+          "take_profit": 1.51154281,
+          "stop_loss": 1.56795432,
+          "atr": 0.01410288,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-26T18:00:00Z",
+              "value": 1.54397583,
+              "lower": 1.50718629,
+              "upper": 1.58197153
+            },
+            "12": {
+              "ts": "2026-09-27T00:00:00Z",
+              "value": 1.54156828,
+              "lower": 1.47979558,
+              "upper": 1.59574842
+            },
+            "24": {
+              "ts": "2026-09-27T12:00:00Z",
+              "value": 1.52627003,
+              "lower": 1.42389715,
+              "upper": 1.60786092
+            },
+            "36": {
+              "ts": "2026-09-28T00:00:00Z",
+              "value": 1.50580668,
+              "lower": 1.37140512,
+              "upper": 1.61221397
+            },
+            "48": {
+              "ts": "2026-09-28T12:00:00Z",
+              "value": 1.49393618,
+              "lower": 1.33579659,
+              "upper": 1.61723125
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
         "model": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 29.63,
-            "direction_accuracy_pct": 62.96,
+            "count": 28,
+            "win_rate_pct": 32.14,
+            "direction_accuracy_pct": 67.86,
             "exit_distribution": {
               "TP": 6,
               "SL": 19,
-              "INSUFFICIENT_DATA": 2
+              "INSUFFICIENT_DATA": 3
             },
-            "avg_win_pct": 2.1104,
+            "avg_win_pct": 1.9431,
             "avg_loss_pct": -1.6555,
-            "total_return_pct": -14.5721,
-            "compound_return_pct": -14.0567,
+            "total_return_pct": -13.9675,
+            "compound_return_pct": -13.5397,
             "max_drawdown_pct": -20.0632,
             "max_drawdown_pct_additive": -21.8915,
-            "profit_factor": 0.5367,
+            "profit_factor": 0.556,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -8578,7 +8800,7 @@
                 "exit_price": 1.57779158,
                 "hours_held": 11,
                 "pnl_pct": -2.0706314224778692,
-                "direction_correct": false
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-25T06:00:00Z",
@@ -8610,10 +8832,10 @@
                 "side": "SELL",
                 "strength": "guclu",
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 1.5509,
-                "hours_held": 12,
-                "pnl_pct": 0.8642401021711439,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 1.5471,
+                "hours_held": 18,
+                "pnl_pct": 1.1068965517241467,
                 "direction_correct": true
               },
               {
@@ -8622,30 +8844,42 @@
                 "side": "SELL",
                 "strength": "guclu",
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 1.5509,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 1.5471,
+                "hours_held": 12,
+                "pnl_pct": 1.1068965517241467,
+                "direction_correct": true
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 1.5505,
+                "side": "SELL",
+                "strength": "guclu",
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 1.5471,
                 "hours_held": 6,
-                "pnl_pct": 0.8642401021711439,
+                "pnl_pct": 0.11928410190261657,
                 "direction_correct": true
               }
             ],
             "by_strength": {
               "guclu": {
-                "count": 12,
-                "win_rate_pct": 33.33,
-                "direction_accuracy_pct": 83.33,
+                "count": 13,
+                "win_rate_pct": 38.46,
+                "direction_accuracy_pct": 84.62,
                 "exit_distribution": {
                   "SL": 8,
                   "TP": 2,
-                  "INSUFFICIENT_DATA": 2
+                  "INSUFFICIENT_DATA": 3
                 },
-                "avg_win_pct": 1.5536,
+                "avg_win_pct": 1.3638,
                 "avg_loss_pct": -0.884,
-                "total_return_pct": -0.8572,
-                "compound_return_pct": -0.9526,
+                "total_return_pct": -0.2526,
+                "compound_return_pct": -0.3568,
                 "max_drawdown_pct": -5.7777,
                 "max_drawdown_pct_additive": -5.9129,
-                "profit_factor": 0.8788
+                "profit_factor": 0.9643
               },
               "orta": {
                 "count": 6,
@@ -8666,7 +8900,7 @@
               "zayif": {
                 "count": 9,
                 "win_rate_pct": 22.22,
-                "direction_accuracy_pct": 44.44,
+                "direction_accuracy_pct": 55.56,
                 "exit_distribution": {
                   "SL": 7,
                   "TP": 2
@@ -8698,21 +8932,21 @@
                 "profit_factor": 0.0924
               },
               "SELL": {
-                "count": 15,
-                "win_rate_pct": 46.67,
-                "direction_accuracy_pct": 46.67,
+                "count": 16,
+                "win_rate_pct": 50.0,
+                "direction_accuracy_pct": 56.25,
                 "exit_distribution": {
                   "TP": 5,
                   "SL": 8,
-                  "INSUFFICIENT_DATA": 2
+                  "INSUFFICIENT_DATA": 3
                 },
-                "avg_win_pct": 2.2463,
+                "avg_win_pct": 2.0411,
                 "avg_loss_pct": -2.3643,
-                "total_return_pct": -3.1906,
-                "compound_return_pct": -3.6017,
+                "total_return_pct": -2.586,
+                "compound_return_pct": -3.0218,
                 "max_drawdown_pct": -11.1009,
                 "max_drawdown_pct_additive": -11.6255,
-                "profit_factor": 0.8313
+                "profit_factor": 0.8633
               }
             }
           },
@@ -8725,13 +8959,13 @@
               "SL": 4,
               "INSUFFICIENT_DATA": 1
             },
-            "avg_win_pct": 2.1477,
+            "avg_win_pct": 2.1963,
             "avg_loss_pct": -2.195,
-            "total_return_pct": 1.9587,
-            "compound_return_pct": 1.7058,
+            "total_return_pct": 2.2014,
+            "compound_return_pct": 1.9505,
             "max_drawdown_pct": -5.3501,
             "max_drawdown_pct_additive": -5.4225,
-            "profit_factor": 1.2231,
+            "profit_factor": 1.2507,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -8835,10 +9069,10 @@
                 "side": "SELL",
                 "strength": "guclu",
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 1.5509,
-                "hours_held": 12,
-                "pnl_pct": 0.8642401021711439,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 1.5471,
+                "hours_held": 18,
+                "pnl_pct": 1.1068965517241467,
                 "direction_correct": true
               }
             ],
@@ -8852,13 +9086,13 @@
                   "SL": 1,
                   "INSUFFICIENT_DATA": 1
                 },
-                "avg_win_pct": 1.7834,
+                "avg_win_pct": 1.8643,
                 "avg_loss_pct": -0.8988,
-                "total_return_pct": 4.4516,
-                "compound_return_pct": 4.4804,
+                "total_return_pct": 4.6942,
+                "compound_return_pct": 4.7318,
                 "max_drawdown_pct": -0.8988,
                 "max_drawdown_pct_additive": -0.8988,
-                "profit_factor": 5.9529
+                "profit_factor": 6.2229
               },
               "orta": {
                 "count": 3,
@@ -8919,34 +9153,34 @@
                   "SL": 3,
                   "INSUFFICIENT_DATA": 1
                 },
-                "avg_win_pct": 2.3949,
+                "avg_win_pct": 2.4556,
                 "avg_loss_pct": -2.627,
-                "total_return_pct": 1.6986,
-                "compound_return_pct": 1.4525,
+                "total_return_pct": 1.9413,
+                "compound_return_pct": 1.6966,
                 "max_drawdown_pct": -5.3501,
                 "max_drawdown_pct_additive": -5.4225,
-                "profit_factor": 1.2155
+                "profit_factor": 1.2463
               }
             }
           }
         },
         "always_buy": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 33.33,
-            "direction_accuracy_pct": 66.67,
+            "count": 28,
+            "win_rate_pct": 32.14,
+            "direction_accuracy_pct": 60.71,
             "exit_distribution": {
-              "SL": 16,
+              "SL": 17,
               "TP": 9,
               "INSUFFICIENT_DATA": 2
             },
             "avg_win_pct": 3.3945,
-            "avg_loss_pct": -1.3259,
-            "total_return_pct": 6.684,
-            "compound_return_pct": 6.1122,
+            "avg_loss_pct": -1.335,
+            "total_return_pct": 5.1846,
+            "compound_return_pct": 4.5143,
             "max_drawdown_pct": -8.0046,
             "max_drawdown_pct_additive": -8.2952,
-            "profit_factor": 1.2801,
+            "profit_factor": 1.2044,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -9222,7 +9456,7 @@
                 "exit_price": 1.5981193,
                 "hours_held": 11,
                 "pnl_pct": 3.1843857041297685,
-                "direction_correct": true
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-25T06:00:00Z",
@@ -9254,10 +9488,10 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 1.5509,
-                "hours_held": 12,
-                "pnl_pct": -1.0642401021711438,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 1.5471,
+                "hours_held": 18,
+                "pnl_pct": -1.3068965517241469,
                 "direction_correct": false
               },
               {
@@ -9265,11 +9499,23 @@
                 "entry_price": 1.566,
                 "side": "BUY",
                 "strength": null,
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-26T09:00:00Z",
+                "exit_price": 1.53622017,
+                "hours_held": 9,
+                "pnl_pct": -2.00164942528736,
+                "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 1.5505,
+                "side": "BUY",
+                "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 1.5509,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 1.5471,
                 "hours_held": 6,
-                "pnl_pct": -1.0642401021711438,
+                "pnl_pct": -0.3192841019026166,
                 "direction_correct": false
               }
             ]
@@ -9284,12 +9530,12 @@
               "INSUFFICIENT_DATA": 1
             },
             "avg_win_pct": 3.268,
-            "avg_loss_pct": -1.729,
-            "total_return_pct": -0.5703,
-            "compound_return_pct": -0.8676,
+            "avg_loss_pct": -1.7695,
+            "total_return_pct": -0.8129,
+            "compound_return_pct": -1.1107,
             "max_drawdown_pct": -5.2909,
             "max_drawdown_pct_additive": -5.3628,
-            "profit_factor": 0.945,
+            "profit_factor": 0.9234,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -9393,10 +9639,10 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 1.5509,
-                "hours_held": 12,
-                "pnl_pct": -1.0642401021711438,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 1.5471,
+                "hours_held": 18,
+                "pnl_pct": -1.3068965517241469,
                 "direction_correct": false
               }
             ]
@@ -9404,21 +9650,21 @@
         },
         "momentum": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 33.33,
-            "direction_accuracy_pct": 66.67,
+            "count": 28,
+            "win_rate_pct": 32.14,
+            "direction_accuracy_pct": 60.71,
             "exit_distribution": {
-              "SL": 16,
+              "SL": 17,
               "TP": 9,
               "INSUFFICIENT_DATA": 2
             },
             "avg_win_pct": 3.3945,
-            "avg_loss_pct": -1.3259,
-            "total_return_pct": 6.684,
-            "compound_return_pct": 6.1122,
+            "avg_loss_pct": -1.335,
+            "total_return_pct": 5.1846,
+            "compound_return_pct": 4.5143,
             "max_drawdown_pct": -8.0046,
             "max_drawdown_pct_additive": -8.2952,
-            "profit_factor": 1.2801,
+            "profit_factor": 1.2044,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -9694,7 +9940,7 @@
                 "exit_price": 1.5981193,
                 "hours_held": 11,
                 "pnl_pct": 3.1843857041297685,
-                "direction_correct": true
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-25T06:00:00Z",
@@ -9726,10 +9972,10 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 1.5509,
-                "hours_held": 12,
-                "pnl_pct": -1.0642401021711438,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 1.5471,
+                "hours_held": 18,
+                "pnl_pct": -1.3068965517241469,
                 "direction_correct": false
               },
               {
@@ -9737,11 +9983,23 @@
                 "entry_price": 1.566,
                 "side": "BUY",
                 "strength": null,
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-26T09:00:00Z",
+                "exit_price": 1.53622017,
+                "hours_held": 9,
+                "pnl_pct": -2.00164942528736,
+                "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 1.5505,
+                "side": "BUY",
+                "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 1.5509,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 1.5471,
                 "hours_held": 6,
-                "pnl_pct": -1.0642401021711438,
+                "pnl_pct": -0.3192841019026166,
                 "direction_correct": false
               }
             ]
@@ -9756,12 +10014,12 @@
               "INSUFFICIENT_DATA": 1
             },
             "avg_win_pct": 3.268,
-            "avg_loss_pct": -1.729,
-            "total_return_pct": -0.5703,
-            "compound_return_pct": -0.8676,
+            "avg_loss_pct": -1.7695,
+            "total_return_pct": -0.8129,
+            "compound_return_pct": -1.1107,
             "max_drawdown_pct": -5.2909,
             "max_drawdown_pct_additive": -5.3628,
-            "profit_factor": 0.945,
+            "profit_factor": 0.9234,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -9865,10 +10123,10 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 1.5509,
-                "hours_held": 12,
-                "pnl_pct": -1.0642401021711438,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 1.5471,
+                "hours_held": 18,
+                "pnl_pct": -1.3068965517241469,
                 "direction_correct": false
               }
             ]
@@ -9876,45 +10134,45 @@
         },
         "random": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 55.56,
-            "direction_accuracy_pct": 59.26,
+            "count": 28,
+            "win_rate_pct": 46.43,
+            "direction_accuracy_pct": 46.43,
             "exit_distribution": {
-              "SL": 12,
-              "TP": 13,
-              "INSUFFICIENT_DATA": 2
+              "TP": 12,
+              "SL": 13,
+              "INSUFFICIENT_DATA": 3
             },
-            "avg_win_pct": 2.0362,
-            "avg_loss_pct": -1.8449,
-            "total_return_pct": 8.4049,
-            "compound_return_pct": 8.0512,
-            "max_drawdown_pct": -12.5009,
-            "max_drawdown_pct_additive": -13.1757,
-            "profit_factor": 1.3796,
+            "avg_win_pct": 2.5967,
+            "avg_loss_pct": -1.4416,
+            "total_return_pct": 12.1324,
+            "compound_return_pct": 12.0573,
+            "max_drawdown_pct": -10.024,
+            "max_drawdown_pct_additive": -10.3258,
+            "profit_factor": 1.5611,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
                 "entry_price": 1.3654,
-                "side": "BUY",
-                "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-13T08:00:00Z",
-                "exit_price": 1.35458479,
-                "hours_held": 12,
-                "pnl_pct": -0.8920909623553592,
-                "direction_correct": true
-              },
-              {
-                "entry_ts": "2026-09-13T00:00:00Z",
-                "entry_price": 1.3665,
                 "side": "SELL",
                 "strength": null,
                 "exit_reason": "TP",
                 "exit_ts": "2026-09-13T08:00:00Z",
-                "exit_price": 1.35087255,
-                "hours_held": 8,
-                "pnl_pct": 1.0436114160263437,
+                "exit_price": 1.34737465,
+                "hours_held": 12,
+                "pnl_pct": 1.2201516039255933,
                 "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-13T00:00:00Z",
+                "entry_price": 1.3665,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-13T07:00:00Z",
+                "exit_price": 1.35712353,
+                "hours_held": 7,
+                "pnl_pct": -0.7861668496158127,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T06:00:00Z",
@@ -9943,14 +10201,14 @@
               {
                 "entry_ts": "2026-09-13T07:00:00Z",
                 "entry_price": 1.3589,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "TP",
-                "exit_ts": "2026-09-13T09:00:00Z",
-                "exit_price": 1.34395325,
-                "hours_held": 2,
-                "pnl_pct": 0.9999153727279423,
-                "direction_correct": false
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-13T08:00:00Z",
+                "exit_price": 1.34993195,
+                "hours_held": 1,
+                "pnl_pct": -0.7599492236367654,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T12:00:00Z",
@@ -9979,26 +10237,26 @@
               {
                 "entry_ts": "2026-09-13T16:00:00Z",
                 "entry_price": 1.3464,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
                 "exit_reason": "SL",
-                "exit_ts": "2026-09-13T22:00:00Z",
-                "exit_price": 1.33499408,
-                "hours_held": 6,
+                "exit_ts": "2026-09-13T18:00:00Z",
+                "exit_price": 1.35780593,
+                "hours_held": 2,
                 "pnl_pct": -0.9471423796791472,
-                "direction_correct": true
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-13T16:00:00Z",
                 "entry_price": 1.3503,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
                 "exit_reason": "SL",
-                "exit_ts": "2026-09-13T22:00:00Z",
-                "exit_price": 1.33871193,
-                "hours_held": 6,
+                "exit_ts": "2026-09-13T21:00:00Z",
+                "exit_price": 1.36188807,
+                "hours_held": 5,
                 "pnl_pct": -0.9581848478115936,
-                "direction_correct": true
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-13T17:00:00Z",
@@ -10015,14 +10273,14 @@
               {
                 "entry_ts": "2026-09-13T18:00:00Z",
                 "entry_price": 1.3542,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "TP",
+                "exit_reason": "SL",
                 "exit_ts": "2026-09-13T22:00:00Z",
-                "exit_price": 1.3361717,
+                "exit_price": 1.34338302,
                 "hours_held": 4,
-                "pnl_pct": 1.2312878452222793,
-                "direction_correct": true
+                "pnl_pct": -0.8987727071333611,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-13T19:00:00Z",
@@ -10051,14 +10309,14 @@
               {
                 "entry_ts": "2026-09-22T18:00:00Z",
                 "entry_price": 1.5693,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-22T19:00:00Z",
-                "exit_price": 1.60638559,
-                "hours_held": 1,
-                "pnl_pct": -2.463193462053143,
-                "direction_correct": true
+                "exit_reason": "TP",
+                "exit_ts": "2026-09-23T04:00:00Z",
+                "exit_price": 1.63110932,
+                "hours_held": 10,
+                "pnl_pct": 3.838655770088576,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-23T00:00:00Z",
@@ -10075,26 +10333,26 @@
               {
                 "entry_ts": "2026-09-23T06:00:00Z",
                 "entry_price": 1.6172,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-23T10:00:00Z",
-                "exit_price": 1.5757853,
-                "hours_held": 4,
-                "pnl_pct": -2.6608891911946593,
-                "direction_correct": false
+                "exit_reason": "TP",
+                "exit_ts": "2026-09-23T14:00:00Z",
+                "exit_price": 1.5481755,
+                "hours_held": 8,
+                "pnl_pct": 4.168148651991099,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-23T12:00:00Z",
                 "entry_price": 1.5669,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-23T14:00:00Z",
-                "exit_price": 1.52613095,
-                "hours_held": 2,
-                "pnl_pct": -2.7018925904652464,
-                "direction_correct": true
+                "exit_reason": "TP",
+                "exit_ts": "2026-09-23T16:00:00Z",
+                "exit_price": 1.49895157,
+                "hours_held": 4,
+                "pnl_pct": 4.236487650775416,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-23T18:00:00Z",
@@ -10111,38 +10369,38 @@
               {
                 "entry_ts": "2026-09-24T00:00:00Z",
                 "entry_price": 1.4993,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
                 "exit_reason": "SL",
-                "exit_ts": "2026-09-24T16:00:00Z",
-                "exit_price": 1.53538484,
-                "hours_held": 16,
+                "exit_ts": "2026-09-24T09:00:00Z",
+                "exit_price": 1.46321516,
+                "hours_held": 9,
                 "pnl_pct": -2.506779163609685,
-                "direction_correct": false
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-24T06:00:00Z",
                 "entry_price": 1.5042,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
                 "exit_reason": "SL",
-                "exit_ts": "2026-09-24T17:00:00Z",
-                "exit_price": 1.53665651,
-                "hours_held": 11,
+                "exit_ts": "2026-09-24T08:00:00Z",
+                "exit_price": 1.47174349,
+                "hours_held": 2,
                 "pnl_pct": -2.257725368966898,
-                "direction_correct": false
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-24T12:00:00Z",
                 "entry_price": 1.4711,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "TP",
-                "exit_ts": "2026-09-24T14:00:00Z",
-                "exit_price": 1.52288943,
-                "hours_held": 2,
-                "pnl_pct": 3.420455781388073,
-                "direction_correct": true
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-24T13:00:00Z",
+                "exit_price": 1.50217365,
+                "hours_held": 1,
+                "pnl_pct": -2.212273468832841,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-24T18:00:00Z",
@@ -10166,19 +10424,19 @@
                 "exit_price": 1.57779158,
                 "hours_held": 11,
                 "pnl_pct": -2.0706314224778692,
-                "direction_correct": false
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-25T06:00:00Z",
                 "entry_price": 1.5295,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "TP",
-                "exit_ts": "2026-09-25T11:00:00Z",
-                "exit_price": 1.57589928,
-                "hours_held": 5,
-                "pnl_pct": 2.933623733246156,
-                "direction_correct": true
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-25T09:00:00Z",
+                "exit_price": 1.55733957,
+                "hours_held": 3,
+                "pnl_pct": -1.9201742399476998,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-25T12:00:00Z",
@@ -10195,14 +10453,14 @@
               {
                 "entry_ts": "2026-09-25T18:00:00Z",
                 "entry_price": 1.566,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 1.5509,
-                "hours_held": 12,
-                "pnl_pct": 0.8642401021711439,
-                "direction_correct": true
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 1.5471,
+                "hours_held": 18,
+                "pnl_pct": -1.3068965517241469,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-26T00:00:00Z",
@@ -10210,42 +10468,54 @@
                 "side": "SELL",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 1.5509,
-                "hours_held": 6,
-                "pnl_pct": 0.8642401021711439,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 1.5471,
+                "hours_held": 12,
+                "pnl_pct": 1.1068965517241467,
                 "direction_correct": true
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 1.5505,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 1.5471,
+                "hours_held": 6,
+                "pnl_pct": -0.3192841019026166,
+                "direction_correct": false
               }
             ]
           },
           "single_position": {
-            "count": 10,
-            "win_rate_pct": 60.0,
-            "direction_accuracy_pct": 70.0,
+            "count": 9,
+            "win_rate_pct": 66.67,
+            "direction_accuracy_pct": 44.44,
             "exit_distribution": {
-              "SL": 4,
-              "TP": 5,
+              "TP": 6,
+              "SL": 2,
               "INSUFFICIENT_DATA": 1
             },
-            "avg_win_pct": 2.3505,
-            "avg_loss_pct": -2.3258,
-            "total_return_pct": 4.7996,
-            "compound_return_pct": 4.5661,
-            "max_drawdown_pct": -8.178,
-            "max_drawdown_pct_additive": -8.4112,
-            "profit_factor": 1.5159,
+            "avg_win_pct": 2.8993,
+            "avg_loss_pct": -1.7513,
+            "total_return_pct": 12.1416,
+            "compound_return_pct": 12.514,
+            "max_drawdown_pct": -3.0484,
+            "max_drawdown_pct_additive": -3.0484,
+            "profit_factor": 3.3109,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
                 "entry_price": 1.3654,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "SL",
+                "exit_reason": "TP",
                 "exit_ts": "2026-09-13T08:00:00Z",
-                "exit_price": 1.35458479,
+                "exit_price": 1.34737465,
                 "hours_held": 12,
-                "pnl_pct": -0.8920909623553592,
-                "direction_correct": true
+                "pnl_pct": 1.2201516039255933,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-13T12:00:00Z",
@@ -10262,14 +10532,14 @@
               {
                 "entry_ts": "2026-09-13T18:00:00Z",
                 "entry_price": 1.3542,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "TP",
+                "exit_reason": "SL",
                 "exit_ts": "2026-09-13T22:00:00Z",
-                "exit_price": 1.3361717,
+                "exit_price": 1.34338302,
                 "hours_held": 4,
-                "pnl_pct": 1.2312878452222793,
-                "direction_correct": true
+                "pnl_pct": -0.8987727071333611,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-22T14:00:00Z",
@@ -10286,25 +10556,13 @@
               {
                 "entry_ts": "2026-09-23T06:00:00Z",
                 "entry_price": 1.6172,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-23T10:00:00Z",
-                "exit_price": 1.5757853,
-                "hours_held": 4,
-                "pnl_pct": -2.6608891911946593,
-                "direction_correct": false
-              },
-              {
-                "entry_ts": "2026-09-23T12:00:00Z",
-                "entry_price": 1.5669,
-                "side": "BUY",
-                "strength": null,
-                "exit_reason": "SL",
+                "exit_reason": "TP",
                 "exit_ts": "2026-09-23T14:00:00Z",
-                "exit_price": 1.52613095,
-                "hours_held": 2,
-                "pnl_pct": -2.7018925904652464,
+                "exit_price": 1.5481755,
+                "hours_held": 8,
+                "pnl_pct": 4.168148651991099,
                 "direction_correct": true
               },
               {
@@ -10346,14 +10604,14 @@
               {
                 "entry_ts": "2026-09-25T18:00:00Z",
                 "entry_price": 1.566,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 1.5509,
-                "hours_held": 12,
-                "pnl_pct": 0.8642401021711439,
-                "direction_correct": true
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 1.5471,
+                "hours_held": 18,
+                "pnl_pct": -1.3068965517241469,
+                "direction_correct": false
               }
             ]
           }
@@ -10362,35 +10620,35 @@
     },
     "SOL": {
       "inst_id": "SOL-USDT-SWAP",
-      "record_count": 29,
-      "sample_size": 27,
+      "record_count": 30,
+      "sample_size": 28,
       "direction_accuracy_pct": {
-        "6": 57.14,
-        "12": 44.44,
-        "24": 36.0,
-        "36": 47.83,
-        "48": 28.57
+        "6": 55.17,
+        "12": 42.86,
+        "24": 34.62,
+        "36": 45.83,
+        "48": 27.27
       },
       "in_confidence_band_pct": {
-        "6": 75.0,
-        "12": 81.48,
-        "24": 84.0,
-        "36": 78.26,
-        "48": 71.43
+        "6": 75.86,
+        "12": 82.14,
+        "24": 84.62,
+        "36": 79.17,
+        "48": 68.18
       },
       "mae": {
-        "6": 1.215589,
-        "12": 1.512204,
-        "24": 2.525514,
-        "36": 2.282252,
-        "48": 3.014781
+        "6": 1.214888,
+        "12": 1.498466,
+        "24": 2.442718,
+        "36": 2.342207,
+        "48": 3.258406
       },
       "mape_pct": {
-        "6": 1.097,
-        "12": 1.339,
-        "24": 2.253,
-        "36": 2.013,
-        "48": 2.732
+        "6": 1.093,
+        "12": 1.325,
+        "24": 2.179,
+        "36": 2.057,
+        "48": 2.922
       },
       "predictions": [
         {
@@ -11403,7 +11661,7 @@
               "upper": 119.93652344
             }
           },
-          "direction_correct": null
+          "direction_correct": false
         },
         {
           "generated_at": "2026-09-24T18:11:30Z",
@@ -11726,26 +11984,72 @@
             }
           },
           "direction_correct": null
+        },
+        {
+          "generated_at": "2026-09-26T12:09:34Z",
+          "coin": "SOL",
+          "inst_id": "SOL-USDT-SWAP",
+          "entry_ts": "2026-09-26T12:00:00Z",
+          "entry_price": 121.23,
+          "side": "SELL",
+          "strength": "zayif",
+          "expected_move_pct": -0.18,
+          "take_profit": 118.6565712,
+          "stop_loss": 122.77405728,
+          "atr": 1.02937152,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-26T18:00:00Z",
+              "value": 121.375,
+              "lower": 119.09739685,
+              "upper": 123.82371521
+            },
+            "12": {
+              "ts": "2026-09-27T00:00:00Z",
+              "value": 121.43374634,
+              "lower": 117.75843811,
+              "upper": 125.44385529
+            },
+            "24": {
+              "ts": "2026-09-27T12:00:00Z",
+              "value": 121.40377808,
+              "lower": 115.82428741,
+              "upper": 127.51763916
+            },
+            "36": {
+              "ts": "2026-09-28T00:00:00Z",
+              "value": 121.27031708,
+              "lower": 113.5993042,
+              "upper": 129.44436646
+            },
+            "48": {
+              "ts": "2026-09-28T12:00:00Z",
+              "value": 121.01143646,
+              "lower": 111.53831482,
+              "upper": 130.19100952
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
         "model": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 29.63,
-            "direction_accuracy_pct": 33.33,
+            "count": 28,
+            "win_rate_pct": 25.0,
+            "direction_accuracy_pct": 25.0,
             "exit_distribution": {
               "SL": 19,
               "TP": 6,
-              "INSUFFICIENT_DATA": 2
+              "INSUFFICIENT_DATA": 3
             },
-            "avg_win_pct": 1.4629,
-            "avg_loss_pct": -1.2896,
-            "total_return_pct": -12.7985,
-            "compound_return_pct": -12.2525,
-            "max_drawdown_pct": -14.7918,
-            "max_drawdown_pct_additive": -15.7587,
-            "profit_factor": 0.4776,
+            "avg_win_pct": 1.4818,
+            "avg_loss_pct": -1.2146,
+            "total_return_pct": -15.1346,
+            "compound_return_pct": -14.2747,
+            "max_drawdown_pct": -15.1997,
+            "max_drawdown_pct_additive": -16.2333,
+            "profit_factor": 0.4067,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -12045,7 +12349,7 @@
                 "exit_price": 122.54740111,
                 "hours_held": 6,
                 "pnl_pct": -1.6137517519880722,
-                "direction_correct": true
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-25T18:00:00Z",
@@ -12053,11 +12357,11 @@
                 "side": "SELL",
                 "strength": "orta",
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 120.37,
-                "hours_held": 12,
-                "pnl_pct": 0.5930121277122261,
-                "direction_correct": true
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 121.27,
+                "hours_held": 18,
+                "pnl_pct": -0.14950086626516151,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-26T00:00:00Z",
@@ -12065,11 +12369,23 @@
                 "side": "SELL",
                 "strength": "zayif",
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 120.37,
-                "hours_held": 6,
-                "pnl_pct": 1.2684038020321218,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 121.27,
+                "hours_held": 12,
+                "pnl_pct": 0.5309406751884712,
                 "direction_correct": true
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 120.36,
+                "side": "SELL",
+                "strength": "zayif",
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 121.27,
+                "hours_held": 6,
+                "pnl_pct": -0.8560651379195717,
+                "direction_correct": false
               }
             ],
             "by_strength": {
@@ -12091,37 +12407,37 @@
               },
               "orta": {
                 "count": 9,
-                "win_rate_pct": 33.33,
-                "direction_accuracy_pct": 11.11,
+                "win_rate_pct": 22.22,
+                "direction_accuracy_pct": 0.0,
                 "exit_distribution": {
                   "SL": 6,
                   "TP": 2,
                   "INSUFFICIENT_DATA": 1
                 },
-                "avg_win_pct": 1.2999,
-                "avg_loss_pct": -1.1045,
-                "total_return_pct": -2.7275,
-                "compound_return_pct": -2.7622,
+                "avg_win_pct": 1.6534,
+                "avg_loss_pct": -0.9681,
+                "total_return_pct": -3.47,
+                "compound_return_pct": -3.4799,
                 "max_drawdown_pct": -3.7527,
                 "max_drawdown_pct_additive": -3.8067,
-                "profit_factor": 0.5884
+                "profit_factor": 0.488
               },
               "zayif": {
-                "count": 11,
-                "win_rate_pct": 18.18,
-                "direction_accuracy_pct": 27.27,
+                "count": 12,
+                "win_rate_pct": 16.67,
+                "direction_accuracy_pct": 16.67,
                 "exit_distribution": {
                   "TP": 1,
                   "SL": 9,
-                  "INSUFFICIENT_DATA": 1
+                  "INSUFFICIENT_DATA": 2
                 },
-                "avg_win_pct": 1.1101,
-                "avg_loss_pct": -1.4243,
-                "total_return_pct": -10.5986,
-                "compound_return_pct": -10.1548,
-                "max_drawdown_pct": -12.1165,
-                "max_drawdown_pct_additive": -12.8188,
-                "profit_factor": 0.1732
+                "avg_win_pct": 0.7413,
+                "avg_loss_pct": -1.3675,
+                "total_return_pct": -12.1922,
+                "compound_return_pct": -11.5726,
+                "max_drawdown_pct": -12.4063,
+                "max_drawdown_pct_additive": -13.1439,
+                "profit_factor": 0.1084
               }
             },
             "by_side": {
@@ -12142,40 +12458,40 @@
                 "profit_factor": 0.1696
               },
               "SELL": {
-                "count": 18,
-                "win_rate_pct": 38.89,
-                "direction_accuracy_pct": 44.44,
+                "count": 19,
+                "win_rate_pct": 31.58,
+                "direction_accuracy_pct": 31.58,
                 "exit_distribution": {
                   "SL": 11,
                   "TP": 5,
-                  "INSUFFICIENT_DATA": 2
+                  "INSUFFICIENT_DATA": 3
                 },
-                "avg_win_pct": 1.4949,
-                "avg_loss_pct": -1.5635,
-                "total_return_pct": -6.7342,
-                "compound_return_pct": -6.728,
-                "max_drawdown_pct": -12.3385,
-                "max_drawdown_pct_additive": -13.06,
-                "profit_factor": 0.6084
+                "avg_win_pct": 1.5223,
+                "avg_loss_pct": -1.4003,
+                "total_return_pct": -9.0702,
+                "compound_return_pct": -8.8775,
+                "max_drawdown_pct": -12.7581,
+                "max_drawdown_pct_additive": -13.5347,
+                "profit_factor": 0.5018
               }
             }
           },
           "single_position": {
             "count": 11,
-            "win_rate_pct": 36.36,
-            "direction_accuracy_pct": 54.55,
+            "win_rate_pct": 27.27,
+            "direction_accuracy_pct": 36.36,
             "exit_distribution": {
               "SL": 7,
               "TP": 3,
               "INSUFFICIENT_DATA": 1
             },
-            "avg_win_pct": 1.2421,
-            "avg_loss_pct": -1.3728,
-            "total_return_pct": -4.6408,
-            "compound_return_pct": -4.6406,
-            "max_drawdown_pct": -5.6677,
-            "max_drawdown_pct_additive": -5.7446,
-            "profit_factor": 0.5171,
+            "avg_win_pct": 1.4585,
+            "avg_loss_pct": -1.2199,
+            "total_return_pct": -5.3833,
+            "compound_return_pct": -5.3445,
+            "max_drawdown_pct": -5.8087,
+            "max_drawdown_pct_additive": -5.8941,
+            "profit_factor": 0.4484,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -12295,7 +12611,7 @@
                 "exit_price": 122.54740111,
                 "hours_held": 6,
                 "pnl_pct": -1.6137517519880722,
-                "direction_correct": true
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-25T18:00:00Z",
@@ -12303,11 +12619,11 @@
                 "side": "SELL",
                 "strength": "orta",
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 120.37,
-                "hours_held": 12,
-                "pnl_pct": 0.5930121277122261,
-                "direction_correct": true
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 121.27,
+                "hours_held": 18,
+                "pnl_pct": -0.14950086626516151,
+                "direction_correct": false
               }
             ],
             "by_strength": {
@@ -12329,24 +12645,24 @@
               },
               "orta": {
                 "count": 4,
-                "win_rate_pct": 25.0,
-                "direction_accuracy_pct": 25.0,
+                "win_rate_pct": 0.0,
+                "direction_accuracy_pct": 0.0,
                 "exit_distribution": {
                   "SL": 3,
                   "INSUFFICIENT_DATA": 1
                 },
-                "avg_win_pct": 0.593,
-                "avg_loss_pct": -1.2577,
-                "total_return_pct": -3.1801,
-                "compound_return_pct": -3.1583,
-                "max_drawdown_pct": -3.7292,
-                "max_drawdown_pct_additive": -3.7731,
-                "profit_factor": 0.1572
+                "avg_win_pct": null,
+                "avg_loss_pct": -0.9807,
+                "total_return_pct": -3.9226,
+                "compound_return_pct": -3.8732,
+                "max_drawdown_pct": -3.8732,
+                "max_drawdown_pct_additive": -3.9226,
+                "profit_factor": 0.0
               },
               "zayif": {
                 "count": 4,
                 "win_rate_pct": 25.0,
-                "direction_accuracy_pct": 50.0,
+                "direction_accuracy_pct": 25.0,
                 "exit_distribution": {
                   "TP": 1,
                   "SL": 3
@@ -12379,41 +12695,41 @@
               },
               "SELL": {
                 "count": 8,
-                "win_rate_pct": 37.5,
-                "direction_accuracy_pct": 62.5,
+                "win_rate_pct": 25.0,
+                "direction_accuracy_pct": 37.5,
                 "exit_distribution": {
                   "SL": 5,
                   "TP": 2,
                   "INSUFFICIENT_DATA": 1
                 },
-                "avg_win_pct": 1.2433,
-                "avg_loss_pct": -1.5735,
-                "total_return_pct": -4.1378,
-                "compound_return_pct": -4.1451,
-                "max_drawdown_pct": -5.2426,
-                "max_drawdown_pct_additive": -5.3367,
-                "profit_factor": 0.4741
+                "avg_win_pct": 1.5684,
+                "avg_loss_pct": -1.3362,
+                "total_return_pct": -4.8803,
+                "compound_return_pct": -4.8526,
+                "max_drawdown_pct": -5.3842,
+                "max_drawdown_pct_additive": -5.4862,
+                "profit_factor": 0.3913
               }
             }
           }
         },
         "always_buy": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 18.52,
-            "direction_accuracy_pct": 40.74,
+            "count": 28,
+            "win_rate_pct": 21.43,
+            "direction_accuracy_pct": 50.0,
             "exit_distribution": {
-              "SL": 20,
+              "SL": 21,
               "TP": 5,
               "INSUFFICIENT_DATA": 2
             },
-            "avg_win_pct": 2.2813,
-            "avg_loss_pct": -1.1811,
-            "total_return_pct": -14.5779,
-            "compound_return_pct": -13.8281,
+            "avg_win_pct": 2.0104,
+            "avg_loss_pct": -1.1609,
+            "total_return_pct": -13.4769,
+            "compound_return_pct": -12.8775,
             "max_drawdown_pct": -15.2793,
             "max_drawdown_pct_additive": -16.4017,
-            "profit_factor": 0.439,
+            "profit_factor": 0.4723,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -12713,7 +13029,7 @@
                 "exit_price": 118.89259888,
                 "hours_held": 1,
                 "pnl_pct": -1.6137517519880722,
-                "direction_correct": false
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-25T18:00:00Z",
@@ -12721,42 +13037,54 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 120.37,
-                "hours_held": 12,
-                "pnl_pct": -0.7930121277122261,
-                "direction_correct": false
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 121.27,
+                "hours_held": 18,
+                "pnl_pct": -0.05049913373483848,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-26T00:00:00Z",
                 "entry_price": 122.04,
                 "side": "BUY",
                 "strength": null,
-                "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 120.37,
-                "hours_held": 6,
-                "pnl_pct": -1.468403802032122,
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-26T09:00:00Z",
+                "exit_price": 120.00681531,
+                "hours_held": 9,
+                "pnl_pct": -1.765998598820058,
                 "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 120.36,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 121.27,
+                "hours_held": 6,
+                "pnl_pct": 0.6560651379195718,
+                "direction_correct": true
               }
             ]
           },
           "single_position": {
             "count": 9,
             "win_rate_pct": 33.33,
-            "direction_accuracy_pct": 44.44,
+            "direction_accuracy_pct": 66.67,
             "exit_distribution": {
               "SL": 5,
               "TP": 3,
               "INSUFFICIENT_DATA": 1
             },
             "avg_win_pct": 2.3034,
-            "avg_loss_pct": -1.1132,
-            "total_return_pct": 0.2309,
-            "compound_return_pct": 0.1027,
+            "avg_loss_pct": -0.9895,
+            "total_return_pct": 0.9734,
+            "compound_return_pct": 0.8519,
             "max_drawdown_pct": -3.0202,
             "max_drawdown_pct_additive": -3.0339,
-            "profit_factor": 1.0346,
+            "profit_factor": 1.164,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -12852,7 +13180,7 @@
                 "exit_price": 118.89259888,
                 "hours_held": 1,
                 "pnl_pct": -1.6137517519880722,
-                "direction_correct": false
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-25T18:00:00Z",
@@ -12860,32 +13188,32 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 120.37,
-                "hours_held": 12,
-                "pnl_pct": -0.7930121277122261,
-                "direction_correct": false
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 121.27,
+                "hours_held": 18,
+                "pnl_pct": -0.05049913373483848,
+                "direction_correct": true
               }
             ]
           }
         },
         "momentum": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 18.52,
-            "direction_accuracy_pct": 40.74,
+            "count": 28,
+            "win_rate_pct": 21.43,
+            "direction_accuracy_pct": 50.0,
             "exit_distribution": {
-              "SL": 20,
+              "SL": 21,
               "TP": 5,
               "INSUFFICIENT_DATA": 2
             },
-            "avg_win_pct": 2.2813,
-            "avg_loss_pct": -1.1811,
-            "total_return_pct": -14.5779,
-            "compound_return_pct": -13.8281,
+            "avg_win_pct": 2.0104,
+            "avg_loss_pct": -1.1609,
+            "total_return_pct": -13.4769,
+            "compound_return_pct": -12.8775,
             "max_drawdown_pct": -15.2793,
             "max_drawdown_pct_additive": -16.4017,
-            "profit_factor": 0.439,
+            "profit_factor": 0.4723,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -13185,7 +13513,7 @@
                 "exit_price": 118.89259888,
                 "hours_held": 1,
                 "pnl_pct": -1.6137517519880722,
-                "direction_correct": false
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-25T18:00:00Z",
@@ -13193,42 +13521,54 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 120.37,
-                "hours_held": 12,
-                "pnl_pct": -0.7930121277122261,
-                "direction_correct": false
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 121.27,
+                "hours_held": 18,
+                "pnl_pct": -0.05049913373483848,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-26T00:00:00Z",
                 "entry_price": 122.04,
                 "side": "BUY",
                 "strength": null,
-                "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 120.37,
-                "hours_held": 6,
-                "pnl_pct": -1.468403802032122,
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-26T09:00:00Z",
+                "exit_price": 120.00681531,
+                "hours_held": 9,
+                "pnl_pct": -1.765998598820058,
                 "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 120.36,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 121.27,
+                "hours_held": 6,
+                "pnl_pct": 0.6560651379195718,
+                "direction_correct": true
               }
             ]
           },
           "single_position": {
             "count": 9,
             "win_rate_pct": 33.33,
-            "direction_accuracy_pct": 44.44,
+            "direction_accuracy_pct": 66.67,
             "exit_distribution": {
               "SL": 5,
               "TP": 3,
               "INSUFFICIENT_DATA": 1
             },
             "avg_win_pct": 2.3034,
-            "avg_loss_pct": -1.1132,
-            "total_return_pct": 0.2309,
-            "compound_return_pct": 0.1027,
+            "avg_loss_pct": -0.9895,
+            "total_return_pct": 0.9734,
+            "compound_return_pct": 0.8519,
             "max_drawdown_pct": -3.0202,
             "max_drawdown_pct_additive": -3.0339,
-            "profit_factor": 1.0346,
+            "profit_factor": 1.164,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -13324,7 +13664,7 @@
                 "exit_price": 118.89259888,
                 "hours_held": 1,
                 "pnl_pct": -1.6137517519880722,
-                "direction_correct": false
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-25T18:00:00Z",
@@ -13332,32 +13672,32 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 120.37,
-                "hours_held": 12,
-                "pnl_pct": -0.7930121277122261,
-                "direction_correct": false
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 121.27,
+                "hours_held": 18,
+                "pnl_pct": -0.05049913373483848,
+                "direction_correct": true
               }
             ]
           }
         },
         "random": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 25.93,
-            "direction_accuracy_pct": 37.04,
+            "count": 28,
+            "win_rate_pct": 32.14,
+            "direction_accuracy_pct": 39.29,
             "exit_distribution": {
-              "SL": 19,
-              "TP": 6,
+              "SL": 17,
+              "TP": 9,
               "INSUFFICIENT_DATA": 2
             },
-            "avg_win_pct": 1.6283,
-            "avg_loss_pct": -1.2696,
-            "total_return_pct": -13.9947,
-            "compound_return_pct": -13.3086,
-            "max_drawdown_pct": -13.4278,
-            "max_drawdown_pct_additive": -14.1417,
-            "profit_factor": 0.4489,
+            "avg_win_pct": 1.6067,
+            "avg_loss_pct": -1.2643,
+            "total_return_pct": -9.5625,
+            "compound_return_pct": -9.3939,
+            "max_drawdown_pct": -13.454,
+            "max_drawdown_pct_additive": -14.1814,
+            "profit_factor": 0.6019,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -13386,26 +13726,26 @@
               {
                 "entry_ts": "2026-09-13T06:00:00Z",
                 "entry_price": 101.77,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "SL",
+                "exit_reason": "TP",
                 "exit_ts": "2026-09-13T07:00:00Z",
-                "exit_price": 101.1277749,
+                "exit_price": 100.69962483,
                 "hours_held": 1,
-                "pnl_pct": -0.7310554239952779,
-                "direction_correct": false
+                "pnl_pct": 0.9517590399921344,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T07:00:00Z",
                 "entry_price": 101.2,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "SL",
+                "exit_reason": "TP",
                 "exit_ts": "2026-09-13T08:00:00Z",
-                "exit_price": 100.50255118,
+                "exit_price": 100.0375853,
                 "hours_held": 1,
-                "pnl_pct": -0.7891786758893333,
-                "direction_correct": false
+                "pnl_pct": 1.0486311264822128,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T07:00:00Z",
@@ -13422,26 +13762,26 @@
               {
                 "entry_ts": "2026-09-13T12:00:00Z",
                 "entry_price": 99.67,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-13T14:00:00Z",
-                "exit_price": 100.47059269,
-                "hours_held": 2,
-                "pnl_pct": -0.9032433931975539,
-                "direction_correct": false
+                "exit_reason": "TP",
+                "exit_ts": "2026-09-13T17:00:00Z",
+                "exit_price": 101.00432115,
+                "hours_held": 5,
+                "pnl_pct": 1.2387389886625804,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T14:00:00Z",
                 "entry_price": 100.23,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
                 "exit_reason": "SL",
-                "exit_ts": "2026-09-13T17:00:00Z",
-                "exit_price": 101.03719107,
-                "hours_held": 3,
+                "exit_ts": "2026-09-13T22:00:00Z",
+                "exit_price": 99.42280893,
+                "hours_held": 8,
                 "pnl_pct": -0.9053387907812049,
-                "direction_correct": true
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-13T16:00:00Z",
@@ -13482,14 +13822,14 @@
               {
                 "entry_ts": "2026-09-13T18:00:00Z",
                 "entry_price": 100.99,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "TP",
+                "exit_reason": "SL",
                 "exit_ts": "2026-09-13T22:00:00Z",
-                "exit_price": 99.63969072,
+                "exit_price": 100.17981443,
                 "hours_held": 4,
-                "pnl_pct": 1.237072259629667,
-                "direction_correct": true
+                "pnl_pct": -0.9022433557777974,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-13T19:00:00Z",
@@ -13518,14 +13858,14 @@
               {
                 "entry_ts": "2026-09-22T18:00:00Z",
                 "entry_price": 117.89,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
                 "exit_reason": "SL",
-                "exit_ts": "2026-09-23T13:00:00Z",
-                "exit_price": 116.11255474,
-                "hours_held": 19,
+                "exit_ts": "2026-09-23T04:00:00Z",
+                "exit_price": 119.66744526,
+                "hours_held": 10,
                 "pnl_pct": -1.6077150436847887,
-                "direction_correct": false
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-23T00:00:00Z",
@@ -13542,14 +13882,14 @@
               {
                 "entry_ts": "2026-09-23T06:00:00Z",
                 "entry_price": 118.56,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-23T08:00:00Z",
-                "exit_price": 116.93450031,
-                "hours_held": 2,
-                "pnl_pct": -1.471035501012144,
-                "direction_correct": false
+                "exit_reason": "TP",
+                "exit_ts": "2026-09-23T13:00:00Z",
+                "exit_price": 115.85083385,
+                "hours_held": 7,
+                "pnl_pct": 2.185059168353577,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-23T12:00:00Z",
@@ -13566,14 +13906,14 @@
               {
                 "entry_ts": "2026-09-23T18:00:00Z",
                 "entry_price": 114.19,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "TP",
-                "exit_ts": "2026-09-24T16:00:00Z",
-                "exit_price": 117.67302177,
-                "hours_held": 22,
-                "pnl_pct": 2.950198594447848,
-                "direction_correct": true
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-24T14:00:00Z",
+                "exit_price": 116.27981306,
+                "hours_held": 20,
+                "pnl_pct": -1.9301191566687113,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-24T00:00:00Z",
@@ -13590,26 +13930,26 @@
               {
                 "entry_ts": "2026-09-24T06:00:00Z",
                 "entry_price": 115.13,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
                 "exit_reason": "SL",
-                "exit_ts": "2026-09-24T16:00:00Z",
-                "exit_price": 116.84124506,
-                "hours_held": 10,
+                "exit_ts": "2026-09-24T08:00:00Z",
+                "exit_price": 113.41875494,
+                "hours_held": 2,
                 "pnl_pct": -1.5863589507513214,
-                "direction_correct": false
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-24T12:00:00Z",
                 "entry_price": 113.51,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-24T13:00:00Z",
-                "exit_price": 115.22512345,
-                "hours_held": 1,
-                "pnl_pct": -1.61098885120254,
-                "direction_correct": false
+                "exit_reason": "TP",
+                "exit_ts": "2026-09-24T14:00:00Z",
+                "exit_price": 116.36853908,
+                "hours_held": 2,
+                "pnl_pct": 2.4183147520042247,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-24T18:00:00Z",
@@ -13626,14 +13966,14 @@
               {
                 "entry_ts": "2026-09-25T00:00:00Z",
                 "entry_price": 117.44,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
                 "exit_reason": "SL",
-                "exit_ts": "2026-09-25T07:00:00Z",
-                "exit_price": 115.77391275,
-                "hours_held": 7,
+                "exit_ts": "2026-09-25T10:00:00Z",
+                "exit_price": 119.10608724,
+                "hours_held": 10,
                 "pnl_pct": -1.5186710192438693,
-                "direction_correct": true
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-25T06:00:00Z",
@@ -13657,7 +13997,7 @@
                 "exit_price": 122.54740111,
                 "hours_held": 6,
                 "pnl_pct": -1.6137517519880722,
-                "direction_correct": true
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-25T18:00:00Z",
@@ -13665,42 +14005,54 @@
                 "side": "SELL",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 120.37,
-                "hours_held": 12,
-                "pnl_pct": 0.5930121277122261,
-                "direction_correct": true
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 121.27,
+                "hours_held": 18,
+                "pnl_pct": -0.14950086626516151,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-26T00:00:00Z",
                 "entry_price": 122.04,
                 "side": "BUY",
                 "strength": null,
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-26T09:00:00Z",
+                "exit_price": 120.00681531,
+                "hours_held": 9,
+                "pnl_pct": -1.765998598820058,
+                "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 120.36,
+                "side": "SELL",
+                "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 120.37,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 121.27,
                 "hours_held": 6,
-                "pnl_pct": -1.468403802032122,
+                "pnl_pct": -0.8560651379195717,
                 "direction_correct": false
               }
             ]
           },
           "single_position": {
-            "count": 10,
-            "win_rate_pct": 20.0,
-            "direction_accuracy_pct": 50.0,
+            "count": 9,
+            "win_rate_pct": 22.22,
+            "direction_accuracy_pct": 33.33,
             "exit_distribution": {
-              "SL": 8,
-              "TP": 1,
+              "SL": 6,
+              "TP": 2,
               "INSUFFICIENT_DATA": 1
             },
-            "avg_win_pct": 1.7716,
-            "avg_loss_pct": -1.186,
-            "total_return_pct": -5.9446,
-            "compound_return_pct": -5.8725,
-            "max_drawdown_pct": -6.4274,
-            "max_drawdown_pct_additive": -6.5376,
-            "profit_factor": 0.3734,
+            "avg_win_pct": 1.1437,
+            "avg_loss_pct": -1.2814,
+            "total_return_pct": -6.6823,
+            "compound_return_pct": -6.5421,
+            "max_drawdown_pct": -7.8228,
+            "max_drawdown_pct_additive": -8.0792,
+            "profit_factor": 0.255,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -13717,37 +14069,25 @@
               {
                 "entry_ts": "2026-09-13T07:00:00Z",
                 "entry_price": 101.2,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "SL",
+                "exit_reason": "TP",
                 "exit_ts": "2026-09-13T08:00:00Z",
-                "exit_price": 100.50255118,
+                "exit_price": 100.0375853,
                 "hours_held": 1,
-                "pnl_pct": -0.7891786758893333,
-                "direction_correct": false
+                "pnl_pct": 1.0486311264822128,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T12:00:00Z",
                 "entry_price": 99.67,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-13T14:00:00Z",
-                "exit_price": 100.47059269,
-                "hours_held": 2,
-                "pnl_pct": -0.9032433931975539,
-                "direction_correct": false
-              },
-              {
-                "entry_ts": "2026-09-13T14:00:00Z",
-                "entry_price": 100.23,
-                "side": "SELL",
-                "strength": null,
-                "exit_reason": "SL",
+                "exit_reason": "TP",
                 "exit_ts": "2026-09-13T17:00:00Z",
-                "exit_price": 101.03719107,
-                "hours_held": 3,
-                "pnl_pct": -0.9053387907812049,
+                "exit_price": 101.00432115,
+                "hours_held": 5,
+                "pnl_pct": 1.2387389886625804,
                 "direction_correct": true
               },
               {
@@ -13777,14 +14117,14 @@
               {
                 "entry_ts": "2026-09-23T18:00:00Z",
                 "entry_price": 114.19,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "TP",
-                "exit_ts": "2026-09-24T16:00:00Z",
-                "exit_price": 117.67302177,
-                "hours_held": 22,
-                "pnl_pct": 2.950198594447848,
-                "direction_correct": true
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-24T14:00:00Z",
+                "exit_price": 116.27981306,
+                "hours_held": 20,
+                "pnl_pct": -1.9301191566687113,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-24T18:00:00Z",
@@ -13808,7 +14148,7 @@
                 "exit_price": 122.54740111,
                 "hours_held": 6,
                 "pnl_pct": -1.6137517519880722,
-                "direction_correct": true
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-25T18:00:00Z",
@@ -13816,11 +14156,11 @@
                 "side": "SELL",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 120.37,
-                "hours_held": 12,
-                "pnl_pct": 0.5930121277122261,
-                "direction_correct": true
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 121.27,
+                "hours_held": 18,
+                "pnl_pct": -0.14950086626516151,
+                "direction_correct": false
               }
             ]
           }
@@ -13829,35 +14169,35 @@
     },
     "AVAX": {
       "inst_id": "AVAX-USDT-SWAP",
-      "record_count": 29,
-      "sample_size": 27,
+      "record_count": 30,
+      "sample_size": 28,
       "direction_accuracy_pct": {
-        "6": 53.57,
-        "12": 55.56,
-        "24": 48.0,
-        "36": 52.17,
-        "48": 57.14
+        "6": 51.72,
+        "12": 53.57,
+        "24": 46.15,
+        "36": 50.0,
+        "48": 54.55
       },
       "in_confidence_band_pct": {
-        "6": 82.14,
-        "12": 88.89,
-        "24": 72.0,
-        "36": 86.96,
-        "48": 90.48
+        "6": 82.76,
+        "12": 89.29,
+        "24": 73.08,
+        "36": 87.5,
+        "48": 90.91
       },
       "mae": {
-        "6": 0.126046,
-        "12": 0.170122,
-        "24": 0.279173,
-        "36": 0.306234,
-        "48": 0.292701
+        "6": 0.133381,
+        "12": 0.174285,
+        "24": 0.287367,
+        "36": 0.327482,
+        "48": 0.320951
       },
       "mape_pct": {
-        "6": 1.311,
-        "12": 1.707,
-        "24": 2.929,
-        "36": 3.231,
-        "48": 3.095
+        "6": 1.373,
+        "12": 1.74,
+        "24": 2.99,
+        "36": 3.408,
+        "48": 3.335
       },
       "predictions": [
         {
@@ -14870,7 +15210,7 @@
               "upper": 11.06864452
             }
           },
-          "direction_correct": null
+          "direction_correct": false
         },
         {
           "generated_at": "2026-09-24T18:11:30Z",
@@ -15193,25 +15533,71 @@
             }
           },
           "direction_correct": null
+        },
+        {
+          "generated_at": "2026-09-26T12:09:34Z",
+          "coin": "AVAX",
+          "inst_id": "AVAX-USDT-SWAP",
+          "entry_ts": "2026-09-26T12:00:00Z",
+          "entry_price": 10.925,
+          "side": "SELL",
+          "strength": "orta",
+          "expected_move_pct": -2.209,
+          "take_profit": 10.52275536,
+          "stop_loss": 11.16634678,
+          "atr": 0.16089785,
+          "checkpoints": {
+            "6": {
+              "ts": "2026-09-26T18:00:00Z",
+              "value": 10.86061096,
+              "lower": 10.42378998,
+              "upper": 11.25346279
+            },
+            "12": {
+              "ts": "2026-09-27T00:00:00Z",
+              "value": 10.80902386,
+              "lower": 10.15796089,
+              "upper": 11.42163658
+            },
+            "24": {
+              "ts": "2026-09-27T12:00:00Z",
+              "value": 10.69334984,
+              "lower": 9.94378757,
+              "upper": 11.54475784
+            },
+            "36": {
+              "ts": "2026-09-28T00:00:00Z",
+              "value": 10.68241787,
+              "lower": 9.77847195,
+              "upper": 11.71520615
+            },
+            "48": {
+              "ts": "2026-09-28T12:00:00Z",
+              "value": 10.68366241,
+              "lower": 9.69387913,
+              "upper": 11.82821941
+            }
+          },
+          "direction_correct": null
         }
       ],
       "strategies": {
         "model": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 33.33,
-            "direction_accuracy_pct": 48.15,
+            "count": 28,
+            "win_rate_pct": 32.14,
+            "direction_accuracy_pct": 39.29,
             "exit_distribution": {
-              "SL": 18,
+              "SL": 19,
               "TP": 9
             },
             "avg_win_pct": 2.4023,
-            "avg_loss_pct": -2.1295,
-            "total_return_pct": -16.7102,
-            "compound_return_pct": -16.0648,
-            "max_drawdown_pct": -19.6288,
-            "max_drawdown_pct_additive": -21.1424,
-            "profit_factor": 0.5641,
+            "avg_loss_pct": -2.1445,
+            "total_return_pct": -19.1256,
+            "compound_return_pct": -18.0922,
+            "max_drawdown_pct": -21.57,
+            "max_drawdown_pct_additive": -23.5578,
+            "profit_factor": 0.5306,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -15511,7 +15897,7 @@
                 "exit_price": 10.25467318,
                 "hours_held": 2,
                 "pnl_pct": 4.026092230740455,
-                "direction_correct": true
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-25T18:00:00Z",
@@ -15535,25 +15921,37 @@
                 "exit_price": 10.89880212,
                 "hours_held": 1,
                 "pnl_pct": -2.4361701408450758,
-                "direction_correct": true
+                "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 10.624,
+                "side": "SELL",
+                "strength": "guclu",
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-26T11:00:00Z",
+                "exit_price": 10.86998548,
+                "hours_held": 5,
+                "pnl_pct": -2.415375376506023,
+                "direction_correct": false
               }
             ],
             "by_strength": {
               "guclu": {
-                "count": 3,
-                "win_rate_pct": 33.33,
-                "direction_accuracy_pct": 66.67,
+                "count": 4,
+                "win_rate_pct": 25.0,
+                "direction_accuracy_pct": 0.0,
                 "exit_distribution": {
                   "TP": 1,
-                  "SL": 2
+                  "SL": 3
                 },
                 "avg_win_pct": 4.0261,
-                "avg_loss_pct": -2.5469,
-                "total_return_pct": -1.0678,
-                "compound_return_pct": -1.2055,
-                "max_drawdown_pct": -5.0291,
-                "max_drawdown_pct_additive": -5.0939,
-                "profit_factor": 0.7904
+                "avg_loss_pct": -2.5031,
+                "total_return_pct": -3.4831,
+                "compound_return_pct": -3.5918,
+                "max_drawdown_pct": -7.323,
+                "max_drawdown_pct_additive": -7.5092,
+                "profit_factor": 0.5362
               },
               "orta": {
                 "count": 6,
@@ -15606,38 +16004,38 @@
                 "profit_factor": 0.1995
               },
               "SELL": {
-                "count": 20,
-                "win_rate_pct": 40.0,
-                "direction_accuracy_pct": 40.0,
+                "count": 21,
+                "win_rate_pct": 38.1,
+                "direction_accuracy_pct": 28.57,
                 "exit_distribution": {
-                  "SL": 12,
+                  "SL": 13,
                   "TP": 8
                 },
                 "avg_win_pct": 2.5187,
-                "avg_loss_pct": -2.5798,
-                "total_return_pct": -10.8074,
-                "compound_return_pct": -10.902,
-                "max_drawdown_pct": -19.012,
-                "max_drawdown_pct_additive": -20.6587,
-                "profit_factor": 0.6509
+                "avg_loss_pct": -2.5671,
+                "total_return_pct": -13.2228,
+                "compound_return_pct": -13.0541,
+                "max_drawdown_pct": -20.9682,
+                "max_drawdown_pct_additive": -23.0741,
+                "profit_factor": 0.6038
               }
             }
           },
           "single_position": {
-            "count": 10,
-            "win_rate_pct": 50.0,
-            "direction_accuracy_pct": 60.0,
+            "count": 11,
+            "win_rate_pct": 45.45,
+            "direction_accuracy_pct": 45.45,
             "exit_distribution": {
-              "SL": 5,
+              "SL": 6,
               "TP": 5
             },
             "avg_win_pct": 3.0848,
-            "avg_loss_pct": -2.5611,
-            "total_return_pct": 2.6186,
-            "compound_return_pct": 2.1845,
-            "max_drawdown_pct": -6.3077,
-            "max_drawdown_pct_additive": -6.4098,
-            "profit_factor": 1.2045,
+            "avg_loss_pct": -2.5368,
+            "total_return_pct": 0.2033,
+            "compound_return_pct": -0.2836,
+            "max_drawdown_pct": -7.4174,
+            "max_drawdown_pct_additive": -7.4567,
+            "profit_factor": 1.0134,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -15745,7 +16143,7 @@
                 "exit_price": 10.25467318,
                 "hours_held": 2,
                 "pnl_pct": 4.026092230740455,
-                "direction_correct": true
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-25T18:00:00Z",
@@ -15758,24 +16156,36 @@
                 "hours_held": 7,
                 "pnl_pct": -2.6576840922135125,
                 "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 10.624,
+                "side": "SELL",
+                "strength": "guclu",
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-26T11:00:00Z",
+                "exit_price": 10.86998548,
+                "hours_held": 5,
+                "pnl_pct": -2.415375376506023,
+                "direction_correct": false
               }
             ],
             "by_strength": {
               "guclu": {
-                "count": 2,
-                "win_rate_pct": 50.0,
-                "direction_accuracy_pct": 50.0,
+                "count": 3,
+                "win_rate_pct": 33.33,
+                "direction_accuracy_pct": 0.0,
                 "exit_distribution": {
                   "TP": 1,
-                  "SL": 1
+                  "SL": 2
                 },
                 "avg_win_pct": 4.0261,
-                "avg_loss_pct": -2.6577,
-                "total_return_pct": 1.3684,
-                "compound_return_pct": 1.2614,
-                "max_drawdown_pct": -2.6577,
-                "max_drawdown_pct_additive": -2.6577,
-                "profit_factor": 1.5149
+                "avg_loss_pct": -2.5365,
+                "total_return_pct": -1.047,
+                "compound_return_pct": -1.1844,
+                "max_drawdown_pct": -5.0089,
+                "max_drawdown_pct_additive": -5.0731,
+                "profit_factor": 0.7936
               },
               "orta": {
                 "count": 3,
@@ -15828,42 +16238,42 @@
                 "profit_factor": 1.4415
               },
               "SELL": {
-                "count": 8,
-                "win_rate_pct": 50.0,
-                "direction_accuracy_pct": 50.0,
+                "count": 9,
+                "win_rate_pct": 44.44,
+                "direction_accuracy_pct": 33.33,
                 "exit_distribution": {
                   "TP": 4,
-                  "SL": 4
+                  "SL": 5
                 },
                 "avg_win_pct": 3.4883,
-                "avg_loss_pct": -2.9462,
-                "total_return_pct": 2.1681,
-                "compound_return_pct": 1.7414,
-                "max_drawdown_pct": -6.3077,
-                "max_drawdown_pct_additive": -6.4098,
-                "profit_factor": 1.184
+                "avg_loss_pct": -2.8401,
+                "total_return_pct": -0.2473,
+                "compound_return_pct": -0.716,
+                "max_drawdown_pct": -7.4174,
+                "max_drawdown_pct_additive": -7.4567,
+                "profit_factor": 0.9826
               }
             }
           }
         },
         "always_buy": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 25.93,
-            "direction_accuracy_pct": 62.96,
+            "count": 28,
+            "win_rate_pct": 32.14,
+            "direction_accuracy_pct": 71.43,
             "exit_distribution": {
               "SL": 19,
               "TP": 6,
               "EXPIRED": 1,
-              "INSUFFICIENT_DATA": 1
+              "INSUFFICIENT_DATA": 2
             },
-            "avg_win_pct": 3.446,
-            "avg_loss_pct": -1.6336,
-            "total_return_pct": -8.5494,
-            "compound_return_pct": -8.9245,
+            "avg_win_pct": 3.2555,
+            "avg_loss_pct": -1.7069,
+            "total_return_pct": -3.1308,
+            "compound_return_pct": -3.9165,
             "max_drawdown_pct": -20.7176,
             "max_drawdown_pct_additive": -22.9693,
-            "profit_factor": 0.7383,
+            "profit_factor": 0.9035,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -16163,7 +16573,7 @@
                 "exit_price": 10.43120391,
                 "hours_held": 1,
                 "pnl_pct": -2.5756553384442733,
-                "direction_correct": false
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-25T18:00:00Z",
@@ -16183,30 +16593,43 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 10.635,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 10.923,
+                "hours_held": 12,
+                "pnl_pct": 2.463380281690138,
+                "direction_correct": true
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 10.624,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 10.923,
                 "hours_held": 6,
-                "pnl_pct": -0.24084507042254055,
-                "direction_correct": false
+                "pnl_pct": 2.714382530120477,
+                "direction_correct": true
               }
             ]
           },
           "single_position": {
-            "count": 7,
-            "win_rate_pct": 42.86,
-            "direction_accuracy_pct": 71.43,
+            "count": 8,
+            "win_rate_pct": 50.0,
+            "direction_accuracy_pct": 75.0,
             "exit_distribution": {
               "SL": 4,
               "TP": 2,
-              "EXPIRED": 1
+              "EXPIRED": 1,
+              "INSUFFICIENT_DATA": 1
             },
-            "avg_win_pct": 2.4421,
+            "avg_win_pct": 2.5102,
             "avg_loss_pct": -1.9245,
-            "total_return_pct": -0.3718,
-            "compound_return_pct": -0.5702,
+            "total_return_pct": 2.3426,
+            "compound_return_pct": 2.1288,
             "max_drawdown_pct": -6.5395,
             "max_drawdown_pct_additive": -6.6776,
-            "profit_factor": 0.9517,
+            "profit_factor": 1.3043,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -16290,6 +16713,18 @@
                 "exit_price": 10.89963383,
                 "hours_held": 7,
                 "pnl_pct": 4.162806820355843,
+                "direction_correct": true
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 10.624,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 10.923,
+                "hours_held": 6,
+                "pnl_pct": 2.714382530120477,
                 "direction_correct": true
               }
             ]
@@ -16297,22 +16732,22 @@
         },
         "momentum": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 25.93,
-            "direction_accuracy_pct": 62.96,
+            "count": 28,
+            "win_rate_pct": 32.14,
+            "direction_accuracy_pct": 71.43,
             "exit_distribution": {
               "SL": 19,
               "TP": 6,
               "EXPIRED": 1,
-              "INSUFFICIENT_DATA": 1
+              "INSUFFICIENT_DATA": 2
             },
-            "avg_win_pct": 3.446,
-            "avg_loss_pct": -1.6336,
-            "total_return_pct": -8.5494,
-            "compound_return_pct": -8.9245,
+            "avg_win_pct": 3.2555,
+            "avg_loss_pct": -1.7069,
+            "total_return_pct": -3.1308,
+            "compound_return_pct": -3.9165,
             "max_drawdown_pct": -20.7176,
             "max_drawdown_pct_additive": -22.9693,
-            "profit_factor": 0.7383,
+            "profit_factor": 0.9035,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -16612,7 +17047,7 @@
                 "exit_price": 10.43120391,
                 "hours_held": 1,
                 "pnl_pct": -2.5756553384442733,
-                "direction_correct": false
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-25T18:00:00Z",
@@ -16632,30 +17067,43 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 10.635,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 10.923,
+                "hours_held": 12,
+                "pnl_pct": 2.463380281690138,
+                "direction_correct": true
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 10.624,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 10.923,
                 "hours_held": 6,
-                "pnl_pct": -0.24084507042254055,
-                "direction_correct": false
+                "pnl_pct": 2.714382530120477,
+                "direction_correct": true
               }
             ]
           },
           "single_position": {
-            "count": 7,
-            "win_rate_pct": 42.86,
-            "direction_accuracy_pct": 71.43,
+            "count": 8,
+            "win_rate_pct": 50.0,
+            "direction_accuracy_pct": 75.0,
             "exit_distribution": {
               "SL": 4,
               "TP": 2,
-              "EXPIRED": 1
+              "EXPIRED": 1,
+              "INSUFFICIENT_DATA": 1
             },
-            "avg_win_pct": 2.4421,
+            "avg_win_pct": 2.5102,
             "avg_loss_pct": -1.9245,
-            "total_return_pct": -0.3718,
-            "compound_return_pct": -0.5702,
+            "total_return_pct": 2.3426,
+            "compound_return_pct": 2.1288,
             "max_drawdown_pct": -6.5395,
             "max_drawdown_pct_additive": -6.6776,
-            "profit_factor": 0.9517,
+            "profit_factor": 1.3043,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
@@ -16740,40 +17188,52 @@
                 "hours_held": 7,
                 "pnl_pct": 4.162806820355843,
                 "direction_correct": true
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 10.624,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "INSUFFICIENT_DATA",
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 10.923,
+                "hours_held": 6,
+                "pnl_pct": 2.714382530120477,
+                "direction_correct": true
               }
             ]
           }
         },
         "random": {
           "independent": {
-            "count": 27,
-            "win_rate_pct": 37.04,
-            "direction_accuracy_pct": 44.44,
+            "count": 28,
+            "win_rate_pct": 42.86,
+            "direction_accuracy_pct": 64.29,
             "exit_distribution": {
-              "TP": 9,
               "SL": 16,
+              "TP": 10,
               "EXPIRED": 1,
               "INSUFFICIENT_DATA": 1
             },
-            "avg_win_pct": 2.7636,
-            "avg_loss_pct": -1.7696,
-            "total_return_pct": -2.4477,
-            "compound_return_pct": -3.1897,
-            "max_drawdown_pct": -8.8041,
-            "max_drawdown_pct_additive": -9.0692,
-            "profit_factor": 0.9186,
+            "avg_win_pct": 2.8914,
+            "avg_loss_pct": -1.8337,
+            "total_return_pct": 5.3574,
+            "compound_return_pct": 4.548,
+            "max_drawdown_pct": -7.2831,
+            "max_drawdown_pct_additive": -7.4038,
+            "profit_factor": 1.1826,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
                 "entry_price": 7.396,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "TP",
-                "exit_ts": "2026-09-13T09:00:00Z",
-                "exit_price": 7.28253635,
-                "hours_held": 13,
-                "pnl_pct": 1.4341218226068133,
-                "direction_correct": false
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-13T08:00:00Z",
+                "exit_price": 7.32792181,
+                "hours_held": 12,
+                "pnl_pct": -1.0204730935640831,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T00:00:00Z",
@@ -16802,38 +17262,38 @@
               {
                 "entry_ts": "2026-09-13T07:00:00Z",
                 "entry_price": 7.385,
-                "side": "SELL",
-                "strength": null,
-                "exit_reason": "TP",
-                "exit_ts": "2026-09-13T09:00:00Z",
-                "exit_price": 7.27754035,
-                "hours_held": 2,
-                "pnl_pct": 1.3551069735951253,
-                "direction_correct": false
-              },
-              {
-                "entry_ts": "2026-09-13T07:00:00Z",
-                "entry_price": 7.376,
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "SL",
                 "exit_ts": "2026-09-13T08:00:00Z",
-                "exit_price": 7.31034564,
+                "exit_price": 7.32052421,
                 "hours_held": 1,
-                "pnl_pct": -0.9901078497830854,
+                "pnl_pct": -0.9730641841570802,
                 "direction_correct": true
+              },
+              {
+                "entry_ts": "2026-09-13T07:00:00Z",
+                "entry_price": 7.376,
+                "side": "SELL",
+                "strength": null,
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-13T19:00:00Z",
+                "exit_price": 7.44165436,
+                "hours_held": 12,
+                "pnl_pct": -0.9901078497830854,
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-13T12:00:00Z",
                 "entry_price": 7.307,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-13T14:00:00Z",
-                "exit_price": 7.37587525,
-                "hours_held": 2,
-                "pnl_pct": -1.0425926508827164,
-                "direction_correct": false
+                "exit_reason": "TP",
+                "exit_ts": "2026-09-13T17:00:00Z",
+                "exit_price": 7.42179208,
+                "hours_held": 5,
+                "pnl_pct": 1.4709877514711978,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T14:00:00Z",
@@ -16850,26 +17310,26 @@
               {
                 "entry_ts": "2026-09-13T16:00:00Z",
                 "entry_price": 7.374,
-                "side": "BUY",
-                "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-13T22:00:00Z",
-                "exit_price": 7.29955672,
-                "hours_held": 6,
-                "pnl_pct": -1.109537225386495,
-                "direction_correct": true
-              },
-              {
-                "entry_ts": "2026-09-13T16:00:00Z",
-                "entry_price": 7.383,
                 "side": "SELL",
                 "strength": null,
                 "exit_reason": "TP",
                 "exit_ts": "2026-09-14T00:00:00Z",
-                "exit_price": 7.25892788,
+                "exit_price": 7.24992788,
                 "hours_held": 8,
-                "pnl_pct": 1.5805109711499339,
+                "pnl_pct": 1.5825620423108169,
                 "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-13T16:00:00Z",
+                "entry_price": 7.383,
+                "side": "BUY",
+                "strength": null,
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-13T22:00:00Z",
+                "exit_price": 7.30855672,
+                "hours_held": 6,
+                "pnl_pct": -1.1083065826899654,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T17:00:00Z",
@@ -16886,14 +17346,14 @@
               {
                 "entry_ts": "2026-09-13T18:00:00Z",
                 "entry_price": 7.425,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
-                "exit_reason": "SL",
+                "exit_reason": "TP",
                 "exit_ts": "2026-09-13T22:00:00Z",
-                "exit_price": 7.35546983,
+                "exit_price": 7.30911637,
                 "hours_held": 4,
-                "pnl_pct": -1.0364333333333293,
-                "direction_correct": false
+                "pnl_pct": 1.4607222222222274,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T19:00:00Z",
@@ -16982,26 +17442,26 @@
               {
                 "entry_ts": "2026-09-24T00:00:00Z",
                 "entry_price": 10.223,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-24T16:00:00Z",
-                "exit_price": 10.50227849,
-                "hours_held": 16,
-                "pnl_pct": -2.8318643255404417,
-                "direction_correct": false
+                "exit_reason": "TP",
+                "exit_ts": "2026-09-24T21:00:00Z",
+                "exit_price": 10.68846415,
+                "hours_held": 21,
+                "pnl_pct": 4.453107209234087,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-24T06:00:00Z",
                 "entry_price": 10.244,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
                 "exit_reason": "SL",
-                "exit_ts": "2026-09-24T16:00:00Z",
-                "exit_price": 10.50044601,
-                "hours_held": 10,
+                "exit_ts": "2026-09-24T12:00:00Z",
+                "exit_price": 9.98755398,
+                "hours_held": 6,
                 "pnl_pct": -2.6033777333073007,
-                "direction_correct": false
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-24T12:00:00Z",
@@ -17018,14 +17478,14 @@
               {
                 "entry_ts": "2026-09-24T18:00:00Z",
                 "entry_price": 10.358,
-                "side": "BUY",
+                "side": "SELL",
                 "strength": null,
                 "exit_reason": "SL",
-                "exit_ts": "2026-09-25T07:00:00Z",
-                "exit_price": 10.07715895,
-                "hours_held": 13,
+                "exit_ts": "2026-09-24T21:00:00Z",
+                "exit_price": 10.63884106,
+                "hours_held": 3,
                 "pnl_pct": -2.8113444197721544,
-                "direction_correct": true
+                "direction_correct": false
               },
               {
                 "entry_ts": "2026-09-25T00:00:00Z",
@@ -17061,7 +17521,7 @@
                 "exit_price": 10.43120391,
                 "hours_held": 1,
                 "pnl_pct": -2.5756553384442733,
-                "direction_correct": false
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-25T18:00:00Z",
@@ -17081,66 +17541,78 @@
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "INSUFFICIENT_DATA",
-                "exit_ts": "2026-09-26T06:00:00Z",
-                "exit_price": 10.635,
-                "hours_held": 6,
-                "pnl_pct": -0.24084507042254055,
+                "exit_ts": "2026-09-26T12:00:00Z",
+                "exit_price": 10.923,
+                "hours_held": 12,
+                "pnl_pct": 2.463380281690138,
+                "direction_correct": true
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 10.624,
+                "side": "SELL",
+                "strength": null,
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-26T11:00:00Z",
+                "exit_price": 10.86998548,
+                "hours_held": 5,
+                "pnl_pct": -2.415375376506023,
                 "direction_correct": false
               }
             ]
           },
           "single_position": {
-            "count": 7,
-            "win_rate_pct": 28.57,
-            "direction_accuracy_pct": 14.29,
+            "count": 8,
+            "win_rate_pct": 25.0,
+            "direction_accuracy_pct": 50.0,
             "exit_distribution": {
+              "SL": 6,
               "TP": 1,
-              "SL": 5,
               "EXPIRED": 1
             },
-            "avg_win_pct": 1.5633,
-            "avg_loss_pct": -2.0783,
-            "total_return_pct": -7.2647,
-            "compound_return_pct": -7.1479,
-            "max_drawdown_pct": -8.4607,
-            "max_drawdown_pct_additive": -8.6988,
-            "profit_factor": 0.3009,
+            "avg_win_pct": 1.5817,
+            "avg_loss_pct": -2.1285,
+            "total_return_pct": -9.6076,
+            "compound_return_pct": -9.3251,
+            "max_drawdown_pct": -9.7183,
+            "max_drawdown_pct_additive": -10.0582,
+            "profit_factor": 0.2477,
             "trades": [
               {
                 "entry_ts": "2026-09-12T20:00:00Z",
                 "entry_price": 7.396,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "TP",
-                "exit_ts": "2026-09-13T09:00:00Z",
-                "exit_price": 7.28253635,
-                "hours_held": 13,
-                "pnl_pct": 1.4341218226068133,
-                "direction_correct": false
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-13T08:00:00Z",
+                "exit_price": 7.32792181,
+                "hours_held": 12,
+                "pnl_pct": -1.0204730935640831,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-13T12:00:00Z",
                 "entry_price": 7.307,
-                "side": "SELL",
+                "side": "BUY",
                 "strength": null,
-                "exit_reason": "SL",
-                "exit_ts": "2026-09-13T14:00:00Z",
-                "exit_price": 7.37587525,
-                "hours_held": 2,
-                "pnl_pct": -1.0425926508827164,
-                "direction_correct": false
+                "exit_reason": "TP",
+                "exit_ts": "2026-09-13T17:00:00Z",
+                "exit_price": 7.42179208,
+                "hours_held": 5,
+                "pnl_pct": 1.4709877514711978,
+                "direction_correct": true
               },
               {
-                "entry_ts": "2026-09-13T14:00:00Z",
-                "entry_price": 7.406,
+                "entry_ts": "2026-09-13T17:00:00Z",
+                "entry_price": 7.424,
                 "side": "BUY",
                 "strength": null,
                 "exit_reason": "SL",
                 "exit_ts": "2026-09-13T22:00:00Z",
-                "exit_price": 7.33166405,
-                "hours_held": 8,
-                "pnl_pct": -1.1037260329462606,
-                "direction_correct": false
+                "exit_price": 7.35048125,
+                "hours_held": 5,
+                "pnl_pct": -1.0902848868534463,
+                "direction_correct": true
               },
               {
                 "entry_ts": "2026-09-22T14:00:00Z",
@@ -17188,6 +17660,18 @@
                 "exit_price": 10.7213803,
                 "hours_held": 7,
                 "pnl_pct": -2.6576840922135125,
+                "direction_correct": false
+              },
+              {
+                "entry_ts": "2026-09-26T06:00:00Z",
+                "entry_price": 10.624,
+                "side": "SELL",
+                "strength": null,
+                "exit_reason": "SL",
+                "exit_ts": "2026-09-26T11:00:00Z",
+                "exit_price": 10.86998548,
+                "hours_held": 5,
+                "pnl_pct": -2.415375376506023,
                 "direction_correct": false
               }
             ]
